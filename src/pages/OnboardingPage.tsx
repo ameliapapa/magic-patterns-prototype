@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 // Mae logo
 import maeLogo from '../assets/icons/mae-logo.svg'
@@ -56,10 +56,33 @@ import iconProfessionalLight from '../assets/icons/professional-role-light.svg'
 import iconInvestorLight from '../assets/icons/investor-role-light.svg'
 import iconReaderLight from '../assets/icons/reader-role-light.svg'
 
+// ─── Animation styles ─────────────────────────────────────────────────────────
+
+const ANIM_STYLES = `
+  @keyframes slideInRight {
+    from { transform: translateX(40px); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+  }
+  @keyframes slideInLeft {
+    from { transform: translateX(-40px); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes marqueeReverse {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+`
+
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const GREEN = '#29422a'
 const BG = '#f8f6f2'
+const MAE_LOGO_TOP = 90
+const MAE_LOGO_HEIGHT = 64
 
 const ROLES_ROW1 = [
   { id: 'friend',     label: 'Friend',    icon: iconFriend,       iconLight: iconFriendLight },
@@ -106,6 +129,16 @@ const INTRO_ROW2 = [
 
 // ─── Shared components ────────────────────────────────────────────────────────
 
+function MaeLogo() {
+  return (
+    <img
+      src={maeLogo}
+      alt="Mae"
+      style={{ height: MAE_LOGO_HEIGHT, width: 'auto', maxWidth: 221 }}
+    />
+  )
+}
+
 function ProgressDots({ active, total = 5 }: { active: number; total?: number }) {
   return (
     <div className="flex gap-1" style={{ width: 240 }}>
@@ -122,8 +155,8 @@ function ProgressDots({ active, total = 5 }: { active: number; total?: number })
 
 function MaeHeader({ step }: { step?: number }) {
   return (
-    <div className="flex flex-col items-center" style={{ paddingTop: 114, gap: 16 }}>
-      <img src={maeLogo} alt="Mae" style={{ height: 64, width: 'auto', maxWidth: 221 }} />
+    <div className="flex flex-col items-center" style={{ paddingTop: MAE_LOGO_TOP, gap: 16 }}>
+      <MaeLogo />
       {step !== undefined && <ProgressDots active={step} />}
     </div>
   )
@@ -143,8 +176,12 @@ function GreenButton({
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       className="w-full flex items-center justify-center rounded-[20px] py-4"
-      style={{ background: disabled ? '#5c5c5c' : GREEN }}
+      style={{
+        background: disabled ? 'rgba(41,66,42,0.45)' : GREEN,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+      }}
     >
       <span
         className="font-medium text-base text-[#fcfcfa] text-center"
@@ -230,8 +267,8 @@ function TextInputBox({
       <input
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="absolute font-sans font-normal text-black bg-transparent outline-none border-none"
-        style={{ top: 16, left: 16, right: 16, fontSize: 20, fontWeight: 100, fontVariationSettings: "'opsz' 14" }}
+        className="absolute text-black bg-transparent outline-none border-none"
+        style={{ top: 16, left: 16, right: 16, fontSize: 20, fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 }}
         autoFocus
       />
       {!value && (
@@ -252,21 +289,24 @@ function RoleTile({
   iconLight,
   selected,
   onToggle,
+  width = 54,
 }: {
   label: string
   icon: string
   iconLight: string
   selected: boolean
   onToggle: () => void
+  width?: number
 }) {
   return (
     <button
       onClick={onToggle}
-      className="flex flex-col items-center p-2 rounded-[10px] shrink-0"
+      className="flex flex-col items-center justify-start p-2 rounded-[10px] shrink-0"
       style={{
         background: selected ? GREEN : BG,
-        border: selected ? 'none' : '1px solid rgba(138,116,103,0.2)',
-        width: 54,
+        border: selected ? '1px solid transparent' : '1px solid rgba(138,116,103,0.2)',
+        width,
+        minHeight: 78,
         gap: 4,
       }}
     >
@@ -279,10 +319,11 @@ function RoleTile({
         className="font-sans font-medium text-center"
         style={{
           fontSize: 10,
-          lineHeight: 'normal',
+          lineHeight: '11px',
           color: selected ? '#fafaf7' : '#030712',
           fontVariationSettings: "'opsz' 14",
           whiteSpace: 'nowrap',
+          width: '100%',
         }}
       >
         {label}
@@ -291,14 +332,21 @@ function RoleTile({
   )
 }
 
+function roleTileWidth(label: string) {
+  if (label.length >= 12) return 86
+  if (label.length >= 10) return 82
+  if (label.length >= 8) return 68
+  return 54
+}
+
 // ─── Screen components ────────────────────────────────────────────────────────
 
 function Intro1({ onNext }: { onNext: () => void }) {
   return (
     <div className="relative size-full" style={{ background: BG }}>
       {/* Mae logo — paddingTop 90 matches Figma ~92px from top */}
-      <div className="flex justify-center" style={{ paddingTop: 90 }}>
-        <img src={maeLogo} alt="Mae" style={{ height: 64, width: 'auto', maxWidth: 221 }} />
+      <div className="flex justify-center" style={{ paddingTop: MAE_LOGO_TOP }}>
+        <MaeLogo />
       </div>
 
       {/* Photo grid — two offset rows */}
@@ -394,13 +442,53 @@ function Intro2({ onNext }: { onNext: () => void }) {
   )
 }
 
+// Duplicated for seamless marquee loop
+const INTRO_ROW1_LOOP = [...INTRO_ROW1, ...INTRO_ROW1]
+const INTRO_ROW2_LOOP = [...INTRO_ROW2, ...INTRO_ROW2]
+
+function MarqueeRow({
+  items,
+  direction,
+  top,
+}: {
+  items: typeof INTRO_ROW1_LOOP
+  direction: 'left' | 'right'
+  top: number
+}) {
+  const animName = direction === 'left' ? 'marquee' : 'marqueeReverse'
+  return (
+    <div
+      className="absolute overflow-hidden"
+      style={{ top, left: 0, right: 0 }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          gap: 16,
+          width: 'max-content',
+          animation: `${animName} 28s linear infinite`,
+        }}
+      >
+        {items.map((r, i) => (
+          <div key={`${r.id}-${i}`} className="flex flex-col items-center shrink-0" style={{ width: 52 }}>
+            <img src={r.icon} alt={r.label} style={{ width: 44, height: 44, opacity: 0.45 }} />
+            <span
+              className="font-sans font-medium text-center"
+              style={{ fontSize: 9, lineHeight: 'normal', color: 'rgba(74,74,69,0.5)', fontVariationSettings: "'opsz' 14" }}
+            >
+              {r.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function Intro3({ onNext }: { onNext: () => void }) {
   return (
     <div className="relative size-full" style={{ background: BG }}>
-      {/* Mae logo — paddingTop 90 matches Figma ~92px from top */}
-      <div className="flex justify-center" style={{ paddingTop: 90 }}>
-        <img src={maeLogo} alt="Mae" style={{ height: 64, width: 'auto', maxWidth: 221 }} />
-      </div>
+      <MaeHeader />
 
       {/* Headline */}
       <div className="text-center px-6" style={{ paddingTop: 48 }}>
@@ -409,45 +497,8 @@ function Intro3({ onNext }: { onNext: () => void }) {
         </p>
       </div>
 
-      {/* Row 1 — overflows right (Professional clips) */}
-      <div
-        className="absolute overflow-hidden"
-        style={{ top: 364, left: 23, right: -30 }}
-      >
-        <div className="flex items-start justify-between px-[2px]">
-          {INTRO_ROW1.map(r => (
-            <div key={r.id} className="flex flex-col items-center shrink-0" style={{ width: 44 }}>
-              <img src={r.icon} alt={r.label} style={{ width: 44, height: 44, opacity: 0.5 }} />
-              <span
-                className="font-sans font-medium text-center"
-                style={{ fontSize: 10, lineHeight: 'normal', color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
-              >
-                {r.label}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Row 2 — overflows left (Care-giver clips) */}
-      <div
-        className="absolute overflow-hidden"
-        style={{ top: 436, left: -24, right: 0 }}
-      >
-        <div className="flex items-start justify-between px-[2px]">
-          {INTRO_ROW2.map(r => (
-            <div key={r.id} className="flex flex-col items-center shrink-0" style={{ width: 44 }}>
-              <img src={r.icon} alt={r.label} style={{ width: 44, height: 44, opacity: 0.5 }} />
-              <span
-                className="font-sans font-medium text-center"
-                style={{ fontSize: 10, lineHeight: 'normal', color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
-              >
-                {r.label}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <MarqueeRow items={INTRO_ROW1_LOOP} direction="left"  top={364} />
+      <MarqueeRow items={INTRO_ROW2_LOOP} direction="right" top={440} />
 
       <BottomActions
         onContinue={onNext}
@@ -476,28 +527,14 @@ function StepPersonal({ onNext, onBack }: { onNext: (name: string) => void; onBa
         </p>
       </div>
 
-      <div style={{ paddingLeft: 55, paddingTop: 90 }}>
-        <div className="flex items-center gap-1">
-          <p
-            className="font-serif font-bold"
-            style={{ fontSize: 20, color: '#000', lineHeight: '27px' }}
-          >
-            {name || ''}
-          </p>
-          <span
-            className="font-sans"
-            style={{ fontSize: 20, fontWeight: 100, color: '#000', fontVariationSettings: "'opsz' 14" }}
-          >
-            |
-          </span>
-          <input
-            value={name}
-            onChange={e => setName(e.target.value)}
-            className="absolute opacity-0"
-            style={{ left: 55, top: 403, width: 271 }}
-            autoFocus
-          />
-        </div>
+      <div style={{ paddingLeft: 55, paddingTop: 90, width: 326 }}>
+        <input
+          value={name}
+          onChange={e => setName(e.target.value)}
+          className="w-full bg-transparent outline-none border-none font-serif font-bold text-black"
+          style={{ fontSize: 20, lineHeight: '27px', caretColor: '#000' }}
+          autoFocus
+        />
         <div style={{ width: 271, height: 1, background: '#000', marginTop: 8 }} />
         {name && (
           <p
@@ -525,7 +562,7 @@ function StepRoles({
   onNext: (roles: Set<string>) => void
   onBack: () => void
 }) {
-  const [selected, setSelected] = useState<Set<string>>(new Set(['friend', 'partner', 'creative', 'professional']))
+  const [selected, setSelected] = useState<Set<string>>(new Set())
   const [customRole, setCustomRole] = useState('')
 
   const toggle = (id: string) =>
@@ -553,29 +590,20 @@ function StepRoles({
         </p>
       </div>
 
-      {/* Row 1 */}
-      <div className="flex gap-2 px-2" style={{ marginTop: 20 }}>
-        {ROLES_ROW1.map(r => (
-          <RoleTile key={r.id} {...r} selected={selected.has(r.id)} onToggle={() => toggle(r.id)} />
-        ))}
-      </div>
-
-      {/* Row 2 */}
-      <div className="flex gap-2 px-4" style={{ marginTop: 8 }}>
-        {ROLES_ROW2.map(r => (
-          <RoleTile key={r.id} {...r} selected={selected.has(r.id)} onToggle={() => toggle(r.id)} />
-        ))}
-      </div>
-
-      {/* Row 3 */}
-      <div className="flex gap-2 px-2" style={{ marginTop: 8 }}>
-        {ROLES_ROW3.map(r => (
-          <RoleTile key={r.id} {...r} selected={selected.has(r.id)} onToggle={() => toggle(r.id)} />
+      <div className="flex flex-wrap gap-2 px-6" style={{ marginTop: 20 }}>
+        {[...ROLES_ROW1, ...ROLES_ROW2, ...ROLES_ROW3].map(r => (
+          <RoleTile
+            key={r.id}
+            {...r}
+            width={roleTileWidth(r.label)}
+            selected={selected.has(r.id)}
+            onToggle={() => toggle(r.id)}
+          />
         ))}
       </div>
 
       {/* Custom role input */}
-      <div style={{ paddingLeft: 68, paddingTop: 24 }}>
+      <div style={{ padding: '24px 24px 0' }}>
         <div className="flex items-center gap-1">
           <span className="font-sans" style={{ fontSize: 20, fontWeight: 100, fontVariationSettings: "'opsz' 14" }}>|</span>
           <input
@@ -586,7 +614,7 @@ function StepRoles({
             placeholder=""
           />
         </div>
-        <div style={{ width: 271, height: 1, background: '#000', marginTop: 4 }} />
+        <div style={{ width: '100%', height: 1, background: '#000', marginTop: 4 }} />
         <p
           className="font-sans font-normal"
           style={{ fontSize: 10, lineHeight: '27px', color: '#000', fontVariationSettings: "'opsz' 14", marginTop: 2 }}
@@ -784,15 +812,54 @@ type Step = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 export default function OnboardingPage({ onComplete }: { onComplete: () => void }) {
   const [step, setStep] = useState<Step>(0)
-  const next = () => setStep(s => Math.min(s + 1, 7) as Step)
-  const back = () => setStep(s => Math.max(s - 1, 0) as Step)
+  const directionRef = useRef<'forward' | 'back'>('forward')
 
-  if (step === 0) return <Intro1 onNext={next} />
-  if (step === 1) return <Intro2 onNext={next} />
-  if (step === 2) return <Intro3 onNext={next} />
-  if (step === 3) return <StepPersonal onNext={(_name) => next()} onBack={back} />
-  if (step === 4) return <StepRoles onNext={(_roles) => next()} onBack={back} />
-  if (step === 5) return <StepIntentions onNext={(_items) => next()} onBack={back} />
-  if (step === 6) return <StepDirections onNext={(_dir) => next()} onBack={back} />
-  return <StepCheckin onNext={onComplete} onBack={back} />
+  const next = () => {
+    directionRef.current = 'forward'
+    setStep(s => Math.min(s + 1, 7) as Step)
+  }
+  const back = () => {
+    directionRef.current = 'back'
+    setStep(s => Math.max(s - 1, 0) as Step)
+  }
+
+  const animName = directionRef.current === 'forward' ? 'slideInRight' : 'slideInLeft'
+
+  let screen: React.ReactNode
+  if (step === 0) screen = <Intro1 onNext={next} />
+  else if (step === 1) screen = <Intro2 onNext={next} />
+  else if (step === 2) screen = <Intro3 onNext={next} />
+  else if (step === 3) screen = <StepPersonal onNext={() => next()} onBack={back} />
+  else if (step === 4) screen = <StepRoles onNext={() => next()} onBack={back} />
+  else if (step === 5) screen = <StepIntentions onNext={() => next()} onBack={back} />
+  else if (step === 6) screen = <StepDirections onNext={() => next()} onBack={back} />
+  else screen = <StepCheckin onNext={onComplete} onBack={back} />
+
+  return (
+    <>
+      <style>{ANIM_STYLES}</style>
+      <div className="relative size-full">
+        <div
+          key={step}
+          className="size-full"
+          style={{ animation: `${animName} 320ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both` }}
+        >
+          {screen}
+        </div>
+        <button
+          onClick={onComplete}
+          className="absolute font-sans font-medium"
+          style={{
+            top: 52,
+            right: 24,
+            fontSize: 12,
+            color: 'rgba(74,74,69,0.5)',
+            fontVariationSettings: "'opsz' 14",
+          }}
+        >
+          Skip
+        </button>
+      </div>
+    </>
+  )
 }

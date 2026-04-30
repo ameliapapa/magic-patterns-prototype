@@ -2,17 +2,13 @@ import heroNature from '../assets/illustrations/walk-in-nature.png'
 import activityWeightlifting from '../assets/illustrations/person_lifting_weights_in_gym.png'
 import activityWatercolor from '../assets/illustrations/u1355955226_painter_painting_a_canvas_--sref_202514354_--prof_51f7c398-d464-4ad1-8bb6-da52f2cc1971_0.png'
 
-// ─── Icons — drop SVG/PNG files into src/assets/icons/ with these exact names ─
+// ─── Icons ────────────────────────────────────────────────────────────────────
 import iconNotification from '../assets/icons/icon-notification.svg'
 import iconUserCircle from '../assets/icons/icon-user-circle.svg'
 import iconHeart from '../assets/icons/icon-heart.svg'
 import iconChevronRight from '../assets/icons/icon-chevron-right.svg'
 import iconMore from '../assets/icons/icon-more.svg'
-import iconMemoryCard from '../assets/icons/icon-memory-card.svg'
-import navOverview from '../assets/icons/nav-overview.svg'
-import navReflect from '../assets/icons/nav-reflect.svg'
 import navMemory from '../assets/icons/nav-memory.svg'
-import navPlus from '../assets/icons/nav-plus.svg'
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -129,69 +125,9 @@ function IntentionCard({ title, subtitle }: { title: string; subtitle: string })
   )
 }
 
-function BottomNav() {
-  return (
-    <div className="flex gap-[11px] items-start py-[6px]">
-      {/* Tab pill — 3 buttons */}
-      <div
-        className="flex gap-[12px] items-start py-[6px] px-[6px] rounded-pill shrink-0"
-        style={{ background: '#e8e1d7', height: 61 }}
-      >
-        {/* Overview — active */}
-        <button
-          className="flex flex-col items-center gap-[2px] px-[14px] py-[4px] rounded-pill"
-          style={{ background: 'rgba(250, 247, 242, 0.8)', minWidth: 72, height: 49 }}
-        >
-          <img src={navOverview} alt="" width={24} height={24} />
-          <span
-            className="font-sans font-medium text-ink-secondary text-center"
-            style={{ fontSize: 10, lineHeight: '15px', fontVariationSettings: "'opsz' 14" }}
-          >
-            Overview
-          </span>
-        </button>
-        {/* Reflect */}
-        <button
-          className="flex flex-col items-center gap-[2px] px-[14px] py-[4px] rounded-pill"
-          style={{ minWidth: 56, height: 49 }}
-        >
-          <img src={navReflect} alt="" width={24} height={24} />
-          <span
-            className="font-sans font-medium text-ink-secondary text-center"
-            style={{ fontSize: 10, lineHeight: '15px', fontVariationSettings: "'opsz' 14" }}
-          >
-            Reflect
-          </span>
-        </button>
-        {/* Memory */}
-        <button
-          className="flex flex-col items-center gap-[2px] px-[14px] py-[4px] rounded-pill"
-          style={{ minWidth: 71, height: 49 }}
-        >
-          <img src={navMemory} alt="" width={24} height={24} />
-          <span
-            className="font-sans font-medium text-ink-secondary text-center"
-            style={{ fontSize: 10, lineHeight: '15px', fontVariationSettings: "'opsz' 14" }}
-          >
-            Memory
-          </span>
-        </button>
-      </div>
-
-      {/* Plus button */}
-      <button
-        className="flex items-center justify-center rounded-pill shrink-0"
-        style={{ background: '#e8e1d7', width: 59, height: 59 }}
-      >
-        <img src={navPlus} alt="Add" width={26} height={26} />
-      </button>
-    </div>
-  )
-}
-
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
-export default function DashboardPage() {
+export default function DashboardPage({ onCaptureOpen }: { onCaptureOpen: () => void }) {
   return (
     <div className="relative" style={{ width: 393, background: '#f8f6f2', minHeight: 852 }}>
 
@@ -291,6 +227,7 @@ export default function DashboardPage() {
               Care for a quick check in?
             </p>
             <button
+              onClick={onCaptureOpen}
               className="flex items-center justify-center px-4 py-1 rounded-[30px]"
               style={{ background: '#2d2d2a' }}
             >
@@ -363,11 +300,6 @@ export default function DashboardPage() {
           <IntentionCard title="Role App design" subtitle="Refine user flow" />
           <IntentionCard title="Website Redesign" subtitle="Create new custom icons" />
         </div>
-      </div>
-
-      {/* ── 6. Bottom navigation ── */}
-      <div style={{ paddingLeft: 23, paddingTop: 8, paddingBottom: 16 }}>
-        <BottomNav />
       </div>
 
     </div>
