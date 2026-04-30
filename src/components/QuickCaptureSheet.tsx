@@ -1,12 +1,32 @@
 import { useState } from 'react'
+import { Camera, Check, X } from 'lucide-react'
+
+import imgBoardgames from '../assets/illustrations/u1355955226_playing_boardgames_--sref_202514354_--profile_8d1_0c4b39ad-8442-4e08-b910-2733d343dc0b_3.png'
+import imgCoffee from '../assets/illustrations/u1355955226_two_girls_sitting_in_coffee_shop_--sref_202514354_12f89aa8-94a4-410a-8fc2-7fd8f984d2c3_0.png'
+import imgPainting from '../assets/illustrations/u1355955226_painter_painting_a_canvas_--sref_202514354_--prof_51f7c398-d464-4ad1-8bb6-da52f2cc1971_0.png'
+import imgRunner from '../assets/illustrations/u1355955226_runner_in_the_park_--sref_202514354_--profile_8d1_34b21c61-5858-439e-8fbd-0256b22a06a4_0.png'
+import imgTyping from '../assets/illustrations/hands_typing_in_keyboard.png'
 
 const GREEN = '#29422a'
 const BORDER = 'rgba(138,116,103,0.2)'
 
 type MomentType = 'happened' | 'intention'
+type Attachment = {
+  id: string
+  label: string
+  src: string
+  source: 'upload' | 'database'
+}
 
 const ROLES = ['Creative', 'Self', 'Parent', 'Daughter', 'Friend', 'Partner', 'Professional']
 const DIRECTION = { role: 'Creative', text: 'Write a chapter of my novel' }
+const DATABASE_ILLUSTRATIONS: Attachment[] = [
+  { id: 'runner', label: 'Morning run', src: imgRunner, source: 'database' },
+  { id: 'painting', label: 'Creative practice', src: imgPainting, source: 'database' },
+  { id: 'boardgames', label: 'Game night', src: imgBoardgames, source: 'database' },
+  { id: 'coffee', label: 'Coffee catch-up', src: imgCoffee, source: 'database' },
+  { id: 'typing', label: 'Focused work', src: imgTyping, source: 'database' },
+]
 
 const STYLES = `
   @keyframes sheetUp {
@@ -52,6 +72,7 @@ export default function QuickCaptureSheet({ onClose }: { onClose: () => void }) 
   const [text, setText] = useState('')
   const [role, setRole] = useState<string | null>(null)
   const [directionLinked, setDirectionLinked] = useState(false)
+  const [attachment, setAttachment] = useState<Attachment | null>(null)
 
   const canSubmit = text.trim().length > 0
   const submitLabel = type === 'happened' ? 'Capture Moment' : 'Save Intention'
@@ -85,6 +106,8 @@ export default function QuickCaptureSheet({ onClose }: { onClose: () => void }) 
           animation: 'sheetUp 380ms cubic-bezier(0.32, 0.72, 0, 1) both',
           zIndex: 20,
           paddingBottom: 28,
+          maxHeight: '88%',
+          overflowY: 'auto',
         }}
       >
         {/* Handle */}
@@ -130,6 +153,145 @@ export default function QuickCaptureSheet({ onClose }: { onClose: () => void }) 
 
         {/* Divider */}
         <div style={{ height: 1, background: BORDER, margin: '0 20px 18px' }} />
+
+        {/* Attachment picker */}
+        <div style={{ paddingBottom: 18 }}>
+          <div className="flex items-center justify-between" style={{ paddingLeft: 20, paddingRight: 20, marginBottom: 10 }}>
+            <p
+              className="font-sans font-medium uppercase"
+              style={{
+                fontSize: 9,
+                letterSpacing: '0.09em',
+                color: 'rgba(74,74,69,0.45)',
+                fontVariationSettings: "'opsz' 14",
+              }}
+            >
+              Photo or illustration
+            </p>
+            {attachment && (
+              <button
+                onClick={() => setAttachment(null)}
+                className="flex items-center gap-1"
+                style={{ color: 'rgba(74,74,69,0.55)' }}
+              >
+                <X size={12} strokeWidth={2} />
+                <span
+                  className="font-sans font-medium"
+                  style={{ fontSize: 11, fontVariationSettings: "'opsz' 9" }}
+                >
+                  Remove
+                </span>
+              </button>
+            )}
+          </div>
+
+          <div
+            className="flex gap-2 overflow-x-auto scrollbar-hide"
+            style={{ paddingLeft: 20, paddingRight: 20 }}
+          >
+            <label
+              className="relative flex flex-col items-center justify-center gap-1 shrink-0 overflow-hidden rounded-[14px]"
+              style={{
+                width: 82,
+                height: 82,
+                border: `1px dashed ${attachment?.source === 'upload' ? GREEN : 'rgba(138,116,103,0.35)'}`,
+                background: attachment?.source === 'upload' ? 'rgba(41,66,42,0.05)' : '#f8f6f2',
+                color: attachment?.source === 'upload' ? GREEN : '#6b6660',
+                cursor: 'pointer',
+              }}
+            >
+              {attachment?.source === 'upload' ? (
+                <>
+                  <img src={attachment.src} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(41,66,42,0.28))' }}
+                  />
+                  <span
+                    className="absolute flex items-center justify-center rounded-full"
+                    style={{ top: 6, right: 6, width: 20, height: 20, background: GREEN }}
+                  >
+                    <Check size={12} color="#fafaf7" strokeWidth={2.4} />
+                  </span>
+                  <span
+                    className="absolute left-2 right-2 bottom-2 font-sans font-medium text-left"
+                    style={{ fontSize: 10, lineHeight: '12px', color: '#fffffe', fontVariationSettings: "'opsz' 9" }}
+                  >
+                    Photo
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Camera size={18} strokeWidth={1.8} />
+                  <span
+                    className="font-sans font-medium text-center"
+                    style={{ fontSize: 11, lineHeight: '13px', fontVariationSettings: "'opsz' 9" }}
+                  >
+                    Add photo
+                  </span>
+                </>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={event => {
+                  const file = event.target.files?.[0]
+                  if (!file) return
+                  setAttachment({
+                    id: `upload-${file.name}`,
+                    label: file.name,
+                    src: URL.createObjectURL(file),
+                    source: 'upload',
+                  })
+                }}
+              />
+            </label>
+
+            {DATABASE_ILLUSTRATIONS.map(item => {
+              const selected = attachment?.id === item.id
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setAttachment(selected ? null : item)}
+                  className="relative overflow-hidden shrink-0 rounded-[14px]"
+                  style={{
+                    width: 82,
+                    height: 82,
+                    border: `2px solid ${selected ? GREEN : 'transparent'}`,
+                    background: '#e8e1d7',
+                  }}
+                  aria-label={`Use ${item.label} illustration`}
+                >
+                  <img src={item.src} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: selected
+                        ? 'linear-gradient(to bottom, rgba(41,66,42,0.08), rgba(41,66,42,0.32))'
+                        : 'linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.18))',
+                    }}
+                  />
+                  <span
+                    className="absolute left-2 right-2 bottom-2 font-sans font-medium text-left"
+                    style={{ fontSize: 10, lineHeight: '12px', color: '#fffffe', fontVariationSettings: "'opsz' 9" }}
+                  >
+                    {item.label}
+                  </span>
+                  {selected && (
+                    <span
+                      className="absolute flex items-center justify-center rounded-full"
+                      style={{ top: 6, right: 6, width: 20, height: 20, background: GREEN }}
+                    >
+                      <Check size={12} color="#fafaf7" strokeWidth={2.4} />
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </div>
 
         {/* Role row */}
         <div style={{ paddingBottom: 16 }}>

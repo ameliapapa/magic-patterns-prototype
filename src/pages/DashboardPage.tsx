@@ -8,7 +8,9 @@ import iconUserCircle from '../assets/icons/icon-user-circle.svg'
 import iconHeart from '../assets/icons/icon-heart.svg'
 import iconChevronRight from '../assets/icons/icon-chevron-right.svg'
 import iconMore from '../assets/icons/icon-more.svg'
-import navMemory from '../assets/icons/nav-memory.svg'
+import navReflect from '../assets/icons/nav-reflect.svg'
+
+const GREEN = '#29422a'
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -84,7 +86,17 @@ function ActivityCard({
   )
 }
 
-function IntentionCard({ title, subtitle }: { title: string; subtitle: string }) {
+function IntentionCard({
+  title,
+  subtitle,
+  directionRole,
+  direction,
+}: {
+  title: string
+  subtitle: string
+  directionRole: string
+  direction: string
+}) {
   return (
     <div
       className="flex flex-col gap-4 overflow-hidden p-4 rounded-2xl shrink-0"
@@ -92,12 +104,12 @@ function IntentionCard({ title, subtitle }: { title: string; subtitle: string })
     >
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-1">
-          <img src={navMemory} alt="" width={16} height={16} />
+          <img src={navReflect} alt="" width={16} height={16} />
           <span
             className="font-sans font-normal text-ink-secondary"
             style={{ fontSize: 12, lineHeight: '18px', fontVariationSettings: "'opsz' 9" }}
           >
-            Memory
+            Reflect
           </span>
         </div>
         <span
@@ -119,6 +131,29 @@ function IntentionCard({ title, subtitle }: { title: string; subtitle: string })
           style={{ fontSize: 12, lineHeight: '18px', fontVariationSettings: "'opsz' 9" }}
         >
           {subtitle}
+        </p>
+      </div>
+      <div
+        className="flex flex-col gap-1 rounded-[12px]"
+        style={{ background: 'rgba(41,66,42,0.05)', padding: '8px 10px' }}
+      >
+        <span
+          className="font-sans font-medium uppercase"
+          style={{
+            fontSize: 9,
+            lineHeight: '12px',
+            letterSpacing: '0.9px',
+            color: 'rgba(74,74,69,0.55)',
+            fontVariationSettings: "'opsz' 9",
+          }}
+        >
+          {directionRole}
+        </span>
+        <p
+          className="font-sans font-medium"
+          style={{ fontSize: 12, lineHeight: '16px', color: GREEN, fontVariationSettings: "'opsz' 9" }}
+        >
+          {direction}
         </p>
       </div>
     </div>
@@ -229,7 +264,7 @@ export default function DashboardPage({ onCaptureOpen }: { onCaptureOpen: () => 
             <button
               onClick={onCaptureOpen}
               className="flex items-center justify-center px-4 py-1 rounded-[30px]"
-              style={{ background: '#2d2d2a' }}
+              style={{ background: GREEN }}
             >
               <span
                 className="font-inter font-medium text-center"
@@ -262,7 +297,7 @@ export default function DashboardPage({ onCaptureOpen }: { onCaptureOpen: () => 
         </div>
 
         {/* Activity cards — right card bottom-aligned in 276px frame (matches Figma stagger) */}
-        <div className="flex items-center justify-between px-6 w-full" style={{ marginTop: 16 }}>
+        <div className="flex items-center justify-between px-6 w-full" style={{ marginTop: 8 }}>
           <ActivityCard
             image={activityWeightlifting}
             role="SELF"
@@ -296,9 +331,24 @@ export default function DashboardPage({ onCaptureOpen }: { onCaptureOpen: () => 
           className="flex gap-2 overflow-x-auto scrollbar-hide"
           style={{ paddingLeft: 15, paddingRight: 15, paddingTop: 12, paddingBottom: 8 }}
         >
-          <IntentionCard title="Portfolio Redesign" subtitle="Create new custom icons" />
-          <IntentionCard title="Role App design" subtitle="Refine user flow" />
-          <IntentionCard title="Website Redesign" subtitle="Create new custom icons" />
+          <IntentionCard
+            title="Portfolio Redesign"
+            subtitle="Create new custom icons"
+            directionRole="Creative"
+            direction="Create more than I consume"
+          />
+          <IntentionCard
+            title="Role App design"
+            subtitle="Refine user flow"
+            directionRole="Professional"
+            direction="Build things worth building"
+          />
+          <IntentionCard
+            title="Website Redesign"
+            subtitle="Create new custom icons"
+            directionRole="Professional"
+            direction="Build things worth building"
+          />
         </div>
       </div>
 

@@ -2,13 +2,14 @@ import { useState } from 'react'
 import DashboardPage from './pages/DashboardPage'
 import OnboardingPage from './pages/OnboardingPage'
 import ReflectPage from './pages/ReflectPage'
+import MemoryPage from './pages/MemoryPage'
 import QuickCaptureSheet from './components/QuickCaptureSheet'
 import navOverview from './assets/icons/nav-overview.svg'
 import navReflect from './assets/icons/nav-reflect.svg'
 import navMemory from './assets/icons/nav-memory.svg'
 import navPlus from './assets/icons/nav-plus.svg'
 
-type Page = 'dashboard' | 'reflect'
+type Page = 'dashboard' | 'reflect' | 'memory'
 
 const GREEN = '#29422a'
 
@@ -95,8 +96,8 @@ function GlobalNav({
           <NavTab
             icon={navMemory}
             label="Memory"
-            active={false}
-            onClick={() => {}}
+            active={page === 'memory'}
+            onClick={() => navigate('memory')}
           />
         </div>
 
@@ -138,6 +139,8 @@ export default function App() {
             <OnboardingPage onComplete={() => setOnboardingDone(true)} />
           ) : page === 'reflect' ? (
             <ReflectPage />
+          ) : page === 'memory' ? (
+            <MemoryPage />
           ) : (
             <DashboardPage onCaptureOpen={() => setShowCapture(true)} />
           )}
