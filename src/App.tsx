@@ -4,6 +4,7 @@ import OnboardingPage from './pages/OnboardingPage'
 import ReflectPage from './pages/ReflectPage'
 import MemoryPage from './pages/MemoryPage'
 import QuickCaptureSheet from './components/QuickCaptureSheet'
+import RoleDetailSheet from './components/RoleDetailSheet'
 import navOverview from './assets/icons/nav-overview.svg'
 import navReflect from './assets/icons/nav-reflect.svg'
 import navMemory from './assets/icons/nav-memory.svg'
@@ -117,6 +118,7 @@ export default function App() {
   const [onboardingDone, setOnboardingDone] = useState(false)
   const [page, setPage] = useState<Page>('dashboard')
   const [showCapture, setShowCapture] = useState(false)
+  const [activeRole, setActiveRole] = useState<string | null>(null)
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -142,7 +144,10 @@ export default function App() {
           ) : page === 'memory' ? (
             <MemoryPage />
           ) : (
-            <DashboardPage onCaptureOpen={() => setShowCapture(true)} />
+            <DashboardPage
+              onCaptureOpen={() => setShowCapture(true)}
+              onRoleOpen={setActiveRole}
+            />
           )}
         </div>
 
@@ -157,6 +162,11 @@ export default function App() {
 
         {/* Quick capture sheet */}
         {showCapture && <QuickCaptureSheet onClose={() => setShowCapture(false)} />}
+
+        {/* Role detail sheet */}
+        {activeRole && (
+          <RoleDetailSheet roleId={activeRole} onClose={() => setActiveRole(null)} />
+        )}
       </div>
     </div>
   )

@@ -14,13 +14,28 @@ const GREEN = '#29422a'
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function RoleChip({ label }: { label: string }) {
+const ROLE_IDS: Record<string, string> = {
+  Parent: 'parent',
+  Self: 'self',
+  Daughter: 'daughter',
+  Friend: 'friend',
+  Creative: 'creative',
+  Partner: 'partner',
+  Professional: 'professional',
+}
+
+function RoleChip({ label, onOpen }: { label: string; onOpen: (id: string) => void }) {
   return (
-    <div
-      className="flex items-center overflow-hidden px-4 py-2 rounded-pill shrink-0"
+    <button
+      onClick={() => {
+        const id = ROLE_IDS[label]
+        if (id) onOpen(id)
+      }}
+      className="flex items-center overflow-hidden px-4 py-2 rounded-pill shrink-0 active:scale-95"
       style={{
         background: '#fffffe',
         border: '1px solid rgba(138, 116, 103, 0.25)',
+        transition: 'transform 120ms ease, box-shadow 120ms ease',
       }}
     >
       <span
@@ -29,7 +44,7 @@ function RoleChip({ label }: { label: string }) {
       >
         {label}
       </span>
-    </div>
+    </button>
   )
 }
 
@@ -162,7 +177,13 @@ function IntentionCard({
 
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
-export default function DashboardPage({ onCaptureOpen }: { onCaptureOpen: () => void }) {
+export default function DashboardPage({
+  onCaptureOpen,
+  onRoleOpen,
+}: {
+  onCaptureOpen: () => void
+  onRoleOpen: (roleId: string) => void
+}) {
   return (
     <div className="relative" style={{ width: 393, background: '#f8f6f2', minHeight: 852 }}>
 
@@ -224,15 +245,15 @@ export default function DashboardPage({ onCaptureOpen }: { onCaptureOpen: () => 
           }}
         >
           <div className="flex gap-1 items-center justify-center w-full">
-            <RoleChip label="Parent" />
-            <RoleChip label="Self" />
-            <RoleChip label="Daughter" />
-            <RoleChip label="Friend" />
+            <RoleChip label="Parent" onOpen={onRoleOpen} />
+            <RoleChip label="Self" onOpen={onRoleOpen} />
+            <RoleChip label="Daughter" onOpen={onRoleOpen} />
+            <RoleChip label="Friend" onOpen={onRoleOpen} />
           </div>
           <div className="flex gap-1 items-center justify-center w-full" style={{ height: 35 }}>
-            <RoleChip label="Creative" />
-            <RoleChip label="Partner" />
-            <RoleChip label="Professional" />
+            <RoleChip label="Creative" onOpen={onRoleOpen} />
+            <RoleChip label="Partner" onOpen={onRoleOpen} />
+            <RoleChip label="Professional" onOpen={onRoleOpen} />
           </div>
         </div>
       </div>
