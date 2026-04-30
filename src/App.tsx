@@ -13,9 +13,9 @@ type Page = 'dashboard' | 'reflect'
 const GREEN = '#29422a'
 
 // Nav pill height (61) + padding top/bottom (8 + 16) = 85px
-// Gradient fade zone above = 16px
-// Total overlay = 101px → paddingBottom on scroll content
-const NAV_OVERLAY_HEIGHT = 101
+// Gradient fade zone above = 20px
+// Total overlay = 105px → paddingBottom on scroll content
+const NAV_OVERLAY_HEIGHT = 105
 
 function NavTab({
   icon,
@@ -74,18 +74,7 @@ function GlobalNav({
   onCaptureOpen: () => void
 }) {
   return (
-    <div
-      className="absolute bottom-0 left-0 right-0"
-      style={{
-        paddingTop: 16,
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        background: 'linear-gradient(to bottom, rgba(248,246,242,0) 0%, rgba(248,246,242,0.95) 45%)',
-        maskImage: 'linear-gradient(to bottom, transparent 0%, black 45%)',
-        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 45%)',
-        zIndex: 20,
-      }}
-    >
+    <div className="absolute bottom-0 left-0 right-0" style={{ zIndex: 20 }}>
       <div className="flex gap-[11px] items-center" style={{ padding: '8px 23px 16px' }}>
         <div
           className="flex flex-1 items-center py-[6px] px-[6px] rounded-pill"
