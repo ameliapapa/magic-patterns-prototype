@@ -1,497 +1,798 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRightIcon, CheckIcon, PlusIcon, XIcon } from 'lucide-react';
-import { Role, RoleColor, PRESET_COLORS, COMMON_EMOJIS } from '../types';
-import { generateId } from '../utils/roleUtils';
+import { useState } from 'react'
 
-// ─── Role suggestions ──────────────────────────────────────────────────────────
-const ROLE_SUGGESTIONS = [
-  { name: 'Professional', emoji: '💼', color: 'sky' as RoleColor,      desc: 'Work & career' },
-  { name: 'Parent',       emoji: '👨‍👧‍👦', color: 'amber' as RoleColor,   desc: 'Raising family' },
-  { name: 'Partner',      emoji: '❤️',  color: 'coral' as RoleColor,   desc: 'Your relationship' },
-  { name: 'Friend',       emoji: '🤝',  color: 'sage' as RoleColor,    desc: 'Social connections' },
-  { name: 'Athlete',      emoji: '🏃',  color: 'mint' as RoleColor,    desc: 'Health & fitness' },
-  { name: 'Creative',     emoji: '🎨',  color: 'lavender' as RoleColor,desc: 'Making things' },
-  { name: 'Learner',      emoji: '📚',  color: 'sky' as RoleColor,     desc: 'Growth & study' },
-  { name: 'Caregiver',    emoji: '🌱',  color: 'sage' as RoleColor,    desc: 'Supporting others' },
-  { name: 'Leader',       emoji: '🎯',  color: 'coral' as RoleColor,   desc: 'Guiding a team' },
-  { name: 'Community',    emoji: '🏠',  color: 'amber' as RoleColor,   desc: 'Local ties' },
-];
+// Mae logo
+import maeLogo from '../assets/icons/mae-logo.svg'
+import maeFlowerIcon from '../assets/icons/mae-flower-icon.svg'
 
-const COLOR_CYCLE: RoleColor[] = ['coral', 'sky', 'sage', 'lavender', 'amber', 'mint'];
+// Grid illustrations (intro-1)
+import imgStudying2 from '../assets/illustrations/u1355955226_student_studying_--sref_202514354_--profile_8d1tc_fc17280c-b262-49d3-9b3f-5e837e25e74b_2.png'
+import imgParentChild from '../assets/illustrations/u1355955226_httpss.mj.runediIY9CaOxU_parent_holding_childs_ha_3d4341f0-366f-4f5d-b1e3-7cbd3860dfaf_2.png'
+import imgBoardgames from '../assets/illustrations/u1355955226_playing_boardgames_--sref_202514354_--profile_8d1tc_d900c493-d5da-47b1-8964-94b53fbc6932.png'
+import imgLunch from '../assets/illustrations/u1355955226_top_down_of_lunch_spread_at_a_restaurant_--sref_2_abbba477-5dd3-4b18-9a64-99e4f98bac2c_0.png'
+import imgDancer from '../assets/illustrations/u1355955226_dancer_in_studio_--sref_202514354_--profile_8d1tc_4471827e-5bc1-4b21-8b83-57daf2706044_3.png'
+import imgDogWalk from '../assets/illustrations/u1355955226_man_walking_dog_in_park_--sref_202514354_--profil_35c96630-cd8f-4290-85f0-14bf006601ba_1.png'
 
-// ─── Mini donut preview (step 3) ───────────────────────────────────────────────
-function MiniDonut({ roles }: { roles: Role[] }) {
-  const SIZE = 220;
-  const CX = SIZE / 2;
-  const CY = SIZE / 2;
-  const OUTER_R = 88;
-  const INNER_R = 52;
-  const GAP = roles.length <= 1 ? 0 : 0.05;
+// Intro-2 hero
+import imgBeach from '../assets/illustrations/u1355955226_two_men_walk_by_the_beach_--sref_202514354_--prof_896047be-7012-4fb3-9026-474f2bca23d0_3.png'
 
-  const polar = (r: number, a: number) => ({
-    x: CX + r * Math.cos(a),
-    y: CY + r * Math.sin(a),
-  });
+// Intention suggestion cards
+import imgWriting from '../assets/illustrations/u1355955226_student_studying_--sref_202514354_--profile_8d1tc_fc17280c-b262-49d3-9b3f-5e837e25e74b_0.png'
+import imgDrawing from '../assets/illustrations/drawing_female.png'
+import imgPainting from '../assets/illustrations/u1355955226_painter_painting_a_canvas_--sref_202514354_--prof_51f7c398-d464-4ad1-8bb6-da52f2cc1971_1.png'
 
-  const arc = (start: number, end: number) => {
-    const oS = polar(OUTER_R, start); const oE = polar(OUTER_R, end);
-    const iS = polar(INNER_R, start); const iE = polar(INNER_R, end);
-    const lg = end - start > Math.PI ? 1 : 0;
-    return [
-      `M ${oS.x.toFixed(2)} ${oS.y.toFixed(2)}`,
-      `A ${OUTER_R} ${OUTER_R} 0 ${lg} 1 ${oE.x.toFixed(2)} ${oE.y.toFixed(2)}`,
-      `L ${iE.x.toFixed(2)} ${iE.y.toFixed(2)}`,
-      `A ${INNER_R} ${INNER_R} 0 ${lg} 0 ${iS.x.toFixed(2)} ${iS.y.toFixed(2)}`,
-      'Z',
-    ].join(' ');
-  };
+// Role icons — dark (for light background, unselected)
+import iconFriend from '../assets/icons/friend-role-icon.svg'
+import iconDaughter from '../assets/icons/daughter-role-icon.svg'
+import iconSelf from '../assets/icons/self-role-icon.svg'
+import iconPartner from '../assets/icons/partner-role.svg'
+import iconParent from '../assets/icons/parent-role-icon.svg'
+import iconCreative from '../assets/icons/creative-icon.svg'
+import iconCaregiver from '../assets/icons/caregiver-role.svg'
+import iconPetOwner from '../assets/icons/pet-owner-role.svg'
+import iconHomeOwner from '../assets/icons/home-owner-role.svg'
+import iconStudent from '../assets/icons/student-role.svg'
+import iconSibling from '../assets/icons/sibling-role.svg'
+import iconMentor from '../assets/icons/mentor-role.svg'
+import iconProfessional from '../assets/icons/professional-role.svg'
+import iconInvestor from '../assets/icons/investor-role.svg'
+import iconReader from '../assets/icons/reader-role.svg'
+import iconIdea from '../assets/icons/idea-01.svg'
+import iconIdeaLight from '../assets/icons/idea-01-light.svg'
 
-  let angle = -Math.PI / 2;
-  const segments = roles.map((role, idx) => {
-    const span = (Math.PI * 2) / roles.length - GAP;
-    const start = angle + GAP / 2;
-    const end = start + span;
-    angle += (Math.PI * 2) / roles.length;
-    return { role, path: arc(start, end), color: PRESET_COLORS[role.color], idx };
-  });
+// Role icons — light (for dark background, selected)
+import iconFriendLight from '../assets/icons/friend-role-icon-light.svg'
+import iconDaughterLight from '../assets/icons/daughter-role-icon-light.svg'
+import iconSelfLight from '../assets/icons/self-role-icon-light.svg'
+import iconPartnerLight from '../assets/icons/partner-role-light.svg'
+import iconParentLight from '../assets/icons/parent-role-icon-light.svg'
+import iconCreativeLight from '../assets/icons/creative-icon-light.svg'
+import iconCaregiverLight from '../assets/icons/caregiver-role-light.svg'
+import iconPetOwnerLight from '../assets/icons/pet-owner-role-light.svg'
+import iconHomeOwnerLight from '../assets/icons/home-owner-role-light.svg'
+import iconStudentLight from '../assets/icons/student-role-light.svg'
+import iconSiblingLight from '../assets/icons/sibling-role-light.svg'
+import iconMentorLight from '../assets/icons/mentor-role-light.svg'
+import iconProfessionalLight from '../assets/icons/professional-role-light.svg'
+import iconInvestorLight from '../assets/icons/investor-role-light.svg'
+import iconReaderLight from '../assets/icons/reader-role-light.svg'
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const GREEN = '#29422a'
+const BG = '#f8f6f2'
+
+const ROLES_ROW1 = [
+  { id: 'friend',     label: 'Friend',    icon: iconFriend,       iconLight: iconFriendLight },
+  { id: 'daughter',   label: 'Daughter',  icon: iconDaughter,     iconLight: iconDaughterLight },
+  { id: 'self',       label: 'Self',      icon: iconSelf,         iconLight: iconSelfLight },
+  { id: 'partner',    label: 'Partner',   icon: iconPartner,      iconLight: iconPartnerLight },
+  { id: 'parent',     label: 'Parent',    icon: iconParent,       iconLight: iconParentLight },
+  { id: 'creative',   label: 'Creative',  icon: iconCreative,     iconLight: iconCreativeLight },
+]
+const ROLES_ROW2 = [
+  { id: 'caregiver',  label: 'Care-giver',  icon: iconCaregiver,  iconLight: iconCaregiverLight },
+  { id: 'pet-owner',  label: 'Pet-owner',   icon: iconPetOwner,   iconLight: iconPetOwnerLight },
+  { id: 'home-owner', label: 'Home-owner',  icon: iconHomeOwner,  iconLight: iconHomeOwnerLight },
+  { id: 'student',    label: 'Student',     icon: iconStudent,    iconLight: iconStudentLight },
+  { id: 'entrepreneur', label: 'Entrepeneur', icon: iconIdea,     iconLight: iconIdeaLight },
+]
+const ROLES_ROW3 = [
+  { id: 'sibling',    label: 'Sibling',     icon: iconSibling,    iconLight: iconSiblingLight },
+  { id: 'mentor',     label: 'Mentor',      icon: iconMentor,     iconLight: iconMentorLight },
+  { id: 'professional', label: 'Professional', icon: iconProfessional, iconLight: iconProfessionalLight },
+  { id: 'investor',   label: 'Investor',    icon: iconInvestor,   iconLight: iconInvestorLight },
+  { id: 'reader',     label: 'Reader',      icon: iconReader,     iconLight: iconReaderLight },
+]
+
+// Decorative icon rows for intro-3 (always dark, displayed on light background)
+const INTRO_ROW1 = [
+  { id: 'daughter',     icon: iconDaughter,    label: 'Daughter' },
+  { id: 'self',         icon: iconSelf,        label: 'Self' },
+  { id: 'friend',       icon: iconFriend,      label: 'Friend' },
+  { id: 'partner',      icon: iconPartner,     label: 'Partner' },
+  { id: 'parent',       icon: iconParent,      label: 'Parent' },
+  { id: 'creative',     icon: iconCreative,    label: 'Creative' },
+  { id: 'professional', icon: iconProfessional, label: 'Professional' },
+]
+const INTRO_ROW2 = [
+  { id: 'caregiver',    icon: iconCaregiver,   label: 'Care-giver' },
+  { id: 'pet-owner',    icon: iconPetOwner,    label: 'Pet owner' },
+  { id: 'home-owner',   icon: iconHomeOwner,   label: 'Neighbour' },
+  { id: 'student',      icon: iconStudent,     label: 'Student' },
+  { id: 'sibling',      icon: iconSibling,     label: 'Sibling' },
+  { id: 'mentor',       icon: iconMentor,      label: 'Mentor' },
+  { id: 'entrepreneur', icon: iconIdea,         label: 'Entrepeneur' },
+]
+
+// ─── Shared components ────────────────────────────────────────────────────────
+
+function ProgressDots({ active, total = 5 }: { active: number; total?: number }) {
   return (
-    <div className="relative" style={{ width: SIZE, height: SIZE }}>
-      <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
-        {segments.map(({ role, path, color, idx }) => (
-          <motion.path
-            key={role.id}
-            d={path}
-            fill={`${color}CC`}
-            stroke="white"
-            strokeWidth={3}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: idx * 0.1, duration: 0.35, ease: 'easeOut' }}
-          />
-        ))}
-      </svg>
-      {/* Center label */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, type: 'spring', stiffness: 200 }}
-          className="text-center"
+    <div className="flex gap-1" style={{ width: 240 }}>
+      {Array.from({ length: total }).map((_, i) => (
+        <div
+          key={i}
+          className="flex-1 rounded-full"
+          style={{ height: 4, background: i < active ? GREEN : '#d9d9d9' }}
+        />
+      ))}
+    </div>
+  )
+}
+
+function MaeHeader({ step }: { step?: number }) {
+  return (
+    <div className="flex flex-col items-center" style={{ paddingTop: 114, gap: 16 }}>
+      <img src={maeLogo} alt="Mae" style={{ height: 64, width: 'auto', maxWidth: 221 }} />
+      {step !== undefined && <ProgressDots active={step} />}
+    </div>
+  )
+}
+
+function GreenButton({
+  label,
+  onClick,
+  disabled,
+  fontFamily = 'DM Sans',
+}: {
+  label: string
+  onClick: () => void
+  disabled?: boolean
+  fontFamily?: string
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full flex items-center justify-center rounded-[20px] py-4"
+      style={{ background: disabled ? '#5c5c5c' : GREEN }}
+    >
+      <span
+        className="font-medium text-base text-[#fcfcfa] text-center"
+        style={{ fontFamily, fontVariationSettings: "'opsz' 14" }}
+      >
+        {label}
+      </span>
+    </button>
+  )
+}
+
+function BackButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full font-sans font-medium text-base text-center"
+      style={{ color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
+    >
+      Back
+    </button>
+  )
+}
+
+// paddingBottom is 56px for intro screens (no back button), 24px for step screens (with back)
+function BottomActions({
+  onContinue,
+  onBack,
+  continueLabel = 'Continue',
+  disabled = false,
+  continueFontFamily = 'DM Sans',
+}: {
+  onContinue: () => void
+  onBack?: () => void
+  continueLabel?: string
+  disabled?: boolean
+  continueFontFamily?: string
+}) {
+  const pb = onBack ? 24 : 56
+  return (
+    <div
+      className="absolute bottom-0 left-0 right-0 flex flex-col items-center"
+      style={{ gap: 8, padding: `0 41px ${pb}px` }}
+    >
+      <GreenButton
+        label={continueLabel}
+        onClick={onContinue}
+        disabled={disabled}
+        fontFamily={continueFontFamily}
+      />
+      {onBack && <BackButton onClick={onBack} />}
+    </div>
+  )
+}
+
+function SuggestionChip({ label, onClick }: { label: string; onClick?: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center justify-center px-2 py-2 rounded-[10px] shrink-0"
+      style={{ border: '1px solid rgba(138,116,103,0.2)' }}
+    >
+      <span className="font-sans font-normal text-black text-center" style={{ fontSize: 10, lineHeight: '13px', fontVariationSettings: "'opsz' 14" }}>
+        {label}
+      </span>
+    </button>
+  )
+}
+
+function TextInputBox({
+  value,
+  onChange,
+  placeholder,
+}: {
+  value: string
+  onChange: (v: string) => void
+  placeholder: string
+}) {
+  return (
+    <div
+      className="relative overflow-hidden rounded-[20px]"
+      style={{ width: 290, height: 78, border: '1px solid rgba(138,116,103,0.2)', background: BG }}
+    >
+      <input
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        className="absolute font-sans font-normal text-black bg-transparent outline-none border-none"
+        style={{ top: 16, left: 16, right: 16, fontSize: 20, fontWeight: 100, fontVariationSettings: "'opsz' 14" }}
+        autoFocus
+      />
+      {!value && (
+        <p
+          className="absolute font-sans font-normal text-left"
+          style={{ bottom: 12, left: 16, fontSize: 10, lineHeight: '15px', color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
         >
-          <div className="text-3xl font-bold text-warm-900 leading-none">{roles.length}</div>
-          <div className="text-xs text-warm-800/45 mt-1 leading-tight">
-            roles in<br />your life
-          </div>
-        </motion.div>
+          {placeholder}
+        </p>
+      )}
+    </div>
+  )
+}
+
+function RoleTile({
+  label,
+  icon,
+  iconLight,
+  selected,
+  onToggle,
+}: {
+  label: string
+  icon: string
+  iconLight: string
+  selected: boolean
+  onToggle: () => void
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      className="flex flex-col items-center p-2 rounded-[10px] shrink-0"
+      style={{
+        background: selected ? GREEN : BG,
+        border: selected ? 'none' : '1px solid rgba(138,116,103,0.2)',
+        width: 54,
+        gap: 4,
+      }}
+    >
+      <img
+        src={selected ? iconLight : icon}
+        alt={label}
+        style={{ width: 40, height: 40 }}
+      />
+      <span
+        className="font-sans font-medium text-center"
+        style={{
+          fontSize: 10,
+          lineHeight: 'normal',
+          color: selected ? '#fafaf7' : '#030712',
+          fontVariationSettings: "'opsz' 14",
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {label}
+      </span>
+    </button>
+  )
+}
+
+// ─── Screen components ────────────────────────────────────────────────────────
+
+function Intro1({ onNext }: { onNext: () => void }) {
+  return (
+    <div className="relative size-full" style={{ background: BG }}>
+      {/* Mae logo — paddingTop 90 matches Figma ~92px from top */}
+      <div className="flex justify-center" style={{ paddingTop: 90 }}>
+        <img src={maeLogo} alt="Mae" style={{ height: 64, width: 'auto', maxWidth: 221 }} />
+      </div>
+
+      {/* Photo grid — two offset rows */}
+      <div
+        className="absolute overflow-hidden"
+        style={{ top: 204, left: -77, width: 555, height: 343 }}
+      >
+        <div className="absolute flex gap-[14px]" style={{ top: 0, left: 47 }}>
+          {[imgStudying2, imgParentChild, imgBoardgames].map((src, i) => (
+            <div key={i} className="shrink-0 rounded-[20px] overflow-hidden" style={{ width: 160, height: 160 }}>
+              <img src={src} alt="" className="w-full h-full object-cover" />
+            </div>
+          ))}
+        </div>
+        <div className="absolute flex gap-[11px]" style={{ top: 184, left: 0 }}>
+          {[imgLunch, imgDancer, imgDogWalk].map((src, i) => (
+            <div key={i} className="shrink-0 rounded-[20px] overflow-hidden" style={{ width: 160, height: 160 }}>
+              <img src={src} alt="" className="w-full h-full object-cover" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Headline */}
+      <div className="absolute text-center px-6" style={{ top: 613, left: 0, right: 0 }}>
+        <p
+          className="font-serif font-bold"
+          style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}
+        >
+          Plan your week around{' '}
+          <em style={{ color: '#d13e1e', fontStyle: 'italic' }}>who you are,</em>
+          {' '}and{' '}
+          <em style={{ color: '#d13e1e', fontStyle: 'italic' }}>who you are becoming</em>
+        </p>
+      </div>
+
+      <BottomActions onContinue={onNext} />
+    </div>
+  )
+}
+
+function Intro2({ onNext }: { onNext: () => void }) {
+  return (
+    <div className="relative size-full overflow-hidden" style={{ background: '#fafaf7' }}>
+      {/* Full-bleed beach illustration */}
+      <div className="absolute" style={{ left: -297, top: -65, width: 939, height: 939 }}>
+        <img src={imgBeach} alt="" className="w-full h-full object-cover" />
+      </div>
+
+      {/* Flower icon only — centered at 43.75% of frame */}
+      <div
+        className="absolute"
+        style={{
+          top: '43.75%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 141,
+          height: 139,
+        }}
+      >
+        <img src={maeFlowerIcon} alt="Mae" className="w-full h-full" />
+      </div>
+
+      {/* Headline — centered below icon */}
+      <div
+        className="absolute text-center"
+        style={{ top: '50%', left: 0, right: 0, paddingTop: 130, paddingLeft: 24, paddingRight: 24 }}
+      >
+        <p
+          className="font-serif font-bold"
+          style={{ fontSize: 32, lineHeight: '38px', color: GREEN }}
+        >
+          Balance your roles{'\n'}
+          through journaling{'\n'}
+          with{' '}
+          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontWeight: 700 }}>Mae</span>
+        </p>
+      </div>
+
+      {/* Glass continue button */}
+      <div className="absolute" style={{ bottom: 53, left: 51, right: 51 }}>
+        <button
+          onClick={onNext}
+          className="w-full flex items-center justify-center rounded-[20px] py-4"
+          style={{ background: 'rgba(41,66,42,0.2)', backdropFilter: 'blur(9px)' }}
+        >
+          <span className="font-sans font-medium text-base text-[#fcfcfa]" style={{ fontVariationSettings: "'opsz' 14" }}>
+            Continue
+          </span>
+        </button>
       </div>
     </div>
-  );
+  )
 }
 
-// ─── Page component ─────────────────────────────────────────────────────────────
-interface OnboardingPageProps {
-  roles: Role[];
-  onAddRole: (role: Role) => void;
-  onRemoveRole: (id: string) => void;
-  onUpdateRole: (id: string, updates: Partial<Role>) => void;
-  onComplete: () => void;
-  onCompleteAndLog?: () => void;
+function Intro3({ onNext }: { onNext: () => void }) {
+  return (
+    <div className="relative size-full" style={{ background: BG }}>
+      {/* Mae logo — paddingTop 90 matches Figma ~92px from top */}
+      <div className="flex justify-center" style={{ paddingTop: 90 }}>
+        <img src={maeLogo} alt="Mae" style={{ height: 64, width: 'auto', maxWidth: 221 }} />
+      </div>
+
+      {/* Headline */}
+      <div className="text-center px-6" style={{ paddingTop: 48 }}>
+        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+          The roles you hold,{'\n'}all tended for in one place.
+        </p>
+      </div>
+
+      {/* Row 1 — overflows right (Professional clips) */}
+      <div
+        className="absolute overflow-hidden"
+        style={{ top: 364, left: 23, right: -30 }}
+      >
+        <div className="flex items-start justify-between px-[2px]">
+          {INTRO_ROW1.map(r => (
+            <div key={r.id} className="flex flex-col items-center shrink-0" style={{ width: 44 }}>
+              <img src={r.icon} alt={r.label} style={{ width: 44, height: 44, opacity: 0.5 }} />
+              <span
+                className="font-sans font-medium text-center"
+                style={{ fontSize: 10, lineHeight: 'normal', color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
+              >
+                {r.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Row 2 — overflows left (Care-giver clips) */}
+      <div
+        className="absolute overflow-hidden"
+        style={{ top: 436, left: -24, right: 0 }}
+      >
+        <div className="flex items-start justify-between px-[2px]">
+          {INTRO_ROW2.map(r => (
+            <div key={r.id} className="flex flex-col items-center shrink-0" style={{ width: 44 }}>
+              <img src={r.icon} alt={r.label} style={{ width: 44, height: 44, opacity: 0.5 }} />
+              <span
+                className="font-sans font-medium text-center"
+                style={{ fontSize: 10, lineHeight: 'normal', color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
+              >
+                {r.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <BottomActions
+        onContinue={onNext}
+        continueLabel="Let's set them up"
+        continueFontFamily="'Libre Baskerville', Georgia, serif"
+      />
+    </div>
+  )
 }
 
-export function OnboardingPage({
-  roles,
-  onAddRole,
-  onRemoveRole,
-  onComplete,
-  onCompleteAndLog,
-}: OnboardingPageProps) {
-  const [step, setStep] = useState(1);
-  const [customExpanded, setCustomExpanded] = useState(false);
-  const [customName, setCustomName] = useState('');
-  const [customEmoji, setCustomEmoji] = useState('💡');
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+function StepPersonal({ onNext, onBack }: { onNext: (name: string) => void; onBack: () => void }) {
+  const [name, setName] = useState('')
+  return (
+    <div className="relative size-full" style={{ background: BG }}>
+      <MaeHeader step={1} />
 
-  const slideVariants = {
-    enter: { x: 60, opacity: 0 },
-    center: { x: 0, opacity: 1 },
-    exit: { x: -60, opacity: 0 },
-  };
+      <div className="text-center px-6" style={{ paddingTop: 32 }}>
+        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+          How should I call you?
+        </p>
+        <p
+          className="font-sans font-medium"
+          style={{ fontSize: 10, lineHeight: '27px', color: '#000', marginTop: 0, fontVariationSettings: "'opsz' 14" }}
+        >
+          Could be your name or a nickname
+        </p>
+      </div>
 
-  const getNextColor = (): RoleColor => {
-    const used = new Set(roles.map((r) => r.color));
-    return COLOR_CYCLE.find((c) => !used.has(c)) ?? COLOR_CYCLE[roles.length % COLOR_CYCLE.length];
-  };
+      <div style={{ paddingLeft: 55, paddingTop: 90 }}>
+        <div className="flex items-center gap-1">
+          <p
+            className="font-serif font-bold"
+            style={{ fontSize: 20, color: '#000', lineHeight: '27px' }}
+          >
+            {name || ''}
+          </p>
+          <span
+            className="font-sans"
+            style={{ fontSize: 20, fontWeight: 100, color: '#000', fontVariationSettings: "'opsz' 14" }}
+          >
+            |
+          </span>
+          <input
+            value={name}
+            onChange={e => setName(e.target.value)}
+            className="absolute opacity-0"
+            style={{ left: 55, top: 403, width: 271 }}
+            autoFocus
+          />
+        </div>
+        <div style={{ width: 271, height: 1, background: '#000', marginTop: 8 }} />
+        {name && (
+          <p
+            className="font-sans font-normal"
+            style={{ fontSize: 10, lineHeight: '27px', color: '#000', marginTop: 4, fontVariationSettings: "'opsz' 14" }}
+          >
+            Nice to meet you, {name}.
+          </p>
+        )}
+      </div>
 
-  const toggleSuggestion = (s: (typeof ROLE_SUGGESTIONS)[0]) => {
-    const existing = roles.find((r) => r.name === s.name);
-    if (existing) { onRemoveRole(existing.id); return; }
-    if (roles.length >= 6) return;
-    const used = new Set(roles.map((r) => r.color));
-    const color = !used.has(s.color) ? s.color : getNextColor();
-    onAddRole({
-      id: generateId(), name: s.name, emoji: s.emoji, color,
-      createdAt: Date.now(), motivation: `Being a great ${s.name.toLowerCase()}`,
-    });
-  };
+      <BottomActions
+        onContinue={() => onNext(name)}
+        onBack={onBack}
+        disabled={!name.trim()}
+      />
+    </div>
+  )
+}
 
-  const addCustomRole = () => {
-    if (!customName.trim() || roles.length >= 6) return;
-    onAddRole({
-      id: generateId(), name: customName.trim(), emoji: customEmoji,
-      color: getNextColor(), createdAt: Date.now(),
-      motivation: `Being a great ${customName.trim().toLowerCase()}`,
-    });
-    setCustomName(''); setCustomEmoji('💡'); setCustomExpanded(false);
-  };
+function StepRoles({
+  onNext,
+  onBack,
+}: {
+  onNext: (roles: Set<string>) => void
+  onBack: () => void
+}) {
+  const [selected, setSelected] = useState<Set<string>>(new Set(['friend', 'partner', 'creative', 'professional']))
+  const [customRole, setCustomRole] = useState('')
 
-  const isSuggestionAdded = (name: string) => roles.some((r) => r.name === name);
+  const toggle = (id: string) =>
+    setSelected(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+
+  const count = selected.size
 
   return (
-    <div className="min-h-screen flex flex-col p-6 max-w-md mx-auto">
-      {/* Progress pills */}
-      <div className="flex gap-2 pt-6 pb-10 justify-center">
-        {[1, 2, 3].map((i) => (
-          <motion.div
-            key={i}
-            animate={{ width: step === i ? 24 : 8 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-            className={`h-2 rounded-full transition-colors duration-300 ${
-              step >= i ? 'bg-warm-900' : 'bg-warm-200'
-            }`}
-          />
+    <div className="relative size-full" style={{ background: BG }}>
+      <MaeHeader step={2} />
+
+      <div className="text-center px-6" style={{ paddingTop: 24 }}>
+        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+          Which of these roles do you identify with, right now?
+        </p>
+        <p
+          className="font-sans font-medium"
+          style={{ fontSize: 10, lineHeight: '12px', color: '#000', marginTop: 4, fontVariationSettings: "'opsz' 14" }}
+        >
+          Pick as many as you see fit. You can make changes anytime,{'\n'}roles can change with the seasons
+        </p>
+      </div>
+
+      {/* Row 1 */}
+      <div className="flex gap-2 px-2" style={{ marginTop: 20 }}>
+        {ROLES_ROW1.map(r => (
+          <RoleTile key={r.id} {...r} selected={selected.has(r.id)} onToggle={() => toggle(r.id)} />
         ))}
       </div>
 
-      <div className="flex-1 relative">
-        <AnimatePresence mode="wait">
-
-          {/* ── Step 1: Welcome ─────────────────────────────────── */}
-          {step === 1 && (
-            <motion.div
-              key="step1"
-              variants={slideVariants}
-              initial="enter" animate="center" exit="exit"
-              transition={{ duration: 0.28, ease: 'easeInOut' }}
-              className="flex flex-col items-center text-center justify-center min-h-[70vh]"
-            >
-              <motion.div
-                initial={{ scale: 0.7, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.1, type: 'spring', stiffness: 180 }}
-                className="w-32 h-32 bg-white rounded-full shadow-warm-lg flex items-center justify-center mb-8 relative"
-              >
-                <div className="absolute w-20 h-20 bg-role-coral/20 rounded-full mix-blend-multiply -translate-x-4 -translate-y-2" />
-                <div className="absolute w-20 h-20 bg-role-sky/20  rounded-full mix-blend-multiply  translate-x-4 -translate-y-2" />
-                <div className="absolute w-20 h-20 bg-role-amber/20 rounded-full mix-blend-multiply translate-y-6" />
-                <span className="text-4xl relative z-10">🌊</span>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
-              >
-                <h1 className="text-4xl font-bold text-warm-900 mb-4">Role Flow</h1>
-                <p className="text-lg text-warm-800/65 mb-12 max-w-xs mx-auto leading-relaxed">
-                  See how your time flows across all the roles that make up your life.
-                </p>
-              </motion.div>
-
-              <motion.button
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                onClick={() => setStep(2)}
-                className="w-full py-4 bg-warm-900 text-white rounded-xl font-medium text-lg flex items-center justify-center gap-2 hover:bg-warm-800 transition-colors shadow-warm"
-              >
-                Get Started
-                <ChevronRightIcon className="w-5 h-5" />
-              </motion.button>
-            </motion.div>
-          )}
-
-          {/* ── Step 2: Pick roles ──────────────────────────────── */}
-          {step === 2 && (
-            <motion.div
-              key="step2"
-              variants={slideVariants}
-              initial="enter" animate="center" exit="exit"
-              transition={{ duration: 0.28, ease: 'easeInOut' }}
-              className="flex flex-col"
-            >
-              <div className="text-center mb-5">
-                <h2 className="text-2xl font-bold text-warm-900 mb-2">
-                  What roles make up your life?
-                </h2>
-                <p className="text-warm-800/55 text-sm">
-                  Tap to add — pick up to 6. You can edit anytime.
-                </p>
-              </div>
-
-              {/* Role count pill */}
-              <AnimatePresence>
-                {roles.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-                    animate={{ opacity: 1, height: 'auto', marginBottom: 16 }}
-                    exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                    className="flex items-center justify-center gap-2 overflow-hidden"
-                  >
-                    <div className="flex -space-x-1.5">
-                      {roles.map((r) => (
-                        <div
-                          key={r.id}
-                          className="w-7 h-7 rounded-full border-2 border-white flex items-center justify-center text-sm"
-                          style={{ backgroundColor: `${PRESET_COLORS[r.color]}30` }}
-                        >
-                          {r.emoji}
-                        </div>
-                      ))}
-                    </div>
-                    <span className="text-sm font-semibold text-warm-800/60">
-                      {roles.length} / 6
-                    </span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Suggestion grid */}
-              <div className="grid grid-cols-2 gap-2 mb-3">
-                {ROLE_SUGGESTIONS.map((suggestion, idx) => {
-                  const added = isSuggestionAdded(suggestion.name);
-                  const disabled = !added && roles.length >= 6;
-                  const color = PRESET_COLORS[suggestion.color];
-                  return (
-                    <motion.button
-                      key={suggestion.name}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.03 }}
-                      onClick={() => !disabled && toggleSuggestion(suggestion)}
-                      className={`flex items-center gap-3 p-3 rounded-2xl text-left border-2 transition-all ${
-                        added
-                          ? 'shadow-sm'
-                          : disabled
-                          ? 'border-transparent bg-warm-100/40 opacity-35 cursor-not-allowed'
-                          : 'border-transparent bg-white hover:bg-warm-50 active:scale-95'
-                      }`}
-                      style={added ? { backgroundColor: `${color}15`, borderColor: color } : {}}
-                    >
-                      <span className="text-xl flex-shrink-0 leading-none w-7 text-center">
-                        {suggestion.emoji}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="font-semibold text-warm-900 text-sm leading-snug">
-                          {suggestion.name}
-                        </div>
-                        <div className="text-[11px] text-warm-800/45 leading-tight">
-                          {suggestion.desc}
-                        </div>
-                      </div>
-                      <AnimatePresence>
-                        {added && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            exit={{ scale: 0 }}
-                            className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-                            style={{ backgroundColor: color }}
-                          >
-                            <CheckIcon className="w-3 h-3 text-white" />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.button>
-                  );
-                })}
-              </div>
-
-              {/* Custom role input */}
-              <div className="mb-5">
-                <AnimatePresence mode="wait">
-                  {!customExpanded ? (
-                    <motion.button
-                      key="expand-btn"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      onClick={() => roles.length < 6 && setCustomExpanded(true)}
-                      disabled={roles.length >= 6}
-                      className="w-full py-3 border-2 border-dashed border-warm-300 rounded-2xl text-sm font-medium text-warm-800/50 hover:border-warm-400 hover:text-warm-800/70 transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    >
-                      <PlusIcon className="w-4 h-4" />
-                      Add something else
-                    </motion.button>
-                  ) : (
-                    <motion.div
-                      key="custom-form"
-                      initial={{ opacity: 0, y: -6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      className="bg-white border-2 border-warm-200 rounded-2xl p-3"
-                    >
-                      <div className="flex gap-2 items-center">
-                        {/* Emoji picker */}
-                        <div className="relative flex-shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                            className="w-11 h-11 bg-warm-100 rounded-xl flex items-center justify-center text-xl hover:bg-warm-200 transition-colors"
-                          >
-                            {customEmoji}
-                          </button>
-                          <AnimatePresence>
-                            {showEmojiPicker && (
-                              <motion.div
-                                initial={{ opacity: 0, scale: 0.9, y: -4 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                className="absolute top-12 left-0 bg-white border border-warm-200 rounded-2xl shadow-warm-lg p-3 grid grid-cols-5 gap-1 z-20 w-52"
-                              >
-                                {COMMON_EMOJIS.map((e) => (
-                                  <button
-                                    key={e}
-                                    type="button"
-                                    onClick={() => { setCustomEmoji(e); setShowEmojiPicker(false); }}
-                                    className="w-8 h-8 flex items-center justify-center text-lg hover:bg-warm-100 rounded-lg transition-colors"
-                                  >
-                                    {e}
-                                  </button>
-                                ))}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-
-                        <input
-                          autoFocus
-                          type="text"
-                          value={customName}
-                          onChange={(e) => setCustomName(e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && addCustomRole()}
-                          placeholder="Role name..."
-                          maxLength={20}
-                          className="flex-1 bg-warm-100 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-warm-300 placeholder:text-warm-800/35"
-                        />
-
-                        <button
-                          type="button"
-                          onClick={addCustomRole}
-                          disabled={!customName.trim()}
-                          className="w-11 h-11 bg-warm-900 text-white rounded-xl flex items-center justify-center disabled:opacity-35 hover:bg-warm-800 transition-colors flex-shrink-0"
-                        >
-                          <PlusIcon className="w-4 h-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => { setCustomExpanded(false); setCustomName(''); }}
-                          className="w-11 h-11 bg-warm-100 rounded-xl flex items-center justify-center hover:bg-warm-200 transition-colors flex-shrink-0"
-                        >
-                          <XIcon className="w-4 h-4 text-warm-800/50" />
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Continue */}
-              <button
-                onClick={() => setStep(3)}
-                disabled={roles.length < 2}
-                className="w-full py-4 bg-warm-900 text-white rounded-xl font-medium text-lg flex items-center justify-center gap-2 disabled:opacity-35 disabled:cursor-not-allowed hover:bg-warm-800 transition-colors shadow-warm"
-              >
-                Continue
-                <ChevronRightIcon className="w-5 h-5" />
-              </button>
-
-              {roles.length < 2 && (
-                <p className="text-center text-xs text-warm-800/35 mt-2">
-                  Add at least 2 roles to continue
-                </p>
-              )}
-            </motion.div>
-          )}
-
-          {/* ── Step 3: Your life at a glance ───────────────────── */}
-          {step === 3 && (
-            <motion.div
-              key="step3"
-              variants={slideVariants}
-              initial="enter" animate="center" exit="exit"
-              transition={{ duration: 0.28, ease: 'easeInOut' }}
-              className="flex flex-col items-center text-center justify-center min-h-[70vh]"
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 }}
-              >
-                <h2 className="text-2xl font-bold text-warm-900 mb-2">Your life, whole</h2>
-                <p className="text-warm-800/55 text-sm mb-8 max-w-xs mx-auto leading-relaxed">
-                  Each slice is a role. Log time and watch them shift to reflect how you actually live.
-                </p>
-              </motion.div>
-
-              {/* Donut */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.15, type: 'spring', stiffness: 160, damping: 18 }}
-                className="mb-6"
-              >
-                <MiniDonut roles={roles} />
-              </motion.div>
-
-              {/* Role pills */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="flex flex-wrap gap-2 justify-center mb-10 max-w-xs"
-              >
-                {roles.map((role) => {
-                  const color = PRESET_COLORS[role.color];
-                  return (
-                    <span
-                      key={role.id}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium"
-                      style={{ backgroundColor: `${color}20`, color }}
-                    >
-                      {role.emoji} {role.name}
-                    </span>
-                  );
-                })}
-              </motion.div>
-
-              {/* CTAs */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="w-full space-y-3"
-              >
-                <button
-                  onClick={onCompleteAndLog ?? onComplete}
-                  className="w-full py-4 bg-warm-900 text-white rounded-xl font-medium text-lg flex items-center justify-center gap-2 hover:bg-warm-800 transition-colors shadow-warm"
-                >
-                  Log your first moment
-                  <ChevronRightIcon className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={onComplete}
-                  className="w-full py-3 text-warm-800/50 text-sm font-medium hover:text-warm-800/80 transition-colors"
-                >
-                  Explore the app first
-                </button>
-              </motion.div>
-            </motion.div>
-          )}
-
-        </AnimatePresence>
+      {/* Row 2 */}
+      <div className="flex gap-2 px-4" style={{ marginTop: 8 }}>
+        {ROLES_ROW2.map(r => (
+          <RoleTile key={r.id} {...r} selected={selected.has(r.id)} onToggle={() => toggle(r.id)} />
+        ))}
       </div>
+
+      {/* Row 3 */}
+      <div className="flex gap-2 px-2" style={{ marginTop: 8 }}>
+        {ROLES_ROW3.map(r => (
+          <RoleTile key={r.id} {...r} selected={selected.has(r.id)} onToggle={() => toggle(r.id)} />
+        ))}
+      </div>
+
+      {/* Custom role input */}
+      <div style={{ paddingLeft: 68, paddingTop: 24 }}>
+        <div className="flex items-center gap-1">
+          <span className="font-sans" style={{ fontSize: 20, fontWeight: 100, fontVariationSettings: "'opsz' 14" }}>|</span>
+          <input
+            value={customRole}
+            onChange={e => setCustomRole(e.target.value)}
+            className="font-sans bg-transparent outline-none border-none text-black"
+            style={{ fontSize: 14, fontVariationSettings: "'opsz' 14" }}
+            placeholder=""
+          />
+        </div>
+        <div style={{ width: 271, height: 1, background: '#000', marginTop: 4 }} />
+        <p
+          className="font-sans font-normal"
+          style={{ fontSize: 10, lineHeight: '27px', color: '#000', fontVariationSettings: "'opsz' 14", marginTop: 2 }}
+        >
+          Add a role in your own words
+        </p>
+      </div>
+
+      <BottomActions
+        onContinue={() => onNext(selected)}
+        onBack={onBack}
+        continueLabel={`${count} Role${count !== 1 ? 's' : ''} · Continue`}
+        disabled={count === 0}
+      />
     </div>
-  );
+  )
+}
+
+function StepIntentions({ onNext, onBack }: { onNext: (items: string[]) => void; onBack: () => void }) {
+  const [text, setText] = useState('')
+  const suggestions = ['Making pottery', 'Filming videos', 'Designing posters']
+  const intentions = text.split(',').map(s => s.trim()).filter(Boolean)
+
+  const addSuggestion = (s: string) => {
+    setText(prev => (prev ? `${prev}, ${s}` : s))
+  }
+
+  const CARDS = [
+    { img: imgWriting, title: 'Writing poetry' },
+    { img: imgDrawing, title: 'Essay writing' },
+    { img: imgPainting, title: 'Watercolor painting' },
+  ]
+
+  return (
+    <div className="relative size-full" style={{ background: BG }}>
+      <MaeHeader step={3} />
+
+      <div className="text-center px-6" style={{ paddingTop: 24 }}>
+        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+          Where is your{' '}
+          <em style={{ fontStyle: 'italic' }}>Creative</em>
+          {' '}role pulling you, right now?
+        </p>
+      </div>
+
+      <div className="flex justify-center" style={{ marginTop: 16 }}>
+        <TextInputBox value={text} onChange={setText} placeholder="Add as many examples that come to mind" />
+      </div>
+
+      <div className="flex gap-2 justify-center flex-wrap px-6" style={{ marginTop: 16 }}>
+        {suggestions.map(s => (
+          <SuggestionChip key={s} label={s} onClick={() => addSuggestion(s)} />
+        ))}
+      </div>
+
+      <p
+        className="font-sans font-normal text-center uppercase"
+        style={{ fontSize: 10, lineHeight: '15px', color: 'rgba(74,74,69,0.6)', marginTop: 24, letterSpacing: '0.05em', fontVariationSettings: "'opsz' 14" }}
+      >
+        How about some suggestions
+      </p>
+
+      <div
+        className="flex overflow-x-auto scrollbar-hide"
+        style={{ paddingLeft: 8, paddingTop: 8, gap: 0 }}
+      >
+        {CARDS.map((c, i) => (
+          <div key={i} className="flex flex-col gap-3 p-2 rounded-[30px] shrink-0">
+            <div className="rounded-[20px] overflow-hidden" style={{ width: 150, height: 150 }}>
+              <img src={c.img} alt={c.title} className="w-full h-full object-cover" />
+            </div>
+            <div className="flex flex-col gap-2 px-1">
+              <div className="flex items-center gap-2">
+                <img src={iconCreative} alt="" style={{ width: 18, height: 18 }} />
+                <span
+                  className="font-sans font-normal tracking-[1.2px] uppercase"
+                  style={{ fontSize: 10, lineHeight: '15px', color: '#2d2d2a' }}
+                >
+                  CREATIVE
+                </span>
+              </div>
+              <p
+                className="font-serif"
+                style={{ fontSize: 14, lineHeight: 'normal', color: '#000' }}
+              >
+                {c.title}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <BottomActions
+        onContinue={() => onNext(intentions)}
+        onBack={onBack}
+        continueLabel={intentions.length > 0 ? `${intentions.length} Intention${intentions.length !== 1 ? 's' : ''} · Continue` : 'Continue'}
+      />
+    </div>
+  )
+}
+
+function StepDirections({ onNext, onBack }: { onNext: (direction: string) => void; onBack: () => void }) {
+  const [text, setText] = useState('')
+  const suggestions = ['Finish a chapter of my novel', 'Make a short film', 'Draw once a week', 'Redesign my portfolio']
+
+  return (
+    <div className="relative size-full" style={{ background: BG }}>
+      <MaeHeader step={4} />
+
+      <div className="text-center px-6" style={{ paddingTop: 24 }}>
+        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+          Pick one direction for your{' '}
+          <em style={{ fontStyle: 'italic' }}>Creative</em>
+          {' '}role this season
+        </p>
+      </div>
+
+      <div className="flex justify-center" style={{ marginTop: 16 }}>
+        <TextInputBox value={text} onChange={setText} placeholder="Write out your aspiration. You can change it anytime." />
+      </div>
+
+      <div
+        className="flex overflow-x-auto scrollbar-hide gap-2"
+        style={{ padding: '16px 0 0 43px' }}
+      >
+        {suggestions.map(s => (
+          <SuggestionChip key={s} label={s} onClick={() => setText(s)} />
+        ))}
+      </div>
+
+      <p
+        className="font-sans font-normal"
+        style={{
+          fontSize: 10,
+          lineHeight: '15px',
+          color: 'rgba(74,74,69,0.6)',
+          padding: '16px 54px 0',
+          fontVariationSettings: "'opsz' 14",
+        }}
+      >
+        At a later time you can do this exercise for each of your roles. This is how you will realize the balance you are looking for your life.
+      </p>
+
+      <BottomActions
+        onContinue={() => onNext(text)}
+        onBack={onBack}
+        continueLabel="Direction · Continue"
+        disabled={!text.trim()}
+      />
+    </div>
+  )
+}
+
+function StepCheckin({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
+  return (
+    <div className="relative size-full" style={{ background: BG }}>
+      <MaeHeader step={5} />
+
+      <div className="px-6" style={{ paddingTop: 32 }}>
+        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+          Let's do your first check-in
+        </p>
+      </div>
+
+      <div className="flex justify-center" style={{ marginTop: 20 }}>
+        <div
+          className="flex items-center justify-between px-4 py-4 rounded-[20px] overflow-hidden"
+          style={{ width: 296, border: '1px solid rgba(138,116,103,0.2)', background: BG }}
+        >
+          <span
+            className="font-sans font-normal"
+            style={{ fontSize: 14, lineHeight: '27px', color: '#000', fontVariationSettings: "'opsz' 14" }}
+          >
+            Capture Moment
+          </span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="#6b6660" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="#6b6660" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <BottomActions
+        onContinue={onNext}
+        onBack={onBack}
+        continueLabel="Go to my overview"
+      />
+    </div>
+  )
+}
+
+// ─── Main orchestrator ────────────────────────────────────────────────────────
+
+type Step = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
+
+export default function OnboardingPage({ onComplete }: { onComplete: () => void }) {
+  const [step, setStep] = useState<Step>(0)
+  const next = () => setStep(s => Math.min(s + 1, 7) as Step)
+  const back = () => setStep(s => Math.max(s - 1, 0) as Step)
+
+  if (step === 0) return <Intro1 onNext={next} />
+  if (step === 1) return <Intro2 onNext={next} />
+  if (step === 2) return <Intro3 onNext={next} />
+  if (step === 3) return <StepPersonal onNext={(_name) => next()} onBack={back} />
+  if (step === 4) return <StepRoles onNext={(_roles) => next()} onBack={back} />
+  if (step === 5) return <StepIntentions onNext={(_items) => next()} onBack={back} />
+  if (step === 6) return <StepDirections onNext={(_dir) => next()} onBack={back} />
+  return <StepCheckin onNext={onComplete} onBack={back} />
 }

@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Context / session docs — not part of the codebase
+_context/
+docs/
+role-app/
+scripts/
+src-prototype-v1/
+.mcp.json
