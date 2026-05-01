@@ -7,6 +7,14 @@ import iconPartner from '../assets/icons/partner-role.svg'
 import iconProfessional from '../assets/icons/professional-role.svg'
 import iconDaughter from '../assets/icons/daughter-role-icon.svg'
 
+import imgSelf from '../assets/illustrations/u1355955226_runner_in_the_park_--sref_202514354_--profile_8d1_34b21c61-5858-439e-8fbd-0256b22a06a4_0.png'
+import imgCreative from '../assets/illustrations/u1355955226_painter_painting_a_canvas_--sref_202514354_--prof_51f7c398-d464-4ad1-8bb6-da52f2cc1971_0.png'
+import imgParent from '../assets/illustrations/u1355955226_parent_holding_childs_hand_--sref_202514354_--pro_91fe1ad1-9487-4412-b919-7b0594e7df7f_0.png'
+import imgFriend from '../assets/illustrations/u1355955226_two_girls_sitting_in_coffee_shop_--sref_202514354_12f89aa8-94a4-410a-8fc2-7fd8f984d2c3_0.png'
+import imgPartner from '../assets/illustrations/dinner-date-restaurant.png'
+import imgProfessional from '../assets/illustrations/female-software-programmer.png'
+import imgDaughter from '../assets/illustrations/u1355955226_helping_elderly_--sref_202514354_--profile_8d1tcd_3a38955f-8e12-495e-a291-1c85261bfe95_3.png'
+
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 type RoleDef = { id: string; label: string; icon: string }
@@ -20,6 +28,26 @@ const USER_ROLES: RoleDef[] = [
   { id: 'professional', label: 'Professional', icon: iconProfessional },
   { id: 'daughter',     label: 'Daughter',     icon: iconDaughter },
 ]
+
+const ILLUSTRATIONS: Record<string, string> = {
+  self:         imgSelf,
+  creative:     imgCreative,
+  parent:       imgParent,
+  friend:       imgFriend,
+  partner:      imgPartner,
+  professional: imgProfessional,
+  daughter:     imgDaughter,
+}
+
+const ILLUSTRATION_POSITIONS: Record<string, string> = {
+  self:         'center 55%',
+  creative:     'center 10%',
+  parent:       'center 65%',
+  friend:       'center 50%',
+  partner:      'center 65%',
+  professional: 'center 40%',
+  daughter:     'center 65%',
+}
 
 const DIRECTIONS: Record<string, string> = {
   self:         'Show up for myself first — sleep, movement, and nourishment',
@@ -46,6 +74,8 @@ const INTENTIONS: Record<string, string[]> = {
 function RoleCard({ role }: { role: RoleDef }) {
   const direction = DIRECTIONS[role.id]
   const intentions = INTENTIONS[role.id] ?? []
+  const illustration = ILLUSTRATIONS[role.id]
+  const illustrationPosition = ILLUSTRATION_POSITIONS[role.id] ?? 'center'
 
   return (
     <div
@@ -55,30 +85,72 @@ function RoleCard({ role }: { role: RoleDef }) {
         border: '1px solid rgba(138,116,103,0.18)',
       }}
     >
-      {/* Role header */}
-      <div className="flex items-center justify-between px-5 pt-5 pb-4">
-        <div className="flex items-center gap-[10px]">
-          <div
-            className="flex items-center justify-center rounded-full shrink-0"
-            style={{ width: 34, height: 34, background: '#f8f6f2' }}
-          >
-            <img src={role.icon} alt="" width={18} height={18} />
-          </div>
+      {/* ── Hero image ── */}
+      <div className="relative shrink-0" style={{ height: 160 }}>
+        <img
+          src={illustration}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: illustrationPosition }}
+        />
+
+        {/* Gradient overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,0.48) 78%, rgba(0,0,0,0.65) 100%)',
+          }}
+        />
+
+        {/* Edit pill — top right */}
+        <button
+          className="absolute flex items-center justify-center rounded-pill"
+          style={{
+            top: 14,
+            right: 14,
+            height: 28,
+            padding: '0 12px',
+            background: 'rgba(255,255,254,0.18)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,254,0.22)',
+          }}
+        >
           <span
-            className="font-sans font-medium uppercase text-ink"
-            style={{ fontSize: 12, letterSpacing: '1.2px', fontVariationSettings: "'opsz' 14" }}
-          >
-            {role.label}
-          </span>
-        </div>
-        <button>
-          <span
-            className="font-sans font-normal text-muted"
-            style={{ fontSize: 11, fontVariationSettings: "'opsz' 9" }}
+            className="font-sans font-medium"
+            style={{ fontSize: 11, color: '#fffffe', letterSpacing: '0.3px', fontVariationSettings: "'opsz' 9" }}
           >
             Edit
           </span>
         </button>
+
+        {/* Role identity pill — bottom left */}
+        <div
+          className="absolute flex items-center gap-[7px] rounded-pill"
+          style={{
+            bottom: 14,
+            left: 14,
+            background: 'rgba(255,255,254,0.15)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,254,0.22)',
+            padding: '5px 11px 5px 7px',
+          }}
+        >
+          <div
+            className="flex items-center justify-center rounded-full shrink-0"
+            style={{ width: 22, height: 22, background: 'rgba(255,255,254,0.2)' }}
+          >
+            <img src={role.icon} alt="" width={12} height={12} style={{ filter: 'brightness(0) invert(1)' }} />
+          </div>
+          <span
+            className="font-sans font-medium uppercase"
+            style={{ fontSize: 11, letterSpacing: '1.6px', color: '#fffffe', fontVariationSettings: "'opsz' 14" }}
+          >
+            {role.label}
+          </span>
+        </div>
       </div>
 
       {/* Divider */}
@@ -167,7 +239,7 @@ function RoleCard({ role }: { role: RoleDef }) {
 
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
-export default function ReflectPage() {
+export default function ReflectPage({ onAddRole }: { onAddRole?: () => void }) {
   const [activeRole, setActiveRole] = useState<string | null>(null)
 
   const visibleRoles = activeRole
@@ -251,6 +323,32 @@ export default function ReflectPage() {
             </span>
           </button>
         ))}
+
+        {onAddRole && (
+          <button
+            onClick={onAddRole}
+            className="flex items-center gap-[6px] px-[12px] py-[7px] rounded-pill shrink-0"
+            style={{
+              background: 'transparent',
+              border: '1px dashed rgba(138,116,103,0.38)',
+            }}
+          >
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+              <path d="M4.5 1v7M1 4.5h7" stroke="rgba(107,102,96,0.55)" strokeWidth="1.3" strokeLinecap="round" />
+            </svg>
+            <span
+              className="font-sans font-medium uppercase"
+              style={{
+                fontSize: 11,
+                letterSpacing: '0.8px',
+                color: '#6b6660',
+                fontVariationSettings: "'opsz' 14",
+              }}
+            >
+              Add role
+            </span>
+          </button>
+        )}
       </div>
 
       {/* ── 3. Role cards ── */}

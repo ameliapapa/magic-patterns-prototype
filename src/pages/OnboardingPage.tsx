@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 // Mae logo
 import maeLogo from '../assets/icons/mae-logo.svg'
@@ -36,8 +36,8 @@ import iconMentor from '../assets/icons/mentor-role.svg'
 import iconProfessional from '../assets/icons/professional-role.svg'
 import iconInvestor from '../assets/icons/investor-role.svg'
 import iconReader from '../assets/icons/reader-role.svg'
-import iconIdea from '../assets/icons/idea-01.svg'
-import iconIdeaLight from '../assets/icons/idea-01-light.svg'
+import iconEntrepreneur from '../assets/icons/entrepeneur-role.svg'
+import iconEntrepreneurLight from '../assets/icons/entrepeneur-role-light.svg'
 
 // Role icons — light (for dark background, selected)
 import iconFriendLight from '../assets/icons/friend-role-icon-light.svg'
@@ -55,27 +55,6 @@ import iconMentorLight from '../assets/icons/mentor-role-light.svg'
 import iconProfessionalLight from '../assets/icons/professional-role-light.svg'
 import iconInvestorLight from '../assets/icons/investor-role-light.svg'
 import iconReaderLight from '../assets/icons/reader-role-light.svg'
-
-// ─── Animation styles ─────────────────────────────────────────────────────────
-
-const ANIM_STYLES = `
-  @keyframes slideInRight {
-    from { transform: translateX(40px); opacity: 0; }
-    to   { transform: translateX(0);    opacity: 1; }
-  }
-  @keyframes slideInLeft {
-    from { transform: translateX(-40px); opacity: 0; }
-    to   { transform: translateX(0);     opacity: 1; }
-  }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  @keyframes marqueeReverse {
-    from { transform: translateX(-50%); }
-    to   { transform: translateX(0); }
-  }
-`
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -97,7 +76,7 @@ const ROLES_ROW2 = [
   { id: 'pet-owner',  label: 'Pet-owner',   icon: iconPetOwner,   iconLight: iconPetOwnerLight },
   { id: 'home-owner', label: 'Home-owner',  icon: iconHomeOwner,  iconLight: iconHomeOwnerLight },
   { id: 'student',    label: 'Student',     icon: iconStudent,    iconLight: iconStudentLight },
-  { id: 'entrepreneur', label: 'Entrepeneur', icon: iconIdea,     iconLight: iconIdeaLight },
+  { id: 'entrepreneur', label: 'Entrepeneur', icon: iconEntrepreneur, iconLight: iconEntrepreneurLight },
 ]
 const ROLES_ROW3 = [
   { id: 'sibling',    label: 'Sibling',     icon: iconSibling,    iconLight: iconSiblingLight },
@@ -124,7 +103,7 @@ const INTRO_ROW2 = [
   { id: 'student',      icon: iconStudent,     label: 'Student' },
   { id: 'sibling',      icon: iconSibling,     label: 'Sibling' },
   { id: 'mentor',       icon: iconMentor,      label: 'Mentor' },
-  { id: 'entrepreneur', icon: iconIdea,         label: 'Entrepeneur' },
+  { id: 'entrepreneur', icon: iconEntrepreneur,  label: 'Entrepeneur' },
 ]
 
 // ─── Shared components ────────────────────────────────────────────────────────
@@ -146,16 +125,16 @@ function ProgressDots({ active, total = 5 }: { active: number; total?: number })
         <div
           key={i}
           className="flex-1 rounded-full"
-          style={{ height: 4, background: i < active ? GREEN : '#d9d9d9' }}
+          style={{ height: 4, background: i < active ? GREEN : '#d9d9d9', transition: 'background 400ms ease' }}
         />
       ))}
     </div>
   )
 }
 
-function MaeHeader({ step }: { step?: number }) {
+function MaeHeader({ step, extraTop = 0 }: { step?: number; extraTop?: number }) {
   return (
-    <div className="flex flex-col items-center" style={{ paddingTop: MAE_LOGO_TOP, gap: 16 }}>
+    <div className="flex flex-col items-center" style={{ paddingTop: MAE_LOGO_TOP + extraTop, gap: 16 }}>
       <MaeLogo />
       {step !== undefined && <ProgressDots active={step} />}
     </div>
@@ -177,7 +156,7 @@ function GreenButton({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="w-full flex items-center justify-center rounded-[20px] py-4"
+      className="w-full flex items-center justify-center rounded-[20px] py-4 active:scale-[0.97] transition-transform duration-100"
       style={{
         background: disabled ? 'rgba(41,66,42,0.45)' : GREEN,
         cursor: disabled ? 'not-allowed' : 'pointer',
@@ -197,7 +176,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="w-full font-sans font-medium text-base text-center"
+      className="w-full font-sans font-medium text-base text-center hover:opacity-70 transition-opacity duration-150"
       style={{ color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
     >
       Back
@@ -240,7 +219,7 @@ function SuggestionChip({ label, onClick }: { label: string; onClick?: () => voi
   return (
     <button
       onClick={onClick}
-      className="flex items-center justify-center px-2 py-2 rounded-[10px] shrink-0"
+      className="flex items-center justify-center px-2 py-2 rounded-[10px] shrink-0 active:bg-[rgba(138,116,103,0.08)] transition-colors duration-100"
       style={{ border: '1px solid rgba(138,116,103,0.2)' }}
     >
       <span className="font-sans font-normal text-black text-center" style={{ fontSize: 10, lineHeight: '13px', fontVariationSettings: "'opsz' 14" }}>
@@ -259,17 +238,23 @@ function TextInputBox({
   onChange: (v: string) => void
   placeholder: string
 }) {
+  const inputRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    const t = setTimeout(() => inputRef.current?.focus(), 400)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
     <div
       className="relative overflow-hidden rounded-[20px]"
       style={{ width: 290, height: 78, border: '1px solid rgba(138,116,103,0.2)', background: BG }}
     >
       <input
+        ref={inputRef}
         value={value}
         onChange={e => onChange(e.target.value)}
         className="absolute text-black bg-transparent outline-none border-none"
         style={{ top: 16, left: 16, right: 16, fontSize: 20, fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 }}
-        autoFocus
       />
       {!value && (
         <p
@@ -289,54 +274,45 @@ function RoleTile({
   iconLight,
   selected,
   onToggle,
-  width = 54,
 }: {
   label: string
   icon: string
   iconLight: string
   selected: boolean
   onToggle: () => void
-  width?: number
 }) {
   return (
     <button
       onClick={onToggle}
-      className="flex flex-col items-center justify-start p-2 rounded-[10px] shrink-0"
+      className="flex flex-row items-center shrink-0 active:scale-[0.95]"
       style={{
         background: selected ? GREEN : BG,
         border: selected ? '1px solid transparent' : '1px solid rgba(138,116,103,0.2)',
-        width,
-        minHeight: 78,
-        gap: 4,
+        transition: 'background 180ms ease, border-color 180ms ease, transform 100ms ease',
+        borderRadius: 20,
+        padding: '8px 14px 8px 10px',
+        gap: 8,
       }}
     >
       <img
         src={selected ? iconLight : icon}
         alt={label}
-        style={{ width: 40, height: 40 }}
+        style={{ width: 28, height: 28 }}
       />
       <span
-        className="font-sans font-medium text-center"
+        className="font-sans font-medium"
         style={{
-          fontSize: 10,
-          lineHeight: '11px',
+          fontSize: 12,
+          lineHeight: '15px',
           color: selected ? '#fafaf7' : '#030712',
           fontVariationSettings: "'opsz' 14",
           whiteSpace: 'nowrap',
-          width: '100%',
         }}
       >
         {label}
       </span>
     </button>
   )
-}
-
-function roleTileWidth(label: string) {
-  if (label.length >= 12) return 86
-  if (label.length >= 10) return 82
-  if (label.length >= 8) return 68
-  return 54
 }
 
 // ─── Screen components ────────────────────────────────────────────────────────
@@ -356,14 +332,22 @@ function Intro1({ onNext }: { onNext: () => void }) {
       >
         <div className="absolute flex gap-[14px]" style={{ top: 0, left: 47 }}>
           {[imgStudying2, imgParentChild, imgBoardgames].map((src, i) => (
-            <div key={i} className="shrink-0 rounded-[20px] overflow-hidden" style={{ width: 160, height: 160 }}>
+            <div
+              key={i}
+              className="shrink-0 rounded-[20px] overflow-hidden"
+              style={{ width: 160, height: 160, animation: 'fadeSlideUp 500ms ease both', animationDelay: `${i * 60}ms` }}
+            >
               <img src={src} alt="" className="w-full h-full object-cover" />
             </div>
           ))}
         </div>
         <div className="absolute flex gap-[11px]" style={{ top: 184, left: 0 }}>
           {[imgLunch, imgDancer, imgDogWalk].map((src, i) => (
-            <div key={i} className="shrink-0 rounded-[20px] overflow-hidden" style={{ width: 160, height: 160 }}>
+            <div
+              key={i}
+              className="shrink-0 rounded-[20px] overflow-hidden"
+              style={{ width: 160, height: 160, animation: 'fadeSlideUp 500ms ease both', animationDelay: `${(i + 3) * 60}ms` }}
+            >
               <img src={src} alt="" className="w-full h-full object-cover" />
             </div>
           ))}
@@ -407,13 +391,13 @@ function Intro2({ onNext }: { onNext: () => void }) {
           height: 139,
         }}
       >
-        <img src={maeFlowerIcon} alt="Mae" className="w-full h-full" />
+        <img src={maeFlowerIcon} alt="Mae" className="w-full h-full" style={{ animation: 'breathe 4s ease-in-out infinite' }} />
       </div>
 
-      {/* Headline — centered below icon */}
+      {/* Headline — between icon and button */}
       <div
         className="absolute text-center"
-        style={{ top: '50%', left: 0, right: 0, paddingTop: 130, paddingLeft: 24, paddingRight: 24 }}
+        style={{ top: 468, left: 0, right: 0, paddingLeft: 24, paddingRight: 24 }}
       >
         <p
           className="font-serif font-bold"
@@ -426,18 +410,7 @@ function Intro2({ onNext }: { onNext: () => void }) {
         </p>
       </div>
 
-      {/* Glass continue button */}
-      <div className="absolute" style={{ bottom: 53, left: 51, right: 51 }}>
-        <button
-          onClick={onNext}
-          className="w-full flex items-center justify-center rounded-[20px] py-4"
-          style={{ background: 'rgba(41,66,42,0.2)', backdropFilter: 'blur(9px)' }}
-        >
-          <span className="font-sans font-medium text-base text-[#fcfcfa]" style={{ fontVariationSettings: "'opsz' 14" }}>
-            Continue
-          </span>
-        </button>
-      </div>
+      <BottomActions onContinue={onNext} />
     </div>
   )
 }
@@ -488,7 +461,7 @@ function MarqueeRow({
 function Intro3({ onNext }: { onNext: () => void }) {
   return (
     <div className="relative size-full" style={{ background: BG }}>
-      <MaeHeader />
+      <MaeHeader extraTop={60} />
 
       {/* Headline */}
       <div className="text-center px-6" style={{ paddingTop: 48 }}>
@@ -497,8 +470,8 @@ function Intro3({ onNext }: { onNext: () => void }) {
         </p>
       </div>
 
-      <MarqueeRow items={INTRO_ROW1_LOOP} direction="left"  top={364} />
-      <MarqueeRow items={INTRO_ROW2_LOOP} direction="right" top={440} />
+      <MarqueeRow items={INTRO_ROW1_LOOP} direction="left"  top={424} />
+      <MarqueeRow items={INTRO_ROW2_LOOP} direction="right" top={500} />
 
       <BottomActions
         onContinue={onNext}
@@ -511,9 +484,15 @@ function Intro3({ onNext }: { onNext: () => void }) {
 
 function StepPersonal({ onNext, onBack }: { onNext: (name: string) => void; onBack: () => void }) {
   const [name, setName] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    const t = setTimeout(() => inputRef.current?.focus(), 400)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
     <div className="relative size-full" style={{ background: BG }}>
-      <MaeHeader step={1} />
+      <MaeHeader step={1} extraTop={60} />
 
       <div className="text-center px-6" style={{ paddingTop: 32 }}>
         <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
@@ -529,21 +508,28 @@ function StepPersonal({ onNext, onBack }: { onNext: (name: string) => void; onBa
 
       <div style={{ paddingLeft: 55, paddingTop: 90, width: 326 }}>
         <input
+          ref={inputRef}
           value={name}
           onChange={e => setName(e.target.value)}
           className="w-full bg-transparent outline-none border-none font-serif font-bold text-black"
           style={{ fontSize: 20, lineHeight: '27px', caretColor: '#000' }}
-          autoFocus
         />
         <div style={{ width: 271, height: 1, background: '#000', marginTop: 8 }} />
-        {name && (
-          <p
-            className="font-sans font-normal"
-            style={{ fontSize: 10, lineHeight: '27px', color: '#000', marginTop: 4, fontVariationSettings: "'opsz' 14" }}
-          >
-            Nice to meet you, {name}.
-          </p>
-        )}
+        <p
+          className="font-sans font-normal"
+          style={{
+            fontSize: 10,
+            lineHeight: '27px',
+            color: '#000',
+            marginTop: 4,
+            fontVariationSettings: "'opsz' 14",
+            opacity: name ? 1 : 0,
+            transform: name ? 'translateY(0)' : 'translateY(4px)',
+            transition: 'opacity 400ms ease, transform 400ms ease',
+          }}
+        >
+          Nice to meet you, {name || ' '}.
+        </p>
       </div>
 
       <BottomActions
@@ -573,10 +559,13 @@ function StepRoles({
     })
 
   const count = selected.size
+  const ALL_ROLES = [...ROLES_ROW1, ...ROLES_ROW2, ...ROLES_ROW3]
+  const tileRow1 = ALL_ROLES.slice(0, 8)
+  const tileRow2 = ALL_ROLES.slice(8)
 
   return (
     <div className="relative size-full" style={{ background: BG }}>
-      <MaeHeader step={2} />
+      <MaeHeader step={2} extraTop={60} />
 
       <div className="text-center px-6" style={{ paddingTop: 24 }}>
         <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
@@ -590,34 +579,31 @@ function StepRoles({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2 px-6" style={{ marginTop: 20 }}>
-        {[...ROLES_ROW1, ...ROLES_ROW2, ...ROLES_ROW3].map(r => (
-          <RoleTile
-            key={r.id}
-            {...r}
-            width={roleTileWidth(r.label)}
-            selected={selected.has(r.id)}
-            onToggle={() => toggle(r.id)}
-          />
+      <div className="overflow-x-auto scrollbar-hide flex gap-2" style={{ paddingLeft: 24, paddingRight: 24, paddingTop: 16 }}>
+        {tileRow1.map(r => (
+          <RoleTile key={r.id} {...r} selected={selected.has(r.id)} onToggle={() => toggle(r.id)} />
         ))}
       </div>
 
-      {/* Custom role input */}
-      <div style={{ padding: '24px 24px 0' }}>
-        <div className="flex items-center gap-1">
-          <span className="font-sans" style={{ fontSize: 20, fontWeight: 100, fontVariationSettings: "'opsz' 14" }}>|</span>
-          <input
-            value={customRole}
-            onChange={e => setCustomRole(e.target.value)}
-            className="font-sans bg-transparent outline-none border-none text-black"
-            style={{ fontSize: 14, fontVariationSettings: "'opsz' 14" }}
-            placeholder=""
-          />
-        </div>
-        <div style={{ width: '100%', height: 1, background: '#000', marginTop: 4 }} />
+      <div className="overflow-x-auto scrollbar-hide flex gap-2" style={{ paddingLeft: 24, paddingRight: 24, paddingTop: 10 }}>
+        {tileRow2.map(r => (
+          <RoleTile key={r.id} {...r} selected={selected.has(r.id)} onToggle={() => toggle(r.id)} />
+        ))}
+      </div>
+
+      {/* Custom role input — same style as StepPersonal */}
+      <div style={{ paddingLeft: 55, paddingTop: 32, width: 326 }}>
+        <input
+          value={customRole}
+          onChange={e => setCustomRole(e.target.value)}
+          className="w-full bg-transparent outline-none border-none font-serif font-bold text-black"
+          style={{ fontSize: 20, lineHeight: '27px', caretColor: '#000' }}
+          placeholder=""
+        />
+        <div style={{ width: 271, height: 1, background: '#000', marginTop: 8 }} />
         <p
           className="font-sans font-normal"
-          style={{ fontSize: 10, lineHeight: '27px', color: '#000', fontVariationSettings: "'opsz' 14", marginTop: 2 }}
+          style={{ fontSize: 10, lineHeight: '27px', color: 'rgba(74,74,69,0.6)', marginTop: 2, fontVariationSettings: "'opsz' 14" }}
         >
           Add a role in your own words
         </p>
@@ -782,7 +768,7 @@ function StepCheckin({ onNext, onBack }: { onNext: () => void; onBack: () => voi
       <div className="flex justify-center" style={{ marginTop: 20 }}>
         <div
           className="flex items-center justify-between px-4 py-4 rounded-[20px] overflow-hidden"
-          style={{ width: 296, border: '1px solid rgba(138,116,103,0.2)', background: BG }}
+          style={{ width: 296, border: '1px solid rgba(138,116,103,0.2)', background: BG, animation: 'fadeSlideUp 400ms ease both', animationDelay: '120ms' }}
         >
           <span
             className="font-sans font-normal"
@@ -823,7 +809,7 @@ export default function OnboardingPage({ onComplete }: { onComplete: () => void 
     setStep(s => Math.max(s - 1, 0) as Step)
   }
 
-  const animName = directionRef.current === 'forward' ? 'slideInRight' : 'slideInLeft'
+  const animName = directionRef.current === 'forward' ? 'onbSlideInRight' : 'onbSlideInLeft'
 
   let screen: React.ReactNode
   if (step === 0) screen = <Intro1 onNext={next} />
@@ -836,9 +822,7 @@ export default function OnboardingPage({ onComplete }: { onComplete: () => void 
   else screen = <StepCheckin onNext={onComplete} onBack={back} />
 
   return (
-    <>
-      <style>{ANIM_STYLES}</style>
-      <div className="relative size-full">
+    <div className="relative size-full">
         <div
           key={step}
           className="size-full"
@@ -846,20 +830,22 @@ export default function OnboardingPage({ onComplete }: { onComplete: () => void 
         >
           {screen}
         </div>
-        <button
-          onClick={onComplete}
-          className="absolute font-sans font-medium"
-          style={{
-            top: 52,
-            right: 24,
-            fontSize: 12,
-            color: 'rgba(74,74,69,0.5)',
-            fontVariationSettings: "'opsz' 14",
-          }}
-        >
-          Skip
-        </button>
-      </div>
-    </>
+        {step >= 2 && (
+          <button
+            onClick={onComplete}
+            className="absolute font-sans font-medium hover:opacity-70 transition-opacity duration-150"
+            style={{
+              top: 52,
+              right: 24,
+              fontSize: 14,
+              color: 'rgba(45,45,42,0.8)',
+              fontVariationSettings: "'opsz' 14",
+              fontWeight: 600,
+            }}
+          >
+            Skip
+          </button>
+        )}
+    </div>
   )
 }

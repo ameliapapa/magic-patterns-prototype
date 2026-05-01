@@ -9,6 +9,7 @@ import RoleDetailSheet from './components/RoleDetailSheet'
 import EditIntentionSheet from './components/EditIntentionSheet'
 import EditDirectionSheet from './components/EditDirectionSheet'
 import MaeChatSheet from './components/MaeChatSheet'
+import RoleEditWizard from './pages/RoleEditWizard'
 import navOverview from './assets/icons/nav-overview.svg'
 import navReflect from './assets/icons/nav-reflect.svg'
 import navMemory from './assets/icons/nav-memory.svg'
@@ -129,8 +130,8 @@ function GlobalNav({
 }
 
 export default function App() {
-  const [onboardingDone, setOnboardingDone] = useState(true)
-  const [page, setPage] = useState<Page>('memory')
+  const [onboardingDone, setOnboardingDone] = useState(false)
+  const [page, setPage] = useState<Page>('dashboard')
   const [showCaptureMoment, setShowCaptureMoment] = useState(false)
   const [captureMomentRole, setCaptureMomentRole] = useState<string | undefined>(undefined)
   const [activeRole, setActiveRole] = useState<string | null>(null)
@@ -138,6 +139,7 @@ export default function App() {
   const [editDirection, setEditDirection] = useState<string | null>(null)
   const [showMaeChat, setShowMaeChat] = useState(false)
   const [showActivityLibrary, setShowActivityLibrary] = useState(false)
+  const [showRoleWizard, setShowRoleWizard] = useState(false)
 
   function openCaptureMoment(roleId?: string) {
     setCaptureMomentRole(roleId ? ROLE_ID_TO_LABEL[roleId] : undefined)
@@ -172,14 +174,14 @@ export default function App() {
           style={{ paddingBottom: onboardingDone ? NAV_OVERLAY_HEIGHT : 0 }}
         >
           {!onboardingDone ? (
-            <OnboardingPage onComplete={() => setOnboardingDone(true)} />
+            <OnboardingPage onComplete={() => { setOnboardingDone(true); setPage('dashboard') }} />
           ) : showActivityLibrary ? (
             <ActivityLibraryPage
               onBack={() => setShowActivityLibrary(false)}
               onCaptureOpen={() => openCaptureMoment()}
             />
           ) : page === 'reflect' ? (
-            <ReflectPage />
+            <ReflectPage onAddRole={() => setShowRoleWizard(true)} />
           ) : page === 'memory' ? (
             <MomentsPage onMaeChatOpen={() => setShowMaeChat(true)} />
           ) : (
@@ -243,6 +245,14 @@ export default function App() {
 
         {/* Mae chat sheet */}
         {showMaeChat && <MaeChatSheet onClose={() => setShowMaeChat(false)} />}
+
+        {/* Role edit wizard */}
+        {showRoleWizard && (
+          <RoleEditWizard
+            onComplete={() => { setShowRoleWizard(false); setPage('dashboard') }}
+            onClose={() => setShowRoleWizard(false)}
+          />
+        )}
       </div>
     </div>
   )

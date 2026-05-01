@@ -375,6 +375,7 @@ export default function RoleDetailSheet({
   onDirectionEdit: (roleId: string) => void
   onCaptureOpen: (roleId: string) => void
 }) {
+  const [showMaeAsks, setShowMaeAsks] = useState(true)
   const role = ROLES_DATA[roleId]
   if (!role) return null
 
@@ -515,61 +516,74 @@ export default function RoleDetailSheet({
             animation: 'fadeUpIn 520ms 220ms cubic-bezier(0.22, 1, 0.36, 1) both',
           }}
         >
-          {/* Mae asks card — borderless, tinted bg only */}
-          <div
-            className="rounded-[22px] flex flex-col gap-3"
-            style={{
-              background: 'rgba(41,66,42,0.06)',
-              padding: '18px 20px',
-              marginTop: 20,
-              marginBottom: 32,
-            }}
-          >
-            <div className="flex items-center gap-[7px]">
-              <img src={maeLogo} alt="" width={15} height={15} style={{ opacity: 0.65 }} />
-              <span
-                className="font-sans font-medium uppercase"
-                style={{
-                  fontSize: 9,
-                  letterSpacing: '1.3px',
-                  color: GREEN,
-                  opacity: 0.75,
-                  fontVariationSettings: "'opsz' 9",
-                }}
-              >
-                Mae asks
-              </span>
-            </div>
-
-            <p
-              className="font-serif"
+          {/* Mae asks card */}
+          {showMaeAsks && (
+            <div
+              className="relative rounded-[22px] flex flex-col gap-3"
               style={{
-                fontSize: 17,
-                lineHeight: '26px',
-                letterSpacing: '-0.2px',
-                color: INK,
-                fontStyle: 'italic',
+                background: 'rgba(41,66,42,0.06)',
+                padding: '18px 20px',
+                marginTop: 20,
+                marginBottom: 32,
               }}
             >
-              "{role.question}"
-            </p>
-
-            <button
-              onClick={() => onCaptureOpen(role.id)}
-              className="flex items-center gap-[8px] self-start rounded-[30px]"
-              style={{ background: GREEN, padding: '10px 18px' }}
-            >
-              <span
-                className="font-sans font-medium"
-                style={{ fontSize: 13, color: '#fffffe', fontVariationSettings: "'opsz' 14" }}
+              {/* Dismiss */}
+              <button
+                onClick={() => setShowMaeAsks(false)}
+                className="absolute flex items-center justify-center"
+                style={{ top: 14, right: 14, width: 28, height: 28 }}
               >
-                Make time for this
-              </span>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M2 6h8M7 3l3 3-3 3" stroke="#fffffe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          </div>
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                  <path d="M1 1l9 9M10 1L1 10" stroke={INK} strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              </button>
+
+              <div className="flex items-center gap-[7px]" style={{ paddingRight: 24 }}>
+                <img src={maeLogo} alt="" width={15} height={15} />
+                <span
+                  className="font-sans font-medium uppercase"
+                  style={{
+                    fontSize: 9,
+                    letterSpacing: '1.3px',
+                    color: GREEN,
+                    opacity: 0.75,
+                    fontVariationSettings: "'opsz' 9",
+                  }}
+                >
+                  Mae asks
+                </span>
+              </div>
+
+              <p
+                className="font-serif"
+                style={{
+                  fontSize: 17,
+                  lineHeight: '26px',
+                  letterSpacing: '-0.2px',
+                  color: INK,
+                  fontStyle: 'italic',
+                }}
+              >
+                "{role.question}"
+              </p>
+
+              <button
+                onClick={() => onCaptureOpen(role.id)}
+                className="flex items-center gap-[8px] self-start rounded-[30px]"
+                style={{ background: GREEN, padding: '10px 18px' }}
+              >
+                <span
+                  className="font-sans font-medium"
+                  style={{ fontSize: 13, color: '#fffffe', fontVariationSettings: "'opsz' 14" }}
+                >
+                  Make time for this
+                </span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 6h8M7 3l3 3-3 3" stroke="#fffffe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+          )}
 
           {/* ── Direction — inline quote, no card ── */}
           <div style={{ marginBottom: 36 }}>

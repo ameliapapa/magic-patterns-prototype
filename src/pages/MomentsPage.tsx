@@ -159,65 +159,37 @@ function Header({
 
 function MaeObservation({ onDismiss }: { onDismiss: () => void }) {
   return (
-    <section
-      className="relative mx-5 overflow-hidden rounded-[28px]"
-      style={{
-        minHeight: 178,
-        background: 'rgba(255,255,254,0.86)',
-        border: `1px solid ${BORDER}`,
-        padding: '22px 22px 24px',
-      }}
+    <div
+      className="relative mx-5 rounded-[22px]"
+      style={{ background: 'rgba(41,66,42,0.06)', padding: '18px 20px' }}
     >
       <button
         onClick={onDismiss}
         className="absolute flex items-center justify-center"
-        aria-label="Dismiss Mae noticed"
-        style={{ top: 18, right: 18, width: 32, height: 32, zIndex: 2 }}
+        aria-label="Dismiss"
+        style={{ top: 14, right: 16, width: 28, height: 28 }}
       >
-        <X size={24} strokeWidth={1.8} color="#151512" />
+        <X size={15} strokeWidth={1.8} color={INK} />
       </button>
 
-      <div style={{ position: 'relative', zIndex: 1, paddingRight: 40 }}>
+      <div className="flex flex-col gap-3" style={{ paddingRight: 28 }}>
+        <div className="flex items-center gap-[7px]">
+          <img src={maeLogo} alt="" width={15} height={15} />
+          <span
+            className="font-sans font-medium uppercase"
+            style={{ fontSize: 9, letterSpacing: '1.3px', color: GREEN, opacity: 0.75, fontVariationSettings: "'opsz' 9" }}
+          >
+            Mae noticed
+          </span>
+        </div>
         <p
-          className="font-sans font-medium uppercase"
-          style={{
-            fontSize: 10,
-            lineHeight: '14px',
-            letterSpacing: '1.8px',
-            color: '#151512',
-            fontVariationSettings: "'opsz' 9",
-          }}
+          className="font-serif"
+          style={{ fontSize: 17, lineHeight: '26px', letterSpacing: '-0.2px', color: INK, fontStyle: 'italic' }}
         >
-          Mae noticed
-        </p>
-        <p
-          className="font-serif font-bold"
-          style={{
-            marginTop: 14,
-            maxWidth: 226,
-            fontSize: 20,
-            lineHeight: '28px',
-            color: '#050505',
-            letterSpacing: '-0.24px',
-          }}
-        >
-          Your highlighted moments this month are with people who make you feel calm
+          "Your highlighted moments this month are with people who make you feel calm."
         </p>
       </div>
-
-      <img
-        src={maeLogo}
-        alt=""
-        className="absolute"
-        style={{
-          width: 132,
-          height: 130,
-          right: -26,
-          bottom: -34,
-          zIndex: 0,
-        }}
-      />
-    </section>
+    </div>
   )
 }
 
