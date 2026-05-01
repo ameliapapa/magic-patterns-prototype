@@ -94,7 +94,7 @@ function RoleCard({ role }: { role: RoleDef }) {
         </span>
         {direction ? (
           <p
-            className="font-lora text-ink-secondary"
+            className="font-serif text-ink-secondary"
             style={{ fontSize: 15, lineHeight: '23px', fontStyle: 'italic' }}
           >
             "{direction}"
@@ -185,7 +185,7 @@ export default function ReflectPage() {
           Reflect
         </p>
         <p
-          className="font-mono text-muted uppercase"
+          className="font-sans text-muted uppercase"
           style={{ fontSize: 10, lineHeight: 'normal', letterSpacing: '0.8px', fontWeight: 300 }}
         >
           Your compass across every role

@@ -220,7 +220,7 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
         {!hasPhoto && (
           <div className="flex items-center justify-between" style={{ marginBottom: 8 }}>
             <span
-              className="font-mono uppercase"
+              className="font-sans uppercase"
               style={{ fontSize: 9, letterSpacing: '0.8px', color: MUTED, fontWeight: 300 }}
             >
               {moment.date}
@@ -229,7 +229,7 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
         )}
 
         <p
-          className="font-lora font-medium"
+          className="font-serif font-medium"
           style={{
             fontSize: hasPhoto ? 15 : 17,
             lineHeight: hasPhoto ? '22px' : '25px',
@@ -243,7 +243,7 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
         <div className="flex items-center justify-between" style={{ marginTop: 14 }}>
           {hasPhoto ? (
             <span
-              className="font-mono uppercase"
+              className="font-sans uppercase"
               style={{ fontSize: 9, letterSpacing: '0.8px', color: MUTED, fontWeight: 300 }}
             >
               {moment.date}
@@ -313,7 +313,7 @@ function UpcomingMomentCard({ date, text }: { date: string; text: string }) {
             style={{ height: 18, background: AMBER }}
           >
             <span
-              className="font-inter font-medium uppercase"
+              className="font-sans font-medium uppercase"
               style={{ fontSize: 8, letterSpacing: '1.1px', color: '#fffffe' }}
             >
               Upcoming
@@ -344,13 +344,13 @@ function UpcomingMomentCard({ date, text }: { date: string; text: string }) {
         }}
       >
         <span
-          className="font-inter font-medium uppercase"
+          className="font-sans font-medium uppercase"
           style={{ fontSize: 9, letterSpacing: '0.8px', color: AMBER, lineHeight: '13px' }}
         >
           {dayLabel}
         </span>
         <span
-          className="font-lora font-medium"
+          className="font-serif font-medium"
           style={{ fontSize: 16, color: AMBER, lineHeight: '20px' }}
         >
           {dayNum}
@@ -491,7 +491,7 @@ export default function RoleDetailSheet({
 
             {/* Direction preview */}
             <p
-              className="font-lora"
+              className="font-serif"
               style={{
                 fontSize: 15,
                 lineHeight: '22px',
@@ -542,7 +542,7 @@ export default function RoleDetailSheet({
             </div>
 
             <p
-              className="font-lora"
+              className="font-serif"
               style={{
                 fontSize: 17,
                 lineHeight: '26px',
@@ -592,7 +592,7 @@ export default function RoleDetailSheet({
 
             <div style={{ paddingLeft: 14, borderLeft: '2px solid rgba(41,66,42,0.32)' }}>
               <p
-                className="font-lora"
+                className="font-serif"
                 style={{
                   fontSize: 16,
                   lineHeight: '25px',
@@ -726,7 +726,7 @@ export default function RoleDetailSheet({
                 <div className="flex items-center gap-[7px]" style={{ marginBottom: 10 }}>
                   <div className="rounded-full shrink-0" style={{ width: 6, height: 6, background: AMBER }} />
                   <span
-                    className="font-inter font-medium uppercase"
+                    className="font-sans font-medium uppercase"
                     style={{ fontSize: 9, letterSpacing: '1.2px', color: AMBER }}
                   >
                     Upcoming
@@ -747,7 +747,7 @@ export default function RoleDetailSheet({
                 <div className="flex items-center gap-[7px]" style={{ marginBottom: 12 }}>
                   <div className="rounded-full shrink-0" style={{ width: 6, height: 6, background: 'rgba(107,102,96,0.4)' }} />
                   <span
-                    className="font-inter font-medium uppercase"
+                    className="font-sans font-medium uppercase"
                     style={{ fontSize: 9, letterSpacing: '1.2px', color: 'rgba(107,102,96,0.6)' }}
                   >
                     Recent

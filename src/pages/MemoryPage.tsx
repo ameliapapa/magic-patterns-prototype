@@ -131,7 +131,7 @@ function MiniCalendar({ selected, onSelect }: {
           </svg>
         </button>
         <span
-          className="font-lora font-medium text-ink"
+          className="font-serif font-medium text-ink"
           style={{ fontSize: 15, lineHeight: '22px' }}
         >
           {MONTH_LABEL}
@@ -286,7 +286,7 @@ function PastMomentCard({
             }}
           >
             <span
-              className="font-inter font-medium uppercase"
+              className="font-sans font-medium uppercase"
               style={{ fontSize: 9, letterSpacing: '1.1px', color: GREEN }}
             >
               {moment.role}
@@ -301,7 +301,7 @@ function PastMomentCard({
         {!hasPhoto && (
           <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
             <span
-              className="font-inter font-medium uppercase"
+              className="font-sans font-medium uppercase"
               style={{ fontSize: 9, letterSpacing: '1.1px', color: GREEN }}
             >
               {moment.role}
@@ -317,7 +317,7 @@ function PastMomentCard({
 
         {/* Moment text */}
         <p
-          className="font-lora font-medium text-ink"
+          className="font-serif font-medium text-ink"
           style={{
             fontSize: hasPhoto ? 15 : 17,
             lineHeight: hasPhoto ? '22px' : '25px',
@@ -402,14 +402,14 @@ function UpcomingMomentCard({ moment }: { moment: Moment }) {
             style={{ height: 18, background: AMBER }}
           >
             <span
-              className="font-inter font-medium uppercase"
+              className="font-sans font-medium uppercase"
               style={{ fontSize: 8, letterSpacing: '1.1px', color: '#fffffe' }}
             >
               Upcoming
             </span>
           </div>
           <span
-            className="font-inter font-medium uppercase"
+            className="font-sans font-medium uppercase"
             style={{ fontSize: 9, letterSpacing: '1px', color: 'rgba(156,107,58,0.75)' }}
           >
             {moment.role}
@@ -436,13 +436,13 @@ function UpcomingMomentCard({ moment }: { moment: Moment }) {
         }}
       >
         <span
-          className="font-inter font-medium uppercase"
+          className="font-sans font-medium uppercase"
           style={{ fontSize: 9, letterSpacing: '0.8px', color: AMBER, lineHeight: '13px' }}
         >
           {moment.date.split(',')[0]}
         </span>
         <span
-          className="font-lora font-medium"
+          className="font-serif font-medium"
           style={{ fontSize: 16, color: AMBER, lineHeight: '20px' }}
         >
           {moment.date.split(' ').pop()}
@@ -536,13 +536,13 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
       >
         <div className="flex flex-col gap-[2px]">
           <p
-            className="font-lora font-medium text-ink"
+            className="font-serif font-medium text-ink"
             style={{ fontSize: 24, lineHeight: '32px', letterSpacing: '-0.4px' }}
           >
             Memories
           </p>
           <p
-            className="font-mono text-muted uppercase"
+            className="font-sans text-muted uppercase"
             style={{ fontSize: 9, letterSpacing: '0.08em', fontWeight: 300 }}
           >
             {moments.filter(m => m.highlighted).length} highlights · {pastMoments.length} moments
@@ -636,7 +636,7 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
               Ask Mae
             </span>
             <p
-              className="font-lora"
+              className="font-serif"
               style={{ fontSize: 14, lineHeight: '20px', color: '#2d2d2a', letterSpacing: '-0.1px', fontStyle: 'italic' }}
             >
               What do my memories say about me this month?
@@ -659,7 +659,7 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
           <>
             <div className="flex items-center gap-3" style={{ marginBottom: 10 }}>
               <span
-                className="font-inter font-medium uppercase"
+                className="font-sans font-medium uppercase"
                 style={{ fontSize: 9, letterSpacing: '1.2px', color: AMBER }}
               >
                 Upcoming
@@ -679,7 +679,7 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
           <>
             <div className="flex items-center gap-3" style={{ marginBottom: 12 }}>
               <span
-                className="font-inter font-medium uppercase"
+                className="font-sans font-medium uppercase"
                 style={{ fontSize: 9, letterSpacing: '1.2px', color: 'rgba(107,102,96,0.6)' }}
               >
                 Recent

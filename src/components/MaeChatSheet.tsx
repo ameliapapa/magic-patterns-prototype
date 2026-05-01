@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import maeLogo from '../assets/icons/mae-flower-icon.svg'
+import chatIcon from '../assets/icons/bubble-chat.svg'
+import archiveIcon from '../assets/icons/archive-04.svg'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
 const GREEN = '#29422a'
@@ -7,6 +9,7 @@ const BORDER = 'rgba(138,116,103,0.2)'
 const INK = '#2d2d2a'
 const MUTED = '#6b6660'
 const BG = '#f8f6f2'
+const SURFACE = '#fffffe'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type MessageRole = 'mae' | 'user'
@@ -60,6 +63,48 @@ const SUGGESTIONS = [
   'Which role needs more attention right now?',
 ]
 
+function MaeMark({ size = 40 }: { size?: number }) {
+  return (
+    <div
+      className="flex items-center justify-center"
+      style={{
+        width: size,
+        height: size,
+      }}
+    >
+      <img src={maeLogo} alt="" width={Math.round(size * 0.72)} height={Math.round(size * 0.72)} />
+    </div>
+  )
+}
+
+function RichText({ text, isMae }: { text: string; isMae: boolean }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g)
+
+  return (
+    <p
+      className={isMae ? 'font-serif' : 'font-sans'}
+      style={{
+        fontSize: isMae ? 15 : 13,
+        lineHeight: isMae ? '24px' : '19px',
+        color: INK,
+        letterSpacing: 0,
+        fontVariationSettings: isMae ? undefined : "'opsz' 14",
+      }}
+    >
+      {parts.map((part, index) => {
+        const isStrong = part.startsWith('**') && part.endsWith('**')
+        return isStrong ? (
+          <strong key={`${part}-${index}`} style={{ fontWeight: 700, color: GREEN }}>
+            {part.slice(2, -2)}
+          </strong>
+        ) : (
+          <span key={`${part}-${index}`}>{part}</span>
+        )
+      })}
+    </p>
+  )
+}
+
 // ─── Mae typing indicator ─────────────────────────────────────────────────────
 function TypingDots() {
   return (
@@ -68,8 +113,8 @@ function TypingDots() {
         <div
           key={i}
           style={{
-            width: 6,
-            height: 6,
+            width: 5,
+            height: 5,
             borderRadius: '50%',
             background: GREEN,
             animation: `dotPulse 1.4s ${i * 0.2}s infinite ease-in-out`,
@@ -93,63 +138,38 @@ function Bubble({ msg }: { msg: Message }) {
     >
       {isMae && (
         <div className="flex items-center gap-[6px]" style={{ marginBottom: 6, marginLeft: 2 }}>
-          <div
-            className="flex items-center justify-center rounded-full"
-            style={{ width: 20, height: 20, background: 'rgba(41,66,42,0.12)' }}
-          >
-            <img src={maeLogo} alt="" width={11} height={11} />
-          </div>
           <span
             className="font-sans font-medium uppercase"
-            style={{ fontSize: 9, letterSpacing: '1.3px', color: GREEN, opacity: 0.75 }}
+            style={{ fontSize: 9, letterSpacing: '1px', color: GREEN, opacity: 0.82, fontVariationSettings: "'opsz' 9" }}
           >
             Mae
           </span>
-          {/* Apple Intelligence badge */}
-          <div
-            className="flex items-center gap-[3px] rounded-pill px-[6px]"
-            style={{
-              height: 16,
-              background: 'rgba(0,0,0,0.04)',
-              border: '1px solid rgba(0,0,0,0.07)',
-            }}
-          >
-            <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
-              <circle cx="5" cy="5" r="4" stroke="rgba(107,102,96,0.5)" strokeWidth="1.2" />
-              <path d="M3.5 5.5L4.5 6.5L6.5 3.5" stroke="rgba(107,102,96,0.5)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span style={{ fontSize: 8, color: MUTED, fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.3px' }}>
-              Apple Intelligence
-            </span>
-          </div>
         </div>
       )}
 
       <div
         style={{
-          maxWidth: '82%',
-          padding: isMae ? '14px 16px' : '13px 16px',
-          borderRadius: isMae ? '4px 20px 20px 20px' : '20px 4px 20px 20px',
-          background: isMae ? 'rgba(41,66,42,0.07)' : '#fffffe',
-          border: isMae ? '1px solid rgba(41,66,42,0.14)' : `1px solid ${BORDER}`,
+          maxWidth: isMae ? '91%' : '76%',
+          padding: isMae ? '15px 16px 15px 17px' : '10px 13px',
+          borderRadius: isMae ? '16px 16px 16px 6px' : '15px 15px 6px 15px',
+          background: isMae ? SURFACE : 'rgba(41,66,42,0.08)',
+          border: isMae ? `1px solid ${BORDER}` : '1px solid rgba(41,66,42,0.12)',
+          borderLeft: isMae ? '3px solid rgba(41,66,42,0.42)' : undefined,
+          boxShadow: isMae ? '0 8px 20px rgba(45,45,42,0.035)' : 'none',
         }}
       >
-        <p
-          className="font-lora"
-          style={{
-            fontSize: 15,
-            lineHeight: '24px',
-            color: INK,
-            letterSpacing: '-0.1px',
-          }}
-        >
-          {msg.text}
-        </p>
+        <RichText text={msg.text} isMae={isMae} />
       </div>
 
       <span
-        className="font-mono"
-        style={{ fontSize: 9, color: 'rgba(107,102,96,0.45)', marginTop: 5, letterSpacing: '0.3px', fontWeight: 300 }}
+        className="font-sans"
+        style={{
+          fontSize: 10,
+          color: 'rgba(107,102,96,0.5)',
+          marginTop: 5,
+          letterSpacing: 0,
+          fontVariationSettings: "'opsz' 9",
+        }}
       >
         {msg.time}
       </span>
@@ -157,55 +177,156 @@ function Bubble({ msg }: { msg: Message }) {
   )
 }
 
+function PromptRow({
+  prompt,
+  onSelect,
+}: {
+  prompt: string
+  onSelect: () => void
+}) {
+  return (
+    <button
+      onClick={onSelect}
+      className="w-full text-left active:scale-[0.995]"
+      aria-label={prompt}
+      style={{
+        background: 'transparent',
+        padding: '9px 0',
+        transition: 'transform 120ms ease',
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <div className="min-w-0 flex-1">
+          <p
+            className="font-sans font-normal"
+            style={{ fontSize: 13, lineHeight: '18px', color: 'rgba(45,45,42,0.68)', letterSpacing: 0, fontVariationSettings: "'opsz' 14" }}
+          >
+            {prompt}
+          </p>
+        </div>
+        <svg width="7" height="12" viewBox="0 0 7 12" fill="none" className="shrink-0">
+          <path d="M1 1l5 5-5 5" stroke="rgba(45,45,42,0.28)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
+    </button>
+  )
+}
+
+function TabIcon({
+  icon,
+  label,
+  active,
+  onClick,
+}: {
+  icon: string
+  label: string
+  active: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center justify-center rounded-full"
+      style={{
+        width: 34,
+        height: 34,
+        background: active ? GREEN : 'rgba(138,116,103,0.08)',
+        border: `1px solid ${active ? 'rgba(41,66,42,0.18)' : BORDER}`,
+        transition: 'background 180ms ease, border-color 180ms ease',
+      }}
+      aria-label={label}
+      aria-pressed={active}
+    >
+      <span
+        aria-hidden="true"
+        style={{
+          width: 17,
+          height: 17,
+          display: 'block',
+          background: active ? SURFACE : 'rgba(45,45,42,0.58)',
+          WebkitMaskImage: `url(${icon})`,
+          maskImage: `url(${icon})`,
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat',
+          WebkitMaskPosition: 'center',
+          maskPosition: 'center',
+          WebkitMaskSize: 'contain',
+          maskSize: 'contain',
+        }}
+      />
+    </button>
+  )
+}
+
 // ─── Archive session card ─────────────────────────────────────────────────────
 function ArchiveCard({ session }: { session: ChatSession }) {
   return (
     <button
-      className="flex items-center justify-between w-full rounded-[20px] text-left"
+      className="flex w-full items-stretch text-left active:scale-[0.995]"
       style={{
-        background: '#fffffe',
+        background: SURFACE,
         border: `1px solid ${BORDER}`,
-        padding: '16px 18px',
+        borderRadius: 16,
+        padding: '13px 14px 13px 0',
+        transition: 'transform 120ms ease',
       }}
     >
-      <div className="flex flex-col gap-[6px]" style={{ flex: 1, paddingRight: 12 }}>
-        <div className="flex items-center gap-2">
+      <div
+        className="shrink-0"
+        style={{
+          width: 3,
+          margin: '3px 13px 3px 0',
+          borderRadius: 3,
+          background: 'rgba(41,66,42,0.34)',
+        }}
+      />
+      <div className="flex min-w-0 flex-1 flex-col" style={{ paddingRight: 10 }}>
+        <div className="flex items-center gap-2" style={{ marginBottom: 7 }}>
           <span
-            className="font-inter font-medium uppercase"
-            style={{ fontSize: 8, letterSpacing: '1.1px', color: MUTED }}
+            className="font-sans font-medium uppercase"
+            style={{ fontSize: 9, letterSpacing: '1px', color: MUTED, fontVariationSettings: "'opsz' 9" }}
           >
             {session.date}
           </span>
           <div
-            className="rounded-pill px-[7px]"
+            className="rounded-pill"
             style={{
-              height: 16,
+              height: 18,
               background: 'rgba(41,66,42,0.08)',
+              padding: '2px 7px',
               display: 'flex',
               alignItems: 'center',
             }}
           >
-            <span style={{ fontSize: 8, color: GREEN, fontFamily: 'DM Sans, sans-serif', fontWeight: 500, letterSpacing: '0.4px' }}>
+            <span
+              className="font-sans font-medium"
+              style={{ fontSize: 9, color: GREEN, letterSpacing: 0, fontVariationSettings: "'opsz' 9" }}
+            >
               {session.topic}
             </span>
           </div>
         </div>
         <p
-          className="font-lora"
-          style={{ fontSize: 14, lineHeight: '21px', color: INK, letterSpacing: '-0.1px', fontStyle: 'italic' }}
+          className="font-serif font-medium"
+          style={{ fontSize: 14, lineHeight: '20px', color: INK, letterSpacing: 0 }}
         >
-          "{session.preview}"
+          {session.preview}
         </p>
         <span
           className="font-sans font-normal"
-          style={{ fontSize: 11, color: MUTED, fontVariationSettings: "'opsz' 9" }}
+          style={{ marginTop: 7, fontSize: 11, color: MUTED, fontVariationSettings: "'opsz' 9" }}
         >
           {session.turns} exchanges
         </span>
       </div>
-      <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-        <path d="M1 1l5 5-5 5" stroke="rgba(138,116,103,0.45)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
+      <div
+        className="flex shrink-0 items-center justify-center rounded-full"
+        style={{ alignSelf: 'center', width: 28, height: 28, background: 'rgba(138,116,103,0.09)' }}
+      >
+        <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+          <path d="M1 1l5 5-5 5" stroke="rgba(45,45,42,0.52)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
     </button>
   )
 }
@@ -281,130 +402,134 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
       >
         {/* ── Header ── */}
         <div
-          className="shrink-0 flex items-center justify-between"
+          className="shrink-0 flex items-center"
           style={{
-            padding: '52px 20px 0',
-            paddingBottom: 0,
+            padding: '52px 20px 14px',
+            gap: 10,
+            background: 'rgba(255,255,254,0.82)',
+            borderBottom: `1px solid ${BORDER}`,
+            backdropFilter: 'blur(14px)',
+            WebkitBackdropFilter: 'blur(14px)',
           }}
         >
           <button
             onClick={onClose}
-            className="flex items-center justify-center rounded-full"
+            className="flex shrink-0 items-center justify-center"
             style={{
-              width: 36,
+              width: 32,
               height: 36,
-              background: 'rgba(138,116,103,0.1)',
-              border: `1px solid ${BORDER}`,
             }}
+            aria-label="Close Mae chat"
           >
             <svg width="8" height="14" viewBox="0 0 8 14" fill="none">
               <path d="M7 1L1 7l6 6" stroke={INK} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
 
-          <div className="flex flex-col items-center gap-[4px]">
-            <div
-              className="flex items-center justify-center rounded-full"
-              style={{ width: 32, height: 32, background: 'rgba(41,66,42,0.1)' }}
-            >
-              <img src={maeLogo} alt="" width={17} height={17} />
-            </div>
-            <span
-              className="font-sans font-medium"
-              style={{ fontSize: 13, color: INK, letterSpacing: '-0.1px', fontVariationSettings: "'opsz' 14" }}
-            >
-              Ask Mae
-            </span>
-          </div>
-
-          {/* Spacer to balance back button */}
-          <div style={{ width: 36 }} />
-        </div>
-
-        {/* ── Tab selector ── */}
-        <div
-          className="shrink-0 flex items-center"
-          style={{ padding: '16px 20px 0' }}
-        >
-          <div
-            className="flex rounded-pill overflow-hidden"
-            style={{
-              background: 'rgba(138,116,103,0.1)',
-              padding: 3,
-              gap: 2,
-            }}
-          >
-            {(['chat', 'archive'] as const).map(t => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                className="rounded-pill"
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <MaeMark size={30} />
+            <div className="min-w-0">
+              <span
                 style={{
-                  padding: '6px 16px',
-                  background: tab === t ? '#fffffe' : 'transparent',
-                  boxShadow: tab === t ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-                  transition: 'background 180ms ease, box-shadow 180ms ease',
+                  display: 'block',
+                  fontFamily: "'Fraunces', Georgia, serif",
+                  fontSize: 20,
+                  fontWeight: 700,
+                  lineHeight: '23px',
+                  color: INK,
+                  letterSpacing: 0,
+                  fontVariationSettings: "'opsz' 24",
                 }}
               >
-                <span
-                  className="font-sans font-medium"
-                  style={{
-                    fontSize: 13,
-                    color: tab === t ? INK : MUTED,
-                    fontVariationSettings: "'opsz' 14",
-                    transition: 'color 180ms ease',
-                    textTransform: 'capitalize',
-                  }}
-                >
-                  {t === 'chat' ? 'Chat' : 'Archive'}
-                </span>
-              </button>
-            ))}
+                Mae
+              </span>
+            </div>
+          </div>
+
+          <div
+            className="flex shrink-0 items-center"
+            style={{
+              gap: 6,
+            }}
+          >
+            <TabIcon
+              icon={chatIcon}
+              label="Chat"
+              active={tab === 'chat'}
+              onClick={() => setTab('chat')}
+            />
+            <TabIcon
+              icon={archiveIcon}
+              label="Archive"
+              active={tab === 'archive'}
+              onClick={() => setTab('archive')}
+            />
           </div>
         </div>
 
         {/* ── Chat view ── */}
         {tab === 'chat' && (
           <>
-            {/* Empty state — centered in the remaining frame */}
+            {/* Empty state */}
             {messages.length === 1 && (
               <div
-                className="flex-1 flex flex-col items-center justify-center"
-                style={{ padding: '0 20px', animation: 'fadeUpIn 380ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
+                className="flex-1"
+                style={{ padding: '18px 20px 0', animation: 'fadeUpIn 380ms 80ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
               >
-                <span
-                  className="font-sans font-normal uppercase"
-                  style={{ fontSize: 9, letterSpacing: '1.3px', color: 'rgba(107,102,96,0.45)', marginBottom: 14 }}
+                <div
+                  className="rounded-[22px]"
+                  style={{
+                    background: SURFACE,
+                    border: `1px solid ${BORDER}`,
+                    padding: '18px',
+                    boxShadow: '0 10px 28px rgba(45,45,42,0.035)',
+                  }}
                 >
-                  Try asking
-                </span>
-                <div className="flex flex-col gap-[8px] w-full">
-                  {SUGGESTIONS.map((s, i) => (
-                    <button
-                      key={i}
-                      onClick={() => sendMessage(s)}
-                      className="flex items-center text-left rounded-[14px]"
+                  <div>
+                    <span
+                      className="font-sans font-medium uppercase"
                       style={{
-                        background: '#fffffe',
-                        border: `1px solid ${BORDER}`,
-                        padding: '13px 14px',
-                        gap: 10,
+                        fontSize: 9,
+                        lineHeight: '13px',
+                        letterSpacing: '1px',
+                        color: GREEN,
+                        fontVariationSettings: "'opsz' 9",
                       }}
                     >
-                      <div
-                        className="shrink-0 rounded-full flex items-center justify-center"
-                        style={{ width: 22, height: 22, background: 'rgba(41,66,42,0.08)' }}
-                      >
-                        <img src={maeLogo} alt="" width={11} height={11} style={{ opacity: 0.6 }} />
-                      </div>
-                      <span
-                        className="font-lora"
-                        style={{ fontSize: 14, lineHeight: '20px', color: INK, letterSpacing: '-0.1px' }}
-                      >
-                        {s}
-                      </span>
-                    </button>
-                  ))}
+                      Ask Mae
+                    </span>
+                    <p
+                      className="font-serif font-medium"
+                      style={{ marginTop: 8, fontSize: 18, lineHeight: '25px', color: INK, letterSpacing: 0 }}
+                    >
+                      Start with a question about where your attention, habits, or roles are pointing.
+                    </p>
+                  </div>
+                  <div style={{ marginTop: 12 }}>
+                    {SUGGESTIONS.map(s => (
+                      <PromptRow
+                        key={s}
+                        prompt={s}
+                        onSelect={() => sendMessage(s)}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div
+                  className="flex items-start gap-2"
+                  style={{
+                    marginTop: 16,
+                    padding: '0 4px',
+                    color: MUTED,
+                  }}
+                >
+                  <div style={{ width: 4, height: 4, marginTop: 8, borderRadius: 4, background: 'rgba(41,66,42,0.45)' }} />
+                  <p
+                    className="font-sans"
+                    style={{ fontSize: 12, lineHeight: '18px', fontVariationSettings: "'opsz' 9" }}
+                  >
+                    Mae uses Apple Intelligence built into your device, which keeps all your data private.
+                  </p>
                 </div>
               </div>
             )}
@@ -413,9 +538,9 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
             {messages.length > 1 && (
               <div
                 className="flex-1 overflow-y-auto scrollbar-hide"
-                style={{ padding: '20px 20px 0' }}
+                style={{ padding: '18px 20px 0' }}
               >
-                <div className="flex flex-col gap-[18px]">
+                <div className="flex flex-col" style={{ gap: 16 }}>
                   {messages.map(msg => (
                     <Bubble key={msg.id} msg={msg} />
                   ))}
@@ -423,25 +548,20 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
                   {isTyping && (
                     <div className="flex flex-col" style={{ alignItems: 'flex-start' }}>
                       <div className="flex items-center gap-[6px]" style={{ marginBottom: 6, marginLeft: 2 }}>
-                        <div
-                          className="flex items-center justify-center rounded-full"
-                          style={{ width: 20, height: 20, background: 'rgba(41,66,42,0.12)' }}
-                        >
-                          <img src={maeLogo} alt="" width={11} height={11} />
-                        </div>
                         <span
                           className="font-sans font-medium uppercase"
-                          style={{ fontSize: 9, letterSpacing: '1.3px', color: GREEN, opacity: 0.75 }}
+                          style={{ fontSize: 9, letterSpacing: '1px', color: GREEN, opacity: 0.82 }}
                         >
                           Mae
                         </span>
                       </div>
                       <div
                         style={{
-                          padding: '14px 18px',
-                          borderRadius: '4px 20px 20px 20px',
-                          background: 'rgba(41,66,42,0.07)',
-                          border: '1px solid rgba(41,66,42,0.14)',
+                          padding: '14px 16px',
+                          borderRadius: '16px 16px 16px 6px',
+                          background: SURFACE,
+                          border: `1px solid ${BORDER}`,
+                          borderLeft: '3px solid rgba(41,66,42,0.42)',
                         }}
                       >
                         <TypingDots />
@@ -458,18 +578,21 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
             <div
               className="shrink-0"
               style={{
-                padding: '12px 16px 32px',
+                padding: '10px 20px 24px',
                 borderTop: `1px solid ${BORDER}`,
-                background: BG,
+                background: 'rgba(248,246,242,0.96)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
               }}
             >
               <div
-                className="flex items-end rounded-[20px]"
+                className="flex items-center rounded-[18px]"
                 style={{
-                  background: '#fffffe',
+                  background: SURFACE,
                   border: `1px solid ${BORDER}`,
-                  padding: '10px 10px 10px 16px',
+                  padding: '8px 9px 8px 14px',
                   gap: 8,
+                  boxShadow: '0 8px 22px rgba(45,45,42,0.05)',
                 }}
               >
                 <textarea
@@ -481,25 +604,29 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
                       sendMessage(input)
                     }
                   }}
-                  placeholder="Ask Mae anything…"
+                  placeholder="Ask Mae about a pattern..."
                   rows={1}
-                  className="flex-1 resize-none bg-transparent outline-none font-lora"
+                  className="flex-1 resize-none bg-transparent outline-none font-sans"
                   style={{
-                    fontSize: 15,
-                    lineHeight: '22px',
+                    fontSize: 14,
+                    lineHeight: '34px',
                     color: INK,
-                    letterSpacing: '-0.1px',
-                    minHeight: 22,
-                    maxHeight: 88,
+                    letterSpacing: 0,
+                    height: 34,
+                    minHeight: 34,
+                    maxHeight: 34,
+                    overflow: 'hidden',
+                    fontVariationSettings: "'opsz' 14",
                   }}
                 />
                 <button
                   onClick={() => sendMessage(input)}
                   disabled={!input.trim()}
                   className="shrink-0 flex items-center justify-center rounded-full"
+                  aria-label="Send message to Mae"
                   style={{
-                    width: 36,
-                    height: 36,
+                    width: 34,
+                    height: 34,
                     background: input.trim() ? GREEN : 'rgba(138,116,103,0.15)',
                     transition: 'background 180ms ease',
                   }}
@@ -517,9 +644,9 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
               {/* Disclaimer */}
               <p
                 className="font-sans font-normal text-center"
-                style={{ fontSize: 10, color: 'rgba(107,102,96,0.45)', marginTop: 8, fontVariationSettings: "'opsz' 9", letterSpacing: '0.1px' }}
+                style={{ fontSize: 10, color: 'rgba(107,102,96,0.5)', marginTop: 7, fontVariationSettings: "'opsz' 9", letterSpacing: 0 }}
               >
-                Your data stays on your device — private and local.
+                Apple Intelligence is built into your device, keeping all your data private.
               </p>
             </div>
           </>
@@ -529,28 +656,39 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
         {tab === 'archive' && (
           <div
             className="flex-1 overflow-y-auto scrollbar-hide"
-            style={{ padding: '20px 20px 32px' }}
+            style={{ padding: '18px 20px 28px' }}
           >
             <div
-              className="flex flex-col gap-[4px]"
-              style={{ marginBottom: 20, animation: 'fadeUpIn 320ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
+              className="flex items-end justify-between"
+              style={{
+                marginBottom: 16,
+                animation: 'fadeUpIn 320ms cubic-bezier(0.22, 1, 0.36, 1) both',
+              }}
             >
-              <p
-                className="font-lora"
-                style={{ fontSize: 19, color: INK, letterSpacing: '-0.2px', lineHeight: '28px' }}
+              <div>
+                <span
+                  className="font-sans font-medium uppercase"
+                  style={{ fontSize: 9, lineHeight: '13px', letterSpacing: '1px', color: GREEN, fontVariationSettings: "'opsz' 9" }}
+                >
+                  Conversation notes
+                </span>
+                <p
+                  className="font-serif font-medium"
+                  style={{ marginTop: 5, fontSize: 21, color: INK, letterSpacing: 0, lineHeight: '27px' }}
+                >
+                  Saved threads
+                </p>
+              </div>
+              <span
+                className="font-sans font-medium"
+                style={{ paddingBottom: 4, fontSize: 11, color: MUTED, fontVariationSettings: "'opsz' 9" }}
               >
-                Past conversations
-              </p>
-              <p
-                className="font-sans font-normal"
-                style={{ fontSize: 13, color: MUTED, fontVariationSettings: "'opsz' 9", lineHeight: '18px' }}
-              >
-                4 sessions with Mae
-              </p>
+                {ARCHIVE.length} total
+              </span>
             </div>
 
             <div
-              className="flex flex-col gap-3"
+              className="flex flex-col gap-2"
               style={{ animation: 'fadeUpIn 360ms 60ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
             >
               {ARCHIVE.map(session => (
@@ -560,22 +698,17 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
 
             {/* Empty state hint */}
             <div
-              className="flex flex-col items-center text-center rounded-[20px]"
+              className="rounded-[16px]"
               style={{
-                marginTop: 24,
-                padding: '20px 16px',
-                border: `1px dashed rgba(138,116,103,0.28)`,
+                marginTop: 16,
+                padding: '14px 16px',
+                border: `1px solid ${BORDER}`,
+                background: 'rgba(255,255,254,0.72)',
               }}
             >
-              <div
-                className="flex items-center justify-center rounded-full"
-                style={{ width: 36, height: 36, background: 'rgba(41,66,42,0.07)', marginBottom: 10 }}
-              >
-                <img src={maeLogo} alt="" width={18} height={18} style={{ opacity: 0.55 }} />
-              </div>
               <p
-                className="font-lora"
-                style={{ fontSize: 14, lineHeight: '21px', color: MUTED, letterSpacing: '-0.1px', fontStyle: 'italic' }}
+                className="font-serif"
+                style={{ fontSize: 14, lineHeight: '21px', color: MUTED, letterSpacing: 0 }}
               >
                 Each conversation becomes part of how Mae understands you.
               </p>

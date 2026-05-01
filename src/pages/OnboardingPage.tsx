@@ -422,7 +422,7 @@ function Intro2({ onNext }: { onNext: () => void }) {
           Balance your roles{'\n'}
           through journaling{'\n'}
           with{' '}
-          <span style={{ fontFamily: "'Fraunces', Georgia, serif", fontWeight: 700 }}>Mae</span>
+          <span style={{ fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 }}>Mae</span>
         </p>
       </div>
 

@@ -85,13 +85,13 @@ function ActivityCard({
       </div>
       <div className="flex flex-col gap-1" style={{ width: 157 }}>
         <p
-          className="font-inter font-normal text-muted uppercase whitespace-nowrap tracking-[1.2px]"
+          className="font-sans font-normal text-muted uppercase whitespace-nowrap tracking-[1.2px]"
           style={{ fontSize: 10, lineHeight: '15px' }}
         >
           {role} · {duration}
         </p>
         <p
-          className="font-lora font-medium text-ink-secondary whitespace-nowrap"
+          className="font-serif font-medium text-ink-secondary whitespace-nowrap"
           style={{ fontSize: 15, lineHeight: '19.5px' }}
         >
           {title}
@@ -234,7 +234,7 @@ export default function DashboardPage({
               Morning Clara!
             </p>
             <p
-              className="font-mono text-ink uppercase"
+              className="font-sans text-ink uppercase"
               style={{ fontSize: 10, lineHeight: 'normal', letterSpacing: '-0.4px', fontWeight: 300 }}
             >
               Monday, April 27 | Spring
@@ -296,7 +296,7 @@ export default function DashboardPage({
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
             <img src={iconMore} alt="" width={24} height={24} />
             <p
-              className="font-inter font-medium text-center text-black"
+              className="font-sans font-medium text-center text-black"
               style={{ fontSize: 10, lineHeight: '19px' }}
             >
               Care for a quick check in?
@@ -307,7 +307,7 @@ export default function DashboardPage({
               style={{ background: GREEN }}
             >
               <span
-                className="font-inter font-medium text-center"
+                className="font-sans font-medium text-center"
                 style={{ fontSize: 10, lineHeight: '19px', color: '#fffffe' }}
               >
                 Capture Moment
@@ -321,14 +321,14 @@ export default function DashboardPage({
       <div className="flex flex-col items-start" style={{ width: 400, marginLeft: 1, marginTop: 20 }}>
         <div className="flex items-center justify-between px-6 w-full" style={{ height: 27 }}>
           <p
-            className="font-lora font-medium text-ink-secondary whitespace-nowrap"
+            className="font-serif font-medium text-ink-secondary whitespace-nowrap"
             style={{ fontSize: 18, lineHeight: '27px' }}
           >
             For today
           </p>
           <button onClick={onActivityLibraryOpen}>
             <span
-              className="font-inter font-medium text-muted text-center whitespace-nowrap"
+              className="font-sans font-medium text-muted text-center whitespace-nowrap"
               style={{ fontSize: 11, lineHeight: '16.5px' }}
             >
               More suggestions →

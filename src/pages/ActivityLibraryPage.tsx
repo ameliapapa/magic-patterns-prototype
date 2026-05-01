@@ -238,7 +238,7 @@ function LibraryCard({ item, onOpen }: { item: LibraryItem; onOpen: () => void }
       />
       <div className="absolute left-4 right-4 bottom-4">
         <p
-          className="font-lora font-medium"
+          className="font-serif font-medium"
           style={{ fontSize: 24, lineHeight: '29px', color: SURFACE, letterSpacing: '-0.2px' }}
         >
           {item.title}
@@ -346,7 +346,7 @@ function IdeaCard({
       </button>
       <div className="absolute left-3 right-3 bottom-3">
         <p
-          className="font-lora font-medium"
+          className="font-serif font-medium"
           style={{ fontSize: 17, lineHeight: '21px', color: SURFACE }}
         >
           {idea.title}
@@ -388,7 +388,7 @@ function SavedIdeaCard({
         <Heart size={15} strokeWidth={1.8} color={SURFACE} fill={SURFACE} />
       </div>
       <div className="absolute left-3 right-3 bottom-3">
-        <p className="font-lora font-medium" style={{ fontSize: 15, lineHeight: '18px', color: SURFACE }}>
+        <p className="font-serif font-medium" style={{ fontSize: 15, lineHeight: '18px', color: SURFACE }}>
           {idea.title}
         </p>
         <MetaChips idea={idea} compact />
@@ -482,7 +482,7 @@ function CategoryDetail({
         </div>
       </section>
 
-      <main style={{ padding: '24px 24px 136px' }}>
+      <main style={{ padding: '24px 24px 32px' }}>
         <div
           className="rounded-[24px]"
           style={{
@@ -492,7 +492,7 @@ function CategoryDetail({
           }}
         >
           <p
-            className="font-lora font-medium"
+            className="font-serif font-medium"
             style={{ fontSize: 18, lineHeight: '27px', color: INK }}
           >
             {item.observation}
@@ -615,7 +615,7 @@ export default function ActivityLibraryPage({
               ref={inputRef}
               value={query}
               onChange={event => setQuery(event.target.value)}
-              placeholder="Search ideas, roles, moods"
+              placeholder="Search for ideas"
               aria-label="Search activity library"
               className="min-w-0 flex-1 bg-transparent font-sans outline-none"
               style={{
@@ -655,7 +655,7 @@ export default function ActivityLibraryPage({
         )}
       </header>
 
-      <main style={{ padding: '0 24px 136px' }}>
+      <main style={{ padding: '0 24px 32px' }}>
         {normalizedQuery.length === 0 && (
           savedIdeas.length > 0 ? (
             <section
@@ -726,7 +726,7 @@ export default function ActivityLibraryPage({
             className="rounded-[24px]"
             style={{ background: SURFACE, border: `1px solid ${BORDER}`, padding: 24 }}
           >
-            <p className="font-lora font-medium" style={{ fontSize: 17, lineHeight: '25px', color: INK }}>
+            <p className="font-serif font-medium" style={{ fontSize: 17, lineHeight: '25px', color: INK }}>
               Nothing surfaced for that search.
             </p>
             <p

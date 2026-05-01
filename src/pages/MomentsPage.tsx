@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Bell, ChevronLeft, ChevronRight, MessageCircle, Search, Star, X } from 'lucide-react'
+import { Bell, ChevronLeft, ChevronRight, Search, Star, X } from 'lucide-react'
 
 import maeLogo from '../assets/icons/mae-flower-icon.svg'
 import runnerImg from '../assets/illustrations/u1355955226_runner_in_the_park_--sref_202514354_--profile_8d1_34b21c61-5858-439e-8fbd-0256b22a06a4_0.png'
@@ -113,7 +113,7 @@ function Header({
       <div className="flex items-start justify-between">
         <div>
           <p
-            className="font-lora font-bold"
+            className="font-serif font-bold"
             style={{ fontSize: 28, lineHeight: '34px', letterSpacing: '-0.5px', color: INK }}
           >
             Memories
@@ -157,54 +157,66 @@ function Header({
 
 // ─── Mae Observation ──────────────────────────────────────────────────────────
 
-function MaeObservation({ onMaeChatOpen }: { onMaeChatOpen: () => void }) {
+function MaeObservation({ onDismiss }: { onDismiss: () => void }) {
   return (
     <section
-      className="mx-5 rounded-[24px]"
+      className="relative mx-5 overflow-hidden rounded-[28px]"
       style={{
-        background: 'rgba(41,66,42,0.06)',
-        border: '1px solid rgba(41,66,42,0.14)',
-        padding: '14px 16px',
+        minHeight: 178,
+        background: 'rgba(255,255,254,0.86)',
+        border: `1px solid ${BORDER}`,
+        padding: '22px 22px 24px',
       }}
     >
-      <div className="flex items-start gap-3">
-        <div
-          className="flex items-center justify-center rounded-full shrink-0"
-          style={{ width: 34, height: 34, background: 'rgba(41,66,42,0.08)' }}
-        >
-          <img src={maeLogo} alt="" width={17} height={17} />
-        </div>
+      <button
+        onClick={onDismiss}
+        className="absolute flex items-center justify-center"
+        aria-label="Dismiss Mae noticed"
+        style={{ top: 18, right: 18, width: 32, height: 32, zIndex: 2 }}
+      >
+        <X size={24} strokeWidth={1.8} color="#151512" />
+      </button>
 
-        <div className="min-w-0 flex-1">
-          <p
-            className="font-sans font-medium uppercase"
-            style={{
-              fontSize: 9,
-              lineHeight: '13px',
-              letterSpacing: '1.2px',
-              color: GREEN,
-              fontVariationSettings: "'opsz' 9",
-            }}
-          >
-            Mae noticed
-          </p>
-          <p
-            className="font-lora font-medium"
-            style={{ marginTop: 4, fontSize: 15, lineHeight: '22px', color: INK, letterSpacing: '-0.1px' }}
-          >
-            Your highlighted moments this month lean toward people who make you feel unhurried.
-          </p>
-        </div>
-
-        <button
-          onClick={onMaeChatOpen}
-          className="flex items-center justify-center rounded-full shrink-0"
-          aria-label="Review with Mae"
-          style={{ width: 32, height: 32, background: SURFACE, border: `1px solid ${BORDER}` }}
+      <div style={{ position: 'relative', zIndex: 1, paddingRight: 40 }}>
+        <p
+          className="font-sans font-medium uppercase"
+          style={{
+            fontSize: 10,
+            lineHeight: '14px',
+            letterSpacing: '1.8px',
+            color: '#151512',
+            fontVariationSettings: "'opsz' 9",
+          }}
         >
-          <MessageCircle size={15} strokeWidth={1.7} color={GREEN} />
-        </button>
+          Mae noticed
+        </p>
+        <p
+          className="font-serif font-bold"
+          style={{
+            marginTop: 14,
+            maxWidth: 226,
+            fontSize: 20,
+            lineHeight: '28px',
+            color: '#050505',
+            letterSpacing: '-0.24px',
+          }}
+        >
+          Your highlighted moments this month are with people who make you feel calm
+        </p>
       </div>
+
+      <img
+        src={maeLogo}
+        alt=""
+        className="absolute"
+        style={{
+          width: 132,
+          height: 130,
+          right: -26,
+          bottom: -34,
+          zIndex: 0,
+        }}
+      />
     </section>
   )
 }
@@ -240,7 +252,7 @@ function MiniCalendar({
         >
           <ChevronLeft size={15} strokeWidth={1.7} color={MUTED} />
         </button>
-        <span className="font-lora font-medium" style={{ fontSize: 15, lineHeight: '22px', color: INK }}>
+        <span className="font-serif font-medium" style={{ fontSize: 15, lineHeight: '22px', color: INK }}>
           {MONTH_LABEL}
         </span>
         <button
@@ -394,7 +406,7 @@ function RoleTag({ label }: { label: string }) {
       }}
     >
       <span
-        className="block font-inter font-medium uppercase"
+        className="block font-sans font-medium uppercase"
         style={{ fontSize: 10, lineHeight: 1, letterSpacing: '1.2px', color: INK, transform: 'translateY(-0.5px)' }}
       >
         {label}
@@ -465,7 +477,7 @@ function MomentCard({
         }}
       >
         <p
-          className="font-lora font-medium"
+          className="font-serif font-medium"
           style={{ fontSize: 17, lineHeight: '26px', color: INK, letterSpacing: '-0.2px' }}
         >
           {moment.text}
@@ -483,6 +495,7 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [showMaeObservation, setShowMaeObservation] = useState(true)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
   const momentDays = useMemo(() => new Set(moments.map(m => m.day)), [moments])
@@ -548,7 +561,7 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
         highlightCount={highlightCount}
       />
 
-      <MaeObservation onMaeChatOpen={onMaeChatOpen} />
+      {showMaeObservation && <MaeObservation onDismiss={() => setShowMaeObservation(false)} />}
 
       <MiniCalendar
         selectedDay={selectedDay}
@@ -575,7 +588,7 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
               ref={searchInputRef}
               value={searchQuery}
               onChange={event => setSearchQuery(event.target.value)}
-              placeholder="Search moments, roles, dates"
+              placeholder="Search moments"
               aria-label="Search memories"
               className="min-w-0 flex-1 bg-transparent font-sans outline-none"
               style={{
@@ -645,7 +658,7 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
         <div className="flex items-center justify-between" style={{ marginTop: 24 }}>
           <div>
             <h2
-              className="font-lora font-medium"
+              className="font-serif font-medium"
               style={{ fontSize: 18, lineHeight: '24px', color: INK, letterSpacing: '-0.2px' }}
             >
               {sectionTitle}
@@ -705,7 +718,7 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
               style={{ background: SURFACE, border: `1px solid ${BORDER}`, padding: '24px 20px' }}
             >
               <p
-                className="font-lora font-medium"
+                className="font-serif font-medium"
                 style={{ fontSize: 17, lineHeight: '25px', color: INK }}
               >
                 {normalizedSearchQuery.length > 0 ? 'Nothing surfaced for that search.' : 'Nothing recorded here yet.'}
