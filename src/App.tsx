@@ -213,7 +213,7 @@ export default function App() {
           <EditIntentionSheet
             initialText={editIntention.text}
             defaultRoleId={editIntention.roleId}
-            onSave={(_text, _roleId) => setEditIntention(null)}
+            onSave={() => setEditIntention(null)}
             onDelete={editIntention.text !== undefined ? () => setEditIntention(null) : undefined}
             onClose={() => setEditIntention(null)}
           />
