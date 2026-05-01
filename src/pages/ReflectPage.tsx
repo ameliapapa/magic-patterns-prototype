@@ -6,6 +6,7 @@ import iconFriend from '../assets/icons/friend-role-icon.svg'
 import iconPartner from '../assets/icons/partner-role.svg'
 import iconProfessional from '../assets/icons/professional-role.svg'
 import iconDaughter from '../assets/icons/daughter-role-icon.svg'
+import iconPencilEdit from '../assets/icons/pencil-edit-01.svg'
 
 import imgSelf from '../assets/illustrations/u1355955226_runner_in_the_park_--sref_202514354_--profile_8d1_34b21c61-5858-439e-8fbd-0256b22a06a4_0.png'
 import imgCreative from '../assets/illustrations/u1355955226_painter_painting_a_canvas_--sref_202514354_--prof_51f7c398-d464-4ad1-8bb6-da52f2cc1971_0.png'
@@ -105,24 +106,28 @@ function RoleCard({ role }: { role: RoleDef }) {
 
         {/* Edit pill — top right */}
         <button
+          type="button"
+          aria-label={`Edit ${role.label}`}
           className="absolute flex items-center justify-center rounded-pill"
           style={{
             top: 14,
             right: 14,
             height: 28,
-            padding: '0 12px',
+            width: 34,
+            padding: 0,
             background: 'rgba(255,255,254,0.18)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
             border: '1px solid rgba(255,255,254,0.22)',
           }}
         >
-          <span
-            className="font-sans font-medium"
-            style={{ fontSize: 11, color: '#fffffe', letterSpacing: '0.3px', fontVariationSettings: "'opsz' 9" }}
-          >
-            Edit
-          </span>
+          <img
+            src={iconPencilEdit}
+            alt=""
+            width={14}
+            height={14}
+            style={{ filter: 'brightness(0) invert(1)', opacity: 0.96 }}
+          />
         </button>
 
         {/* Role identity pill — bottom left */}
@@ -257,8 +262,8 @@ export default function ReflectPage({ onAddRole }: { onAddRole?: () => void }) {
           Reflect
         </p>
         <p
-          className="font-sans text-muted uppercase"
-          style={{ fontSize: 10, lineHeight: 'normal', letterSpacing: '0.8px', fontWeight: 300 }}
+          className="font-mono text-muted uppercase"
+          style={{ fontSize: 10, lineHeight: 'normal', letterSpacing: '0.4px', fontWeight: 400 }}
         >
           Your compass across every role
         </p>

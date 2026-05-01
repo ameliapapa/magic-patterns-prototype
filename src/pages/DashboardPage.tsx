@@ -3,7 +3,7 @@ import activityWeightlifting from '../assets/illustrations/person_lifting_weight
 import activityWatercolor from '../assets/illustrations/u1355955226_painter_painting_a_canvas_--sref_202514354_--prof_51f7c398-d464-4ad1-8bb6-da52f2cc1971_0.png'
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
-import iconNotification from '../assets/icons/icon-notification.svg'
+import iconBubbleChat from '../assets/icons/bubble-chat.svg'
 import iconUserCircle from '../assets/icons/icon-user-circle.svg'
 import iconHeart from '../assets/icons/icon-heart.svg'
 import iconChevronRight from '../assets/icons/icon-chevron-right.svg'
@@ -234,15 +234,15 @@ export default function DashboardPage({
               Morning Clara!
             </p>
             <p
-              className="font-sans text-ink uppercase"
-              style={{ fontSize: 10, lineHeight: 'normal', letterSpacing: '-0.4px', fontWeight: 300 }}
+              className="font-mono text-ink uppercase"
+              style={{ fontSize: 10, lineHeight: 'normal', letterSpacing: '0.4px', fontWeight: 400 }}
             >
               Monday, April 27 | Spring
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <button onClick={onMaeChatOpen} className="relative flex items-center justify-center">
-              <img src={iconNotification} alt="notifications" width={24} height={24} />
+              <img src={iconBubbleChat} alt="chat" width={24} height={24} />
               {/* Unread indicator */}
               <span
                 className="absolute rounded-full"

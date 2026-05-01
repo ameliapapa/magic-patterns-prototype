@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import runnerImg from '../assets/illustrations/u1355955226_runner_in_the_park_--sref_202514354_--profile_8d1_34b21c61-5858-439e-8fbd-0256b22a06a4_0.png'
 import boardgamesImg from '../assets/illustrations/u1355955226_playing_boardgames_--sref_202514354_--profile_8d1_0c4b39ad-8442-4e08-b910-2733d343dc0b_3.png'
-import iconNotification from '../assets/icons/icon-notification.svg'
+import iconBubbleChat from '../assets/icons/bubble-chat.svg'
 import maeLogo from '../assets/icons/mae-flower-icon.svg'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
@@ -549,7 +549,7 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
           </p>
         </div>
         <button onClick={onMaeChatOpen} className="relative flex items-center justify-center">
-          <img src={iconNotification} alt="notifications" width={24} height={24} />
+          <img src={iconBubbleChat} alt="chat" width={24} height={24} />
           <span
             className="absolute rounded-full"
             style={{ width: 7, height: 7, background: GREEN, top: 0, right: 0, border: '1.5px solid #f8f6f2' }}

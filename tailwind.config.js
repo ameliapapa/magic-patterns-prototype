@@ -17,6 +17,7 @@ module.exports = {
       fontFamily: {
         serif: ['"Libre Baskerville"', 'Georgia', 'serif'],
         sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"DM Mono"', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
         '4xl': '2rem',
