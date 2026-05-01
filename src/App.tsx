@@ -174,7 +174,10 @@ export default function App() {
           {!onboardingDone ? (
             <OnboardingPage onComplete={() => setOnboardingDone(true)} />
           ) : showActivityLibrary ? (
-            <ActivityLibraryPage onBack={() => setShowActivityLibrary(false)} />
+            <ActivityLibraryPage
+              onBack={() => setShowActivityLibrary(false)}
+              onCaptureOpen={() => openCaptureMoment()}
+            />
           ) : page === 'reflect' ? (
             <ReflectPage />
           ) : page === 'memory' ? (
