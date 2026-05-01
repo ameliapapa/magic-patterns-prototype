@@ -106,11 +106,13 @@ function IntentionCard({
   subtitle,
   directionRole,
   direction,
+  onEdit,
 }: {
   title: string
   subtitle: string
   directionRole: string
   direction: string
+  onEdit?: () => void
 }) {
   return (
     <div
@@ -127,12 +129,16 @@ function IntentionCard({
             Reflect
           </span>
         </div>
-        <span
-          className="font-sans font-normal text-muted"
-          style={{ fontSize: 12, lineHeight: '18px', fontVariationSettings: "'opsz' 9" }}
-        >
-          3h ago
-        </span>
+        {onEdit && (
+          <button onClick={onEdit}>
+            <span
+              className="font-sans font-normal text-muted"
+              style={{ fontSize: 11, fontVariationSettings: "'opsz' 9" }}
+            >
+              Edit
+            </span>
+          </button>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <p
@@ -180,9 +186,13 @@ function IntentionCard({
 export default function DashboardPage({
   onCaptureOpen,
   onRoleOpen,
+  onMaeChatOpen,
+  onIntentionEdit,
 }: {
   onCaptureOpen: () => void
   onRoleOpen: (roleId: string) => void
+  onMaeChatOpen: () => void
+  onIntentionEdit: (text: string, roleId: string) => void
 }) {
   return (
     <div className="relative" style={{ width: 393, background: '#f8f6f2', minHeight: 852 }}>
@@ -229,7 +239,14 @@ export default function DashboardPage({
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <img src={iconNotification} alt="notifications" width={24} height={24} />
+            <button onClick={onMaeChatOpen} className="relative flex items-center justify-center">
+              <img src={iconNotification} alt="notifications" width={24} height={24} />
+              {/* Unread indicator */}
+              <span
+                className="absolute rounded-full"
+                style={{ width: 7, height: 7, background: '#29422a', top: 0, right: 0, border: '1.5px solid #f8f6f2' }}
+              />
+            </button>
             <img src={iconUserCircle} alt="profile" width={24} height={24} />
           </div>
         </div>
@@ -357,18 +374,21 @@ export default function DashboardPage({
             subtitle="Create new custom icons"
             directionRole="Creative"
             direction="Create more than I consume"
+            onEdit={() => onIntentionEdit('Portfolio Redesign', ROLE_IDS['Creative'])}
           />
           <IntentionCard
             title="Role App design"
             subtitle="Refine user flow"
             directionRole="Professional"
             direction="Build things worth building"
+            onEdit={() => onIntentionEdit('Role App design', ROLE_IDS['Professional'])}
           />
           <IntentionCard
             title="Website Redesign"
             subtitle="Create new custom icons"
             directionRole="Professional"
             direction="Build things worth building"
+            onEdit={() => onIntentionEdit('Website Redesign', ROLE_IDS['Professional'])}
           />
         </div>
       </div>

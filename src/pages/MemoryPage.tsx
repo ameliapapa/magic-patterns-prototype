@@ -3,6 +3,7 @@ import { useState } from 'react'
 import runnerImg from '../assets/illustrations/u1355955226_runner_in_the_park_--sref_202514354_--profile_8d1_34b21c61-5858-439e-8fbd-0256b22a06a4_0.png'
 import boardgamesImg from '../assets/illustrations/u1355955226_playing_boardgames_--sref_202514354_--profile_8d1_0c4b39ad-8442-4e08-b910-2733d343dc0b_3.png'
 import iconNotification from '../assets/icons/icon-notification.svg'
+import maeLogo from '../assets/icons/mae-flower-icon.svg'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
 
@@ -505,7 +506,7 @@ function FilterTab({
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
-export default function MemoryPage() {
+export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => void }) {
   const [selectedDay, setSelectedDay] = useState(TODAY_DATE)
   const [filter, setFilter] = useState<Filter>('all')
   const [moments, setMoments] = useState<Moment[]>(INITIAL_MOMENTS)
@@ -547,7 +548,13 @@ export default function MemoryPage() {
             {moments.filter(m => m.highlighted).length} highlights · {pastMoments.length} moments
           </p>
         </div>
-        <img src={iconNotification} alt="notifications" width={24} height={24} />
+        <button onClick={onMaeChatOpen} className="relative flex items-center justify-center">
+          <img src={iconNotification} alt="notifications" width={24} height={24} />
+          <span
+            className="absolute rounded-full"
+            style={{ width: 7, height: 7, background: GREEN, top: 0, right: 0, border: '1.5px solid #f8f6f2' }}
+          />
+        </button>
       </div>
 
       {/* ── 2. Calendar ── */}
@@ -602,7 +609,46 @@ export default function MemoryPage() {
         />
       </div>
 
-      {/* ── 4. Moments feed ── */}
+      {/* ── 4. Ask Mae card ── */}
+      <button
+        onClick={onMaeChatOpen}
+        className="flex items-center justify-between mx-5 rounded-[20px]"
+        style={{
+          background: 'rgba(41,66,42,0.06)',
+          border: '1px solid rgba(41,66,42,0.14)',
+          padding: '16px 18px',
+          marginBottom: 20,
+          width: 'calc(100% - 40px)',
+        }}
+      >
+        <div className="flex items-center gap-3">
+          <div
+            className="flex items-center justify-center rounded-full shrink-0"
+            style={{ width: 36, height: 36, background: 'rgba(41,66,42,0.1)' }}
+          >
+            <img src={maeLogo} alt="" width={18} height={18} />
+          </div>
+          <div className="flex flex-col gap-[3px] text-left">
+            <span
+              className="font-sans font-medium uppercase"
+              style={{ fontSize: 9, letterSpacing: '1.3px', color: GREEN, opacity: 0.75, fontVariationSettings: "'opsz' 9" }}
+            >
+              Ask Mae
+            </span>
+            <p
+              className="font-lora"
+              style={{ fontSize: 14, lineHeight: '20px', color: '#2d2d2a', letterSpacing: '-0.1px', fontStyle: 'italic' }}
+            >
+              What do my memories say about me this month?
+            </p>
+          </div>
+        </div>
+        <svg width="7" height="12" viewBox="0 0 7 12" fill="none" style={{ marginLeft: 12, flexShrink: 0 }}>
+          <path d="M1 1l5 5-5 5" stroke="rgba(41,66,42,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {/* ── 5. Moments feed ── */}
       <div
         className="flex flex-col"
         style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 8 }}

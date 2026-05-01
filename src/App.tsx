@@ -2,15 +2,28 @@ import { useState } from 'react'
 import DashboardPage from './pages/DashboardPage'
 import OnboardingPage from './pages/OnboardingPage'
 import ReflectPage from './pages/ReflectPage'
-import MemoryPage from './pages/MemoryPage'
-import QuickCaptureSheet from './components/QuickCaptureSheet'
+import MomentsPage from './pages/MomentsPage'
+import CaptureMomentSheet from './components/CaptureMomentSheet'
 import RoleDetailSheet from './components/RoleDetailSheet'
+import EditIntentionSheet from './components/EditIntentionSheet'
+import EditDirectionSheet from './components/EditDirectionSheet'
+import MaeChatSheet from './components/MaeChatSheet'
 import navOverview from './assets/icons/nav-overview.svg'
 import navReflect from './assets/icons/nav-reflect.svg'
 import navMemory from './assets/icons/nav-memory.svg'
 import navPlus from './assets/icons/nav-plus.svg'
 
 type Page = 'dashboard' | 'reflect' | 'memory'
+
+type EditIntentionState = {
+  text?: string
+  roleId?: string
+} | null
+
+const ROLE_ID_TO_LABEL: Record<string, string> = {
+  self: 'Self', creative: 'Creative', parent: 'Parent', friend: 'Friend',
+  partner: 'Partner', professional: 'Professional', daughter: 'Daughter',
+}
 
 const GREEN = '#29422a'
 
@@ -69,11 +82,11 @@ function NavTab({
 function GlobalNav({
   page,
   navigate,
-  onCaptureOpen,
+  onNewMoment,
 }: {
   page: Page
   navigate: (p: Page) => void
-  onCaptureOpen: () => void
+  onNewMoment: () => void
 }) {
   return (
     <div className="absolute bottom-0 left-0 right-0" style={{ zIndex: 20 }}>
@@ -103,7 +116,7 @@ function GlobalNav({
         </div>
 
         <button
-          onClick={onCaptureOpen}
+          onClick={onNewMoment}
           className="flex items-center justify-center rounded-pill shrink-0"
           style={{ background: '#e8e1d7', width: 59, height: 59 }}
         >
@@ -115,10 +128,24 @@ function GlobalNav({
 }
 
 export default function App() {
-  const [onboardingDone, setOnboardingDone] = useState(false)
-  const [page, setPage] = useState<Page>('dashboard')
-  const [showCapture, setShowCapture] = useState(false)
+  const [onboardingDone, setOnboardingDone] = useState(true)
+  const [page, setPage] = useState<Page>('memory')
+  const [showCaptureMoment, setShowCaptureMoment] = useState(false)
+  const [captureMomentRole, setCaptureMomentRole] = useState<string | undefined>(undefined)
   const [activeRole, setActiveRole] = useState<string | null>(null)
+  const [editIntention, setEditIntention] = useState<EditIntentionState>(null)
+  const [editDirection, setEditDirection] = useState<string | null>(null)
+  const [showMaeChat, setShowMaeChat] = useState(false)
+
+  function openCaptureMoment(roleId?: string) {
+    setCaptureMomentRole(roleId ? ROLE_ID_TO_LABEL[roleId] : undefined)
+    setShowCaptureMoment(true)
+  }
+
+  function closeCaptureMoment() {
+    setShowCaptureMoment(false)
+    setCaptureMomentRole(undefined)
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -142,11 +169,13 @@ export default function App() {
           ) : page === 'reflect' ? (
             <ReflectPage />
           ) : page === 'memory' ? (
-            <MemoryPage />
+            <MomentsPage onMaeChatOpen={() => setShowMaeChat(true)} />
           ) : (
             <DashboardPage
-              onCaptureOpen={() => setShowCapture(true)}
+              onCaptureOpen={openCaptureMoment}
               onRoleOpen={setActiveRole}
+              onMaeChatOpen={() => setShowMaeChat(true)}
+              onIntentionEdit={(text, roleId) => setEditIntention({ text, roleId })}
             />
           )}
         </div>
@@ -156,17 +185,51 @@ export default function App() {
           <GlobalNav
             page={page}
             navigate={setPage}
-            onCaptureOpen={() => setShowCapture(true)}
+            onNewMoment={openCaptureMoment}
           />
         )}
 
-        {/* Quick capture sheet */}
-        {showCapture && <QuickCaptureSheet onClose={() => setShowCapture(false)} />}
+        {/* Capture moment sheet */}
+        {showCaptureMoment && (
+          <CaptureMomentSheet
+            defaultRole={captureMomentRole}
+            onClose={closeCaptureMoment}
+          />
+        )}
 
         {/* Role detail sheet */}
         {activeRole && (
-          <RoleDetailSheet roleId={activeRole} onClose={() => setActiveRole(null)} />
+          <RoleDetailSheet
+            roleId={activeRole}
+            onClose={() => setActiveRole(null)}
+            onIntentionEdit={(roleId, text) => setEditIntention({ text, roleId })}
+            onDirectionEdit={roleId => setEditDirection(roleId)}
+            onCaptureOpen={openCaptureMoment}
+          />
         )}
+
+        {/* Edit intention sheet */}
+        {editIntention !== null && (
+          <EditIntentionSheet
+            initialText={editIntention.text}
+            defaultRoleId={editIntention.roleId}
+            onSave={(_text, _roleId) => setEditIntention(null)}
+            onDelete={editIntention.text !== undefined ? () => setEditIntention(null) : undefined}
+            onClose={() => setEditIntention(null)}
+          />
+        )}
+
+        {/* Edit direction sheet */}
+        {editDirection !== null && (
+          <EditDirectionSheet
+            roleId={editDirection}
+            onSave={() => setEditDirection(null)}
+            onClose={() => setEditDirection(null)}
+          />
+        )}
+
+        {/* Mae chat sheet */}
+        {showMaeChat && <MaeChatSheet onClose={() => setShowMaeChat(false)} />}
       </div>
     </div>
   )

@@ -34,17 +34,6 @@ const AMBER_BORDER = 'rgba(156,107,58,0.28)'
 const INK = '#2d2d2a'
 const MUTED = '#6b6660'
 
-const ANIM = `
-  @keyframes slideInRight {
-    from { transform: translateX(100%); }
-    to   { transform: translateX(0); }
-  }
-  @keyframes fadeUpIn {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-`
-
 // ─── Data Types ───────────────────────────────────────────────────────────────
 
 type PastMoment = {
@@ -376,24 +365,35 @@ function UpcomingMomentCard({ date, text }: { date: string; text: string }) {
 export default function RoleDetailSheet({
   roleId,
   onClose,
+  onIntentionEdit,
+  onDirectionEdit,
+  onCaptureOpen,
 }: {
   roleId: string
   onClose: () => void
+  onIntentionEdit: (roleId: string, text?: string) => void
+  onDirectionEdit: (roleId: string) => void
+  onCaptureOpen: (roleId: string) => void
 }) {
   const role = ROLES_DATA[roleId]
   if (!role) return null
 
   return (
     <>
-      <style>{ANIM}</style>
-
+      {/* Animated outer — overflow:hidden allows GPU-composited transform */}
       <div
-        className="absolute inset-0 overflow-y-auto scrollbar-hide"
+        className="absolute inset-0"
         style={{
-          background: '#f8f6f2',
           zIndex: 30,
+          overflow: 'hidden',
           animation: 'slideInRight 360ms cubic-bezier(0.32, 0.72, 0, 1) both',
+          willChange: 'transform',
         }}
+      >
+      {/* Scrollable inner */}
+      <div
+        className="h-full overflow-y-auto scrollbar-hide"
+        style={{ background: '#f8f6f2' }}
       >
         {/* ── 1. Hero illustration ── */}
         <div className="relative shrink-0" style={{ height: 300 }}>
@@ -515,18 +515,16 @@ export default function RoleDetailSheet({
             animation: 'fadeUpIn 520ms 220ms cubic-bezier(0.22, 1, 0.36, 1) both',
           }}
         >
-          {/* Mae asks card */}
+          {/* Mae asks card — borderless, tinted bg only */}
           <div
-            className="rounded-[22px] flex flex-col gap-4"
+            className="rounded-[22px] flex flex-col gap-3"
             style={{
               background: 'rgba(41,66,42,0.06)',
-              border: '1px solid rgba(41,66,42,0.12)',
-              padding: '20px',
+              padding: '18px 20px',
               marginTop: 20,
-              marginBottom: 28,
+              marginBottom: 32,
             }}
           >
-            {/* Mae label */}
             <div className="flex items-center gap-[7px]">
               <img src={maeLogo} alt="" width={15} height={15} style={{ opacity: 0.65 }} />
               <span
@@ -543,12 +541,11 @@ export default function RoleDetailSheet({
               </span>
             </div>
 
-            {/* Question */}
             <p
               className="font-lora"
               style={{
-                fontSize: 19,
-                lineHeight: '28px',
+                fontSize: 17,
+                lineHeight: '26px',
                 letterSpacing: '-0.2px',
                 color: INK,
                 fontStyle: 'italic',
@@ -557,48 +554,33 @@ export default function RoleDetailSheet({
               "{role.question}"
             </p>
 
-            {/* CTA */}
             <button
+              onClick={() => onCaptureOpen(role.id)}
               className="flex items-center gap-[8px] self-start rounded-[30px]"
               style={{ background: GREEN, padding: '10px 18px' }}
             >
               <span
                 className="font-sans font-medium"
-                style={{
-                  fontSize: 13,
-                  color: '#fffffe',
-                  fontVariationSettings: "'opsz' 14",
-                }}
+                style={{ fontSize: 13, color: '#fffffe', fontVariationSettings: "'opsz' 14" }}
               >
                 Make time for this
               </span>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path
-                  d="M2 6h8M7 3l3 3-3 3"
-                  stroke="#fffffe"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+                <path d="M2 6h8M7 3l3 3-3 3" stroke="#fffffe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
           </div>
 
-          {/* ── Direction ── */}
-          <div style={{ marginBottom: 28 }}>
-            <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
+          {/* ── Direction — inline quote, no card ── */}
+          <div style={{ marginBottom: 36 }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: 12 }}>
               <span
-                className="font-sans font-normal uppercase"
-                style={{
-                  fontSize: 9,
-                  letterSpacing: '1.4px',
-                  color: 'rgba(107,102,96,0.6)',
-                  fontVariationSettings: "'opsz' 9",
-                }}
+                className="font-sans font-medium"
+                style={{ fontSize: 12, color: 'rgba(45,45,42,0.65)', fontVariationSettings: "'opsz' 9" }}
               >
                 Your Direction
               </span>
-              <button>
+              <button onClick={() => onDirectionEdit(role.id)}>
                 <span
                   className="font-sans font-normal"
                   style={{ fontSize: 11, color: MUTED, fontVariationSettings: "'opsz' 9" }}
@@ -608,14 +590,7 @@ export default function RoleDetailSheet({
               </button>
             </div>
 
-            <div
-              className="rounded-[16px]"
-              style={{
-                background: '#fffffe',
-                border: `1px solid ${BORDER}`,
-                padding: '16px 18px',
-              }}
-            >
+            <div style={{ paddingLeft: 14, borderLeft: '2px solid rgba(41,66,42,0.32)' }}>
               <p
                 className="font-lora"
                 style={{
@@ -631,69 +606,60 @@ export default function RoleDetailSheet({
             </div>
           </div>
 
-          {/* ── Divider ── */}
-          <div style={{ height: 1, background: BORDER, marginBottom: 28 }} />
-
-          {/* ── Intentions ── */}
-          <div style={{ marginBottom: 28 }}>
-            <div className="flex items-center justify-between" style={{ marginBottom: 14 }}>
+          {/* ── Intentions — individual cards, no grouped container ── */}
+          <div style={{ marginBottom: 36 }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: 12 }}>
               <span
-                className="font-sans font-normal uppercase"
-                style={{
-                  fontSize: 9,
-                  letterSpacing: '1.4px',
-                  color: 'rgba(107,102,96,0.6)',
-                  fontVariationSettings: "'opsz' 9",
-                }}
+                className="font-sans font-medium"
+                style={{ fontSize: 12, color: 'rgba(45,45,42,0.65)', fontVariationSettings: "'opsz' 9" }}
               >
                 Intentions
               </span>
               {role.intentions.length > 0 && (
-                <span
-                  className="font-sans font-normal"
-                  style={{ fontSize: 10, color: 'rgba(107,102,96,0.55)', fontVariationSettings: "'opsz' 9" }}
+                <div
+                  className="flex items-center justify-center rounded-pill"
+                  style={{ background: 'rgba(138,116,103,0.1)', padding: '3px 9px' }}
                 >
-                  {role.intentions.length} active
-                </span>
+                  <span
+                    className="font-sans font-medium"
+                    style={{ fontSize: 10, color: MUTED, fontVariationSettings: "'opsz' 9" }}
+                  >
+                    {role.intentions.length} active
+                  </span>
+                </div>
               )}
             </div>
 
             {role.intentions.length > 0 ? (
-              <div
-                className="flex flex-col rounded-[16px] overflow-hidden"
-                style={{
-                  background: '#fffffe',
-                  border: `1px solid ${BORDER}`,
-                  marginBottom: 12,
-                }}
-              >
+              <div className="flex flex-col" style={{ gap: 8, marginBottom: 10 }}>
                 {role.intentions.map((intent, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-[12px]"
+                    className="flex items-center justify-between rounded-[14px]"
                     style={{
-                      padding: '13px 18px',
-                      borderBottom:
-                        i < role.intentions.length - 1
-                          ? `1px solid ${BORDER}`
-                          : 'none',
+                      background: '#fffffe',
+                      border: '1px solid rgba(138,116,103,0.15)',
+                      padding: '13px 16px',
                     }}
                   >
-                    <div
-                      className="shrink-0 rounded-full"
-                      style={{ width: 5, height: 5, background: 'rgba(138,116,103,0.35)' }}
-                    />
                     <span
                       className="font-sans font-normal"
-                      style={{
-                        fontSize: 14,
-                        lineHeight: '20px',
-                        color: INK,
-                        fontVariationSettings: "'opsz' 9",
-                      }}
+                      style={{ fontSize: 14, lineHeight: '20px', color: INK, fontVariationSettings: "'opsz' 9" }}
                     >
                       {intent}
                     </span>
+                    <button
+                      className="shrink-0"
+                      style={{ marginLeft: 12 }}
+                      onClick={() => onIntentionEdit(role.id, intent)}
+                    >
+                      <span
+                        className="font-sans font-normal"
+                        style={{ fontSize: 11, color: MUTED, fontVariationSettings: "'opsz' 9" }}
+                      >
+                        Edit
+                      </span>
+                    </button>
                   </div>
                 ))}
               </div>
@@ -704,42 +670,70 @@ export default function RoleDetailSheet({
                   fontSize: 13,
                   color: 'rgba(138,116,103,0.5)',
                   fontVariationSettings: "'opsz' 9",
-                  marginBottom: 12,
+                  marginBottom: 10,
                 }}
               >
                 No intentions set yet.
               </p>
             )}
 
-            <button className="flex items-center gap-[6px]">
+            {/* Add intention — dashed card matching item height */}
+            <button
+              className="flex items-center justify-center w-full rounded-[14px]"
+              style={{
+                height: 46,
+                border: '1px dashed rgba(138,116,103,0.3)',
+                background: 'rgba(138,116,103,0.03)',
+              }}
+              onClick={() => onIntentionEdit(role.id)}
+            >
               <span
                 className="font-sans font-normal"
-                style={{ fontSize: 13, color: 'rgba(138,116,103,0.55)', fontVariationSettings: "'opsz' 9" }}
+                style={{ fontSize: 13, color: 'rgba(41,66,42,0.6)', fontVariationSettings: "'opsz' 9" }}
               >
                 + Add intention
               </span>
             </button>
           </div>
 
-          {/* ── Divider ── */}
-          <div style={{ height: 1, background: BORDER, marginBottom: 28 }} />
-
           {/* ── Moments ── */}
           <div>
-            {/* Upcoming */}
+            <div className="flex items-center justify-between" style={{ marginBottom: 16 }}>
+              <span
+                className="font-sans font-medium"
+                style={{ fontSize: 12, color: 'rgba(45,45,42,0.65)', fontVariationSettings: "'opsz' 9" }}
+              >
+                Moments
+              </span>
+              {(role.upcoming.length + role.past.length) > 0 && (
+                <div
+                  className="flex items-center justify-center rounded-pill"
+                  style={{ background: 'rgba(138,116,103,0.1)', padding: '3px 9px' }}
+                >
+                  <span
+                    className="font-sans font-medium"
+                    style={{ fontSize: 10, color: MUTED, fontVariationSettings: "'opsz' 9" }}
+                  >
+                    {role.upcoming.length + role.past.length} total
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Upcoming — dot + label, no extending line */}
             {role.upcoming.length > 0 && (
               <>
-                <div className="flex items-center gap-3" style={{ marginBottom: 12 }}>
+                <div className="flex items-center gap-[7px]" style={{ marginBottom: 10 }}>
+                  <div className="rounded-full shrink-0" style={{ width: 6, height: 6, background: AMBER }} />
                   <span
                     className="font-inter font-medium uppercase"
                     style={{ fontSize: 9, letterSpacing: '1.2px', color: AMBER }}
                   >
                     Upcoming
                   </span>
-                  <div style={{ flex: 1, height: 1, background: AMBER_BORDER }} />
                 </div>
 
-                <div className="flex flex-col gap-2" style={{ marginBottom: 24 }}>
+                <div className="flex flex-col gap-2" style={{ marginBottom: 22 }}>
                   {role.upcoming.map((m, i) => (
                     <UpcomingMomentCard key={i} date={m.date} text={m.text} />
                   ))}
@@ -747,17 +741,17 @@ export default function RoleDetailSheet({
               </>
             )}
 
-            {/* Past */}
+            {/* Recent — dot + label, no extending line */}
             {role.past.length > 0 && (
               <>
-                <div className="flex items-center gap-3" style={{ marginBottom: 14 }}>
+                <div className="flex items-center gap-[7px]" style={{ marginBottom: 12 }}>
+                  <div className="rounded-full shrink-0" style={{ width: 6, height: 6, background: 'rgba(107,102,96,0.4)' }} />
                   <span
                     className="font-inter font-medium uppercase"
                     style={{ fontSize: 9, letterSpacing: '1.2px', color: 'rgba(107,102,96,0.6)' }}
                   >
                     Recent
                   </span>
-                  <div style={{ flex: 1, height: 1, background: BORDER }} />
                 </div>
 
                 <div className="flex flex-col gap-3">
@@ -768,24 +762,30 @@ export default function RoleDetailSheet({
               </>
             )}
 
-            {/* Add moment CTA */}
+            {/* Capture CTA — tinted dashed card with icon */}
             <button
-              className="flex items-center justify-center w-full rounded-[18px] mt-4"
+              onClick={() => onCaptureOpen(role.id)}
+              className="flex items-center justify-center gap-[8px] w-full rounded-[18px]"
               style={{
-                height: 52,
-                border: `1px dashed rgba(138,116,103,0.35)`,
-                background: 'transparent',
+                height: 54,
+                marginTop: 16,
+                border: '1px dashed rgba(138,116,103,0.3)',
+                background: 'rgba(138,116,103,0.04)',
               }}
             >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2v10M2 7h10" stroke="rgba(41,66,42,0.6)" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
               <span
                 className="font-sans font-normal"
-                style={{ fontSize: 13, color: 'rgba(138,116,103,0.55)', fontVariationSettings: "'opsz' 9" }}
+                style={{ fontSize: 13, color: 'rgba(41,66,42,0.65)', fontVariationSettings: "'opsz' 9" }}
               >
-                + Capture a moment for {role.label}
+                Capture a moment for {role.label}
               </span>
             </button>
           </div>
         </div>
+      </div>
       </div>
     </>
   )
