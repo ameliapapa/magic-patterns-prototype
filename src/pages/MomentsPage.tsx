@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { Bell, ChevronLeft, ChevronRight, MessageCircle, Search, Star } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Bell, ChevronLeft, ChevronRight, MessageCircle, Search, Star, X } from 'lucide-react'
 
 import maeLogo from '../assets/icons/mae-flower-icon.svg'
 import runnerImg from '../assets/illustrations/u1355955226_runner_in_the_park_--sref_202514354_--profile_8d1_34b21c61-5858-439e-8fbd-0256b22a06a4_0.png'
@@ -30,6 +30,8 @@ const CALENDAR_CELLS: number[] = [
 ]
 
 type Filter = 'all' | 'highlights'
+
+const SEARCH_SUGGESTIONS = ['Self', 'Friend', 'Creative']
 
 type Moment = {
   id: string
@@ -479,15 +481,35 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
   const [moments, setMoments] = useState(INITIAL_MOMENTS)
   const [filter, setFilter] = useState<Filter>('all')
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
   const momentDays = useMemo(() => new Set(moments.map(m => m.day)), [moments])
   const highlightDays = useMemo(() => new Set(moments.filter(m => m.highlighted).map(m => m.day)), [moments])
+  const normalizedSearchQuery = searchQuery.trim().toLowerCase()
 
   const visibleMoments = moments.filter(m => {
     if (filter === 'highlights' && !m.highlighted) return false
     if (selectedDay !== null && m.day !== selectedDay) return false
+    if (normalizedSearchQuery.length > 0) {
+      const searchable = [
+        m.text,
+        m.role,
+        m.dateLabel,
+        m.highlighted ? 'highlight highlighted held close' : '',
+      ].join(' ').toLowerCase()
+
+      if (!searchable.includes(normalizedSearchQuery)) return false
+    }
     return true
   })
+
+  useEffect(() => {
+    if (searchOpen) {
+      window.setTimeout(() => searchInputRef.current?.focus(), 80)
+    }
+  }, [searchOpen])
 
   function toggleHighlight(id: string) {
     setMoments(prev => prev.map(m => (m.id === id ? { ...m, highlighted: !m.highlighted } : m)))
@@ -495,11 +517,28 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
 
   const highlightCount = moments.filter(m => m.highlighted).length
 
-  const sectionTitle = filter === 'highlights'
+  const sectionTitle = normalizedSearchQuery.length > 0
+    ? 'Search results'
+    : filter === 'highlights'
     ? 'Held close'
     : selectedDay !== null
     ? 'That day'
     : 'Recently recorded'
+
+  const sectionMeta = normalizedSearchQuery.length > 0
+    ? `${visibleMoments.length} ${visibleMoments.length === 1 ? 'moment' : 'moments'} found`
+    : null
+
+  function openSearch() {
+    setFilter('all')
+    setSelectedDay(null)
+    setSearchOpen(true)
+  }
+
+  function closeSearch() {
+    setSearchOpen(false)
+    setSearchQuery('')
+  }
 
   return (
     <div className="relative" style={{ width: 393, minHeight: 852, background: CANVAS }}>
@@ -520,28 +559,107 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
 
       {/* Filter + section header */}
       <section style={{ padding: '20px 20px 0' }}>
-        <div className="flex items-center gap-2">
-          <FilterTab label="All moments" active={filter === 'all'} onClick={() => setFilter('all')} />
-          <FilterTab label="Highlights" active={filter === 'highlights'} onClick={() => setFilter('highlights')} />
-          <div style={{ flex: 1 }} />
-          <button
-            className="flex items-center justify-center rounded-full"
-            aria-label="Search memories"
-            style={{ width: 34, height: 34, background: SURFACE, border: `1px solid ${BORDER}` }}
+        {searchOpen ? (
+          <div
+            className="flex items-center rounded-[20px]"
+            style={{
+              minHeight: 46,
+              background: SURFACE,
+              border: `1px solid ${BORDER}`,
+              padding: '0 8px 0 14px',
+              animation: 'fadeUpIn 180ms ease-out both',
+            }}
           >
-            <Search size={15} strokeWidth={1.7} color={MUTED} />
-          </button>
-        </div>
+            <Search size={16} strokeWidth={1.7} color={GREEN} style={{ flexShrink: 0 }} />
+            <input
+              ref={searchInputRef}
+              value={searchQuery}
+              onChange={event => setSearchQuery(event.target.value)}
+              placeholder="Search moments, roles, dates"
+              aria-label="Search memories"
+              className="min-w-0 flex-1 bg-transparent font-sans outline-none"
+              style={{
+                height: 44,
+                padding: '0 10px',
+                fontSize: 14,
+                lineHeight: '20px',
+                color: INK,
+                fontVariationSettings: "'opsz' 14",
+              }}
+            />
+            <button
+              onClick={closeSearch}
+              className="flex items-center justify-center rounded-full"
+              aria-label="Close search"
+              style={{ width: 30, height: 30, background: 'rgba(138,116,103,0.1)' }}
+            >
+              <X size={15} strokeWidth={1.7} color={MUTED} />
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <FilterTab label="All moments" active={filter === 'all'} onClick={() => setFilter('all')} />
+            <FilterTab label="Highlights" active={filter === 'highlights'} onClick={() => setFilter('highlights')} />
+            <div style={{ flex: 1 }} />
+            <button
+              onClick={openSearch}
+              className="flex items-center justify-center rounded-full"
+              aria-label="Search memories"
+              style={{ width: 34, height: 34, background: SURFACE, border: `1px solid ${BORDER}` }}
+            >
+              <Search size={15} strokeWidth={1.7} color={MUTED} />
+            </button>
+          </div>
+        )}
+
+        {searchOpen && normalizedSearchQuery.length === 0 && (
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide" style={{ marginTop: 10, paddingBottom: 2 }}>
+            {SEARCH_SUGGESTIONS.map(term => (
+              <button
+                key={term}
+                onClick={() => setSearchQuery(term)}
+                className="shrink-0 rounded-pill"
+                style={{
+                  height: 30,
+                  padding: '0 12px',
+                  background: term === 'highlighted' ? 'rgba(185,131,61,0.08)' : 'rgba(41,66,42,0.06)',
+                  border: `1px solid ${term === 'highlighted' ? 'rgba(185,131,61,0.22)' : 'rgba(41,66,42,0.14)'}`,
+                }}
+              >
+                <span
+                  className="font-sans font-medium"
+                  style={{
+                    fontSize: 12,
+                    color: term === 'highlighted' ? GOLD : GREEN,
+                    fontVariationSettings: "'opsz' 14",
+                  }}
+                >
+                  {term}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Section heading row */}
         <div className="flex items-center justify-between" style={{ marginTop: 24 }}>
-          <h2
-            className="font-lora font-medium"
-            style={{ fontSize: 18, lineHeight: '24px', color: INK, letterSpacing: '-0.2px' }}
-          >
-            {sectionTitle}
-          </h2>
-          {selectedDay !== null && (
+          <div>
+            <h2
+              className="font-lora font-medium"
+              style={{ fontSize: 18, lineHeight: '24px', color: INK, letterSpacing: '-0.2px' }}
+            >
+              {sectionTitle}
+            </h2>
+            {sectionMeta && (
+              <p
+                className="font-sans"
+                style={{ marginTop: 3, fontSize: 12, lineHeight: '17px', color: MUTED, fontVariationSettings: "'opsz' 14" }}
+              >
+                {sectionMeta}
+              </p>
+            )}
+          </div>
+          {selectedDay !== null && normalizedSearchQuery.length === 0 && (
             <button onClick={() => setSelectedDay(null)}>
               <span
                 className="font-sans font-medium"
@@ -590,13 +708,15 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
                 className="font-lora font-medium"
                 style={{ fontSize: 17, lineHeight: '25px', color: INK }}
               >
-                Nothing recorded here yet.
+                {normalizedSearchQuery.length > 0 ? 'Nothing surfaced for that search.' : 'Nothing recorded here yet.'}
               </p>
               <p
                 className="font-sans"
                 style={{ marginTop: 6, fontSize: 13, lineHeight: '19px', color: MUTED, fontVariationSettings: "'opsz' 14" }}
               >
-                Silence counts too. Mae will use what is here when there is something to return to.
+                {normalizedSearchQuery.length > 0
+                  ? 'Try a role, a date, or a word from the moment. Mae remembers quietly, not perfectly.'
+                  : 'Silence counts too. Mae will use what is here when there is something to return to.'}
               </p>
             </div>
           )}

@@ -188,11 +188,13 @@ export default function DashboardPage({
   onRoleOpen,
   onMaeChatOpen,
   onIntentionEdit,
+  onActivityLibraryOpen,
 }: {
   onCaptureOpen: () => void
   onRoleOpen: (roleId: string) => void
   onMaeChatOpen: () => void
   onIntentionEdit: (text: string, roleId: string) => void
+  onActivityLibraryOpen: () => void
 }) {
   return (
     <div className="relative" style={{ width: 393, background: '#f8f6f2', minHeight: 852 }}>
@@ -324,7 +326,7 @@ export default function DashboardPage({
           >
             For today
           </p>
-          <button>
+          <button onClick={onActivityLibraryOpen}>
             <span
               className="font-inter font-medium text-muted text-center whitespace-nowrap"
               style={{ fontSize: 11, lineHeight: '16.5px' }}

@@ -3,6 +3,7 @@ import DashboardPage from './pages/DashboardPage'
 import OnboardingPage from './pages/OnboardingPage'
 import ReflectPage from './pages/ReflectPage'
 import MomentsPage from './pages/MomentsPage'
+import ActivityLibraryPage from './pages/ActivityLibraryPage'
 import CaptureMomentSheet from './components/CaptureMomentSheet'
 import RoleDetailSheet from './components/RoleDetailSheet'
 import EditIntentionSheet from './components/EditIntentionSheet'
@@ -136,6 +137,7 @@ export default function App() {
   const [editIntention, setEditIntention] = useState<EditIntentionState>(null)
   const [editDirection, setEditDirection] = useState<string | null>(null)
   const [showMaeChat, setShowMaeChat] = useState(false)
+  const [showActivityLibrary, setShowActivityLibrary] = useState(false)
 
   function openCaptureMoment(roleId?: string) {
     setCaptureMomentRole(roleId ? ROLE_ID_TO_LABEL[roleId] : undefined)
@@ -145,6 +147,11 @@ export default function App() {
   function closeCaptureMoment() {
     setShowCaptureMoment(false)
     setCaptureMomentRole(undefined)
+  }
+
+  function navigate(p: Page) {
+    setShowActivityLibrary(false)
+    setPage(p)
   }
 
   return (
@@ -166,6 +173,8 @@ export default function App() {
         >
           {!onboardingDone ? (
             <OnboardingPage onComplete={() => setOnboardingDone(true)} />
+          ) : showActivityLibrary ? (
+            <ActivityLibraryPage onBack={() => setShowActivityLibrary(false)} />
           ) : page === 'reflect' ? (
             <ReflectPage />
           ) : page === 'memory' ? (
@@ -176,6 +185,7 @@ export default function App() {
               onRoleOpen={setActiveRole}
               onMaeChatOpen={() => setShowMaeChat(true)}
               onIntentionEdit={(text, roleId) => setEditIntention({ text, roleId })}
+              onActivityLibraryOpen={() => setShowActivityLibrary(true)}
             />
           )}
         </div>
@@ -184,7 +194,7 @@ export default function App() {
         {onboardingDone && (
           <GlobalNav
             page={page}
-            navigate={setPage}
+            navigate={navigate}
             onNewMoment={openCaptureMoment}
           />
         )}
