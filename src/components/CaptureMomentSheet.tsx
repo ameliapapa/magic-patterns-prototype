@@ -78,7 +78,7 @@ function IllustrationTile({
           style={{ top: 5, right: 5, width: 18, height: 18, background: GREEN }}
         >
           <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
-            <path d="M1 3.5l2 2L8 1" stroke="#fafaf7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M1 3.5l2 2L8 1" stroke="#fffffe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
       )}
@@ -236,10 +236,10 @@ export default function CaptureMomentSheet({
               rows={5}
               className="w-full resize-none bg-transparent outline-none border-none"
               style={{
-                fontFamily: "'F37 Bobby Trial', Georgia, serif",
+                fontFamily: "'Libre Baskerville', Georgia, serif",
                 fontWeight: 700,
-                fontSize: 20,
-                lineHeight: '31px',
+                fontSize: 19,
+                lineHeight: '29px',
                 letterSpacing: '-0.3px',
                 color: INK,
                 caretColor: GREEN,
@@ -267,7 +267,7 @@ export default function CaptureMomentSheet({
                     lineHeight: '30px',
                     padding: '0 12px',
                     background: active ? GREEN : 'transparent',
-                    color: active ? '#fafaf7' : MUTED,
+                    color: active ? '#fffffe' : MUTED,
                     border: `1px solid ${active ? 'transparent' : BORDER}`,
                     transition: 'background 160ms ease, color 160ms ease, border-color 160ms ease',
                     fontVariationSettings: "'opsz' 9",

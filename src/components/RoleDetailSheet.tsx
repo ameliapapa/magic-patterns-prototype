@@ -559,8 +559,8 @@ export default function RoleDetailSheet({
             <div
               className="relative rounded-[22px] overflow-hidden flex flex-col"
               style={{
-                background: '#F6FDE8',
-                border: '1px solid rgba(4,74,40,0.12)',
+                background: AMBER_50,
+                border: '1px solid rgba(93,62,31,0.2)',
                 padding: '18px 20px 22px',
                 marginBottom: 20,
                 minHeight: 120,
@@ -573,15 +573,15 @@ export default function RoleDetailSheet({
                 style={{ top: 15, right: 15, width: 26, height: 26 }}
               >
                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-                  <path d="M1 1l9 9M10 1L1 10" stroke="rgba(4,74,40,0.5)" strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M1 1l9 9M10 1L1 10" stroke="#5d3e1f" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </button>
 
-              <div className="flex flex-col" style={{ gap: 9, marginBottom: 14 }}>
+              <div className="flex flex-col" style={{ gap: 9, paddingRight: 78 }}>
                 {/* "MAE NOTICED" label */}
                 <span
                   className="font-mono uppercase"
-                  style={{ fontSize: 9, letterSpacing: '0.2px', color: GREEN, lineHeight: '13px' }}
+                  style={{ fontSize: 9, letterSpacing: '1.2px', color: '#5d3e1f', lineHeight: '13px' }}
                 >
                   Mae noticed
                 </span>
@@ -589,28 +589,11 @@ export default function RoleDetailSheet({
                 {/* Body text */}
                 <p
                   className="font-bobby"
-                  style={{ fontSize: 18, lineHeight: '24px', letterSpacing: '-0.2px', color: GREEN, fontWeight: 400 }}
+                  style={{ fontSize: 18, lineHeight: '25px', letterSpacing: '-0.2px', color: INK, fontWeight: 400 }}
                 >
                   {role.noticed}
                 </p>
               </div>
-
-              {/* CTA pill */}
-              <button
-                onClick={() => onIntentionEdit(role.id)}
-                className="flex items-center gap-[8px] self-start rounded-[30px]"
-                style={{ background: GREEN, padding: '9px 16px' }}
-              >
-                <span
-                  className="font-sans font-medium"
-                  style={{ fontSize: 12, color: '#fffffe', fontVariationSettings: "'opsz' 14" }}
-                >
-                  Set an intention
-                </span>
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M2 5h6M5.5 2.5L8 5l-2.5 2.5" stroke="#fffffe" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
 
               {/* Mae flower — large, clipped bottom-right */}
               <img
@@ -622,7 +605,7 @@ export default function RoleDetailSheet({
                   height: 90,
                   bottom: -10,
                   right: -8,
-                  opacity: 0.18,
+                  opacity: 1,
                 }}
               />
             </div>

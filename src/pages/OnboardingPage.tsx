@@ -60,6 +60,11 @@ import iconReaderLight from '../assets/icons/reader-role-light.svg'
 
 const GREEN = '#044A28'
 const BG = '#FFFCF3'
+const SURFACE = '#fffffe'
+const INK = '#2d2d2a'
+const MUTED = '#6b6660'
+const BORDER = 'rgba(138,116,103,0.2)'
+const TERRACOTTA = '#8f342f'
 const MAE_LOGO_TOP = 90
 const MAE_LOGO_HEIGHT = 64
 
@@ -72,11 +77,11 @@ const ROLES_ROW1 = [
   { id: 'creative',   label: 'Creative',  icon: iconCreative,     iconLight: iconCreativeLight },
 ]
 const ROLES_ROW2 = [
-  { id: 'caregiver',  label: 'Care-giver',  icon: iconCaregiver,  iconLight: iconCaregiverLight },
-  { id: 'pet-owner',  label: 'Pet-owner',   icon: iconPetOwner,   iconLight: iconPetOwnerLight },
-  { id: 'home-owner', label: 'Home-owner',  icon: iconHomeOwner,  iconLight: iconHomeOwnerLight },
+  { id: 'caregiver',  label: 'Caregiver',   icon: iconCaregiver,  iconLight: iconCaregiverLight },
+  { id: 'pet-owner',  label: 'Pet owner',   icon: iconPetOwner,   iconLight: iconPetOwnerLight },
+  { id: 'home-owner', label: 'Home owner',  icon: iconHomeOwner,  iconLight: iconHomeOwnerLight },
   { id: 'student',    label: 'Student',     icon: iconStudent,    iconLight: iconStudentLight },
-  { id: 'entrepreneur', label: 'Entrepeneur', icon: iconEntrepreneur, iconLight: iconEntrepreneurLight },
+  { id: 'entrepreneur', label: 'Entrepreneur', icon: iconEntrepreneur, iconLight: iconEntrepreneurLight },
 ]
 const ROLES_ROW3 = [
   { id: 'sibling',    label: 'Sibling',     icon: iconSibling,    iconLight: iconSiblingLight },
@@ -97,13 +102,13 @@ const INTRO_ROW1 = [
   { id: 'professional', icon: iconProfessional, label: 'Professional' },
 ]
 const INTRO_ROW2 = [
-  { id: 'caregiver',    icon: iconCaregiver,   label: 'Care-giver' },
+  { id: 'caregiver',    icon: iconCaregiver,   label: 'Caregiver' },
   { id: 'pet-owner',    icon: iconPetOwner,    label: 'Pet owner' },
-  { id: 'home-owner',   icon: iconHomeOwner,   label: 'Neighbour' },
+  { id: 'home-owner',   icon: iconHomeOwner,   label: 'Home owner' },
   { id: 'student',      icon: iconStudent,     label: 'Student' },
   { id: 'sibling',      icon: iconSibling,     label: 'Sibling' },
   { id: 'mentor',       icon: iconMentor,      label: 'Mentor' },
-  { id: 'entrepreneur', icon: iconEntrepreneur,  label: 'Entrepeneur' },
+  { id: 'entrepreneur', icon: iconEntrepreneur,  label: 'Entrepreneur' },
 ]
 
 // ─── Shared components ────────────────────────────────────────────────────────
@@ -154,15 +159,15 @@ function GreenButton({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="w-full flex items-center justify-center rounded-[30px] py-4 active:scale-[0.97] transition-transform duration-100"
+      className="w-full flex items-center justify-center rounded-[20px] py-4 active:scale-[0.97] transition-transform duration-100"
       style={{
         background: disabled ? 'rgba(4,74,40,0.45)' : GREEN,
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}
     >
       <span
-        className="font-bobby font-bold text-[#fcfcfa] text-center"
-        style={{ fontSize: 18 }}
+        className="font-sans font-medium text-[#fcfcfa] text-center"
+        style={{ fontSize: 16, fontVariationSettings: "'opsz' 14" }}
       >
         {label}
       </span>
@@ -174,8 +179,8 @@ function BackButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="w-full font-bobby font-bold text-center hover:opacity-70 transition-opacity duration-150"
-      style={{ fontSize: 18, color: 'rgba(74,74,69,0.6)' }}
+      className="w-full font-sans font-normal text-center hover:opacity-70 transition-opacity duration-150"
+      style={{ fontSize: 14, color: 'rgba(74,74,69,0.55)', fontVariationSettings: "'opsz' 14" }}
     >
       Back
     </button>
@@ -238,19 +243,19 @@ function TextInputBox({
   return (
     <div
       className="relative overflow-hidden rounded-[20px]"
-      style={{ width: 290, height: 78, border: '1px solid rgba(138,116,103,0.2)', background: BG }}
+      style={{ width: 290, height: 78, border: `1px solid ${BORDER}`, background: SURFACE }}
     >
       <input
         ref={inputRef}
         value={value}
         onChange={e => onChange(e.target.value)}
         className="absolute text-black bg-transparent outline-none border-none"
-        style={{ top: 16, left: 16, right: 16, fontSize: 24, fontFamily: "'F37 Bobby Trial', Georgia, serif", fontWeight: 700 }}
+        style={{ top: 16, left: 16, right: 16, fontSize: 22, fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700, color: INK }}
       />
       {!value && (
         <p
           className="absolute font-sans font-normal text-left"
-          style={{ bottom: 12, left: 16, fontSize: 13, lineHeight: '18px', color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
+          style={{ bottom: 12, left: 16, fontSize: 13, lineHeight: '18px', color: MUTED, fontVariationSettings: "'opsz' 14" }}
         >
           {placeholder}
         </p>
@@ -277,8 +282,8 @@ function RoleTile({
       onClick={onToggle}
       className="flex flex-row items-center shrink-0 active:scale-[0.95]"
       style={{
-        background: selected ? GREEN : BG,
-        border: selected ? '1px solid transparent' : '1px solid rgba(138,116,103,0.2)',
+        background: selected ? GREEN : SURFACE,
+        border: selected ? '1px solid transparent' : `1px solid ${BORDER}`,
         transition: 'background 180ms ease, border-color 180ms ease, transform 100ms ease',
         borderRadius: 20,
         padding: '8px 14px 8px 10px',
@@ -295,7 +300,7 @@ function RoleTile({
         style={{
           fontSize: 12,
           lineHeight: '15px',
-          color: selected ? '#fafaf7' : '#030712',
+          color: selected ? '#fffffe' : INK,
           fontVariationSettings: "'opsz' 14",
           whiteSpace: 'nowrap',
         }}
@@ -352,9 +357,9 @@ function Intro1({ onNext }: { onNext: () => void }) {
           style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}
         >
           Plan your week around{' '}
-          <em style={{ fontWeight: 700, color: '#BC3712', fontStyle: 'normal' }}>who you are,</em>
+          <em style={{ fontWeight: 700, color: TERRACOTTA, fontStyle: 'normal' }}>who you are,</em>
           {' '}and{' '}
-          <em style={{ fontWeight: 700, color: '#BC3712', fontStyle: 'normal' }}>who you are becoming</em>
+          <em style={{ fontWeight: 700, color: TERRACOTTA, fontStyle: 'normal' }}>who you are becoming</em>
         </p>
       </div>
 
@@ -365,7 +370,7 @@ function Intro1({ onNext }: { onNext: () => void }) {
 
 function Intro2({ onNext }: { onNext: () => void }) {
   return (
-    <div className="relative size-full overflow-hidden" style={{ background: '#fafaf7' }}>
+    <div className="relative size-full overflow-hidden" style={{ background: BG }}>
       {/* Full-bleed beach illustration */}
       <div className="absolute" style={{ left: -297, top: -65, width: 939, height: 939 }}>
         <img src={imgBeach} alt="" className="w-full h-full object-cover" />
@@ -397,7 +402,7 @@ function Intro2({ onNext }: { onNext: () => void }) {
           Balance your roles{'\n'}
           through journaling{'\n'}
           with{' '}
-          <span style={{ fontFamily: "'F37 Bobby Trial', Georgia, serif", fontWeight: 700 }}>Mae</span>
+          <span className="font-serif" style={{ fontWeight: 700 }}>Mae</span>
         </p>
       </div>
 
@@ -490,7 +495,7 @@ function StepPersonal({ onNext, onBack }: { onNext: (name: string) => void; onBa
         </p>
         <p
           className="font-sans font-medium"
-          style={{ fontSize: 13, lineHeight: '20px', color: '#000', marginTop: 6, fontVariationSettings: "'opsz' 14" }}
+          style={{ fontSize: 13, lineHeight: '20px', color: MUTED, marginTop: 6, fontVariationSettings: "'opsz' 14" }}
         >
           Could be your name or a nickname
         </p>
@@ -502,15 +507,15 @@ function StepPersonal({ onNext, onBack }: { onNext: (name: string) => void; onBa
           value={name}
           onChange={e => setName(e.target.value)}
           className="w-full bg-transparent outline-none border-none font-serif font-bold text-black"
-          style={{ fontSize: 24, lineHeight: '31px', caretColor: '#000' }}
+          style={{ fontSize: 23, lineHeight: '31px', caretColor: GREEN, color: INK }}
         />
-        <div style={{ width: 271, height: 1, background: '#000', marginTop: 8 }} />
+        <div style={{ width: 271, height: 1, background: 'rgba(138,116,103,0.35)', marginTop: 8 }} />
         <p
           className="font-sans font-normal"
           style={{
             fontSize: 13,
             lineHeight: '20px',
-            color: '#000',
+            color: MUTED,
             marginTop: 6,
             fontVariationSettings: "'opsz' 14",
             opacity: name ? 1 : 0,
@@ -563,7 +568,7 @@ function StepRoles({
         </p>
         <p
           className="font-sans font-medium"
-          style={{ fontSize: 13, lineHeight: '18px', color: '#000', marginTop: 6, fontVariationSettings: "'opsz' 14" }}
+          style={{ fontSize: 13, lineHeight: '18px', color: MUTED, marginTop: 6, fontVariationSettings: "'opsz' 14" }}
         >
           Pick as many as you see fit. You can make changes anytime,{'\n'}roles can change with the seasons
         </p>
@@ -587,10 +592,10 @@ function StepRoles({
           value={customRole}
           onChange={e => setCustomRole(e.target.value)}
           className="w-full bg-transparent outline-none border-none font-serif font-bold text-black"
-          style={{ fontSize: 24, lineHeight: '31px', caretColor: '#000' }}
+          style={{ fontSize: 23, lineHeight: '31px', caretColor: GREEN, color: INK }}
           placeholder=""
         />
-        <div style={{ width: 271, height: 1, background: '#000', marginTop: 8 }} />
+        <div style={{ width: 271, height: 1, background: 'rgba(138,116,103,0.35)', marginTop: 8 }} />
         <p
           className="font-sans font-normal"
           style={{ fontSize: 13, lineHeight: '20px', color: 'rgba(74,74,69,0.6)', marginTop: 6, fontVariationSettings: "'opsz' 14" }}
@@ -631,7 +636,7 @@ function StepIntentions({ onNext, onBack }: { onNext: (items: string[]) => void;
       <div className="text-center px-6" style={{ paddingTop: 24 }}>
         <p className="font-serif font-bold" style={{ fontSize: 24, lineHeight: '31px', color: '#2d2d2a' }}>
           Where is your{' '}
-          <em style={{ fontWeight: 700, color: '#BC3712', fontStyle: 'normal' }}>Creative</em>
+          <em style={{ fontWeight: 700, color: TERRACOTTA, fontStyle: 'normal' }}>Creative</em>
           {' '}role pulling you, right now?
         </p>
       </div>
@@ -674,7 +679,7 @@ function StepIntentions({ onNext, onBack }: { onNext: (items: string[]) => void;
               </div>
               <p
                 className="font-serif"
-                style={{ fontSize: 14, lineHeight: 'normal', color: '#000' }}
+                style={{ fontSize: 14, lineHeight: 'normal', color: INK }}
               >
                 {c.title}
               </p>
@@ -703,7 +708,7 @@ function StepDirections({ onNext, onBack }: { onNext: (direction: string) => voi
       <div className="text-center px-6" style={{ paddingTop: 24 }}>
         <p className="font-serif font-bold" style={{ fontSize: 24, lineHeight: '31px', color: '#2d2d2a' }}>
           Pick one direction for your{' '}
-          <em style={{ fontWeight: 700, color: '#BC3712', fontStyle: 'normal' }}>Creative</em>
+          <em style={{ fontWeight: 700, color: TERRACOTTA, fontStyle: 'normal' }}>Creative</em>
           {' '}role this season
         </p>
       </div>
@@ -762,7 +767,7 @@ function StepCheckin({ onNext, onBack }: { onNext: () => void; onBack: () => voi
         >
           <span
             className="font-sans font-normal"
-            style={{ fontSize: 14, lineHeight: '27px', color: '#000', fontVariationSettings: "'opsz' 14" }}
+            style={{ fontSize: 14, lineHeight: '27px', color: INK, fontVariationSettings: "'opsz' 14" }}
           >
             Capture Moment
           </span>
