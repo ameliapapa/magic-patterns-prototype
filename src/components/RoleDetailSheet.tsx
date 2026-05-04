@@ -29,8 +29,9 @@ import imgRunner from '../assets/illustrations/u1355955226_runner_in_the_park_--
 const GREEN = '#044A28'
 const BORDER = 'rgba(138,116,103,0.2)'
 const AMBER = '#9c6b3a'
-const AMBER_BG = 'rgba(156,107,58,0.07)'
-const AMBER_BORDER = 'rgba(156,107,58,0.28)'
+const AMBER_800 = '#94440C'
+const TERRACOTTA_50 = '#FEF0E3'
+const TERRACOTTA_200 = '#FBD1AD'
 const INK = '#2d2d2a'
 const MUTED = '#6b6660'
 
@@ -225,16 +226,42 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
         className="flex flex-col"
         style={{ padding: hasPhoto ? '14px 16px 16px' : '16px' }}
       >
-        {!hasPhoto && (
-          <div className="flex items-center justify-between" style={{ marginBottom: 8 }}>
-            <span
-              className="font-sans uppercase"
-              style={{ fontSize: 9, letterSpacing: '0.8px', color: MUTED, fontWeight: 300 }}
-            >
-              {moment.date}
-            </span>
-          </div>
-        )}
+        <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
+          <span
+            className="font-mono font-normal uppercase"
+            style={{ fontSize: 10, letterSpacing: '0.6px', color: 'rgba(45,45,42,0.74)', lineHeight: '14px' }}
+          >
+            {moment.date}
+          </span>
+
+          <button
+            onClick={() => setHighlighted(h => !h)}
+            className="flex items-center justify-center shrink-0"
+            style={{ width: 28, height: 28, marginRight: -4, marginTop: -5 }}
+            aria-label={highlighted ? 'Remove highlight' : 'Highlight moment'}
+          >
+            {highlighted ? (
+              <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M8 1.5l1.75 3.55 3.9.57-2.82 2.74.66 3.88L8 10.35l-3.49 1.84.66-3.88-2.82-2.74 3.9-.57L8 1.5z"
+                  fill={AMBER}
+                  stroke={AMBER}
+                  strokeWidth="1"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            ) : (
+              <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M8 1.5l1.75 3.55 3.9.57-2.82 2.74.66 3.88L8 10.35l-3.49 1.84.66-3.88-2.82-2.74 3.9-.57L8 1.5z"
+                  stroke="rgba(45,45,42,0.62)"
+                  strokeWidth="1.2"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
+          </button>
+        </div>
 
         <p
           className="font-serif font-medium"
@@ -247,53 +274,6 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
         >
           {moment.text}
         </p>
-
-        <div className="flex items-center justify-between" style={{ marginTop: 14 }}>
-          {hasPhoto ? (
-            <span
-              className="font-sans uppercase"
-              style={{ fontSize: 9, letterSpacing: '0.8px', color: MUTED, fontWeight: 300 }}
-            >
-              {moment.date}
-            </span>
-          ) : (
-            <div />
-          )}
-
-          <button
-            onClick={() => setHighlighted(h => !h)}
-            className="flex items-center gap-[5px]"
-          >
-            {highlighted ? (
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M8 1.5l1.75 3.55 3.9.57-2.82 2.74.66 3.88L8 10.35l-3.49 1.84.66-3.88-2.82-2.74 3.9-.57L8 1.5z"
-                  fill={AMBER}
-                  stroke={AMBER}
-                  strokeWidth="1"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M8 1.5l1.75 3.55 3.9.57-2.82 2.74.66 3.88L8 10.35l-3.49 1.84.66-3.88-2.82-2.74 3.9-.57L8 1.5z"
-                  stroke="rgba(138,116,103,0.45)"
-                  strokeWidth="1.2"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-            {highlighted && (
-              <span
-                className="font-sans font-medium"
-                style={{ fontSize: 10, color: AMBER, fontVariationSettings: "'opsz' 9" }}
-              >
-                Highlight
-              </span>
-            )}
-          </button>
-        </div>
       </div>
     </div>
   )
@@ -302,40 +282,38 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
 // ─── Upcoming Moment Card ─────────────────────────────────────────────────────
 
 function UpcomingMomentCard({ date, text }: { date: string; text: string }) {
-  const dayLabel = date.split(',')[0]
+  const dayLabel = date.split(',')[0].toUpperCase()
   const dayNum = date.split(' ').pop()
 
   return (
     <div
       className="flex items-center justify-between rounded-[18px]"
       style={{
-        background: AMBER_BG,
-        border: `1px solid ${AMBER_BORDER}`,
-        padding: '14px 16px',
+        background: TERRACOTTA_50,
+        border: '1px solid rgba(149,45,23,0.16)',
+        padding: '14px 14px 14px 16px',
       }}
     >
-      <div className="flex flex-col gap-[6px]">
+      <div className="flex min-w-0 flex-col" style={{ gap: 14, paddingRight: 12 }}>
         <div className="flex items-center gap-2">
           <div
-            className="flex items-center px-2 rounded-pill"
-            style={{ height: 18, background: AMBER }}
+            className="flex items-center rounded-pill"
+            style={{ height: 26, background: AMBER_800, padding: '0 13px' }}
           >
             <span
-              className="font-sans font-medium uppercase"
-              style={{ fontSize: 8, letterSpacing: '1.1px', color: '#fffffe' }}
+              className="font-mono font-normal uppercase"
+              style={{ fontSize: 12, lineHeight: '16px', letterSpacing: '0.2px', color: '#fffffe' }}
             >
               Upcoming
             </span>
           </div>
         </div>
         <p
-          className="font-sans font-medium"
+          className="font-serif font-normal"
           style={{
-            fontSize: 15,
+            fontSize: 16,
             lineHeight: '22px',
-            letterSpacing: '-0.15px',
             color: INK,
-            fontVariationSettings: "'opsz' 14",
           }}
         >
           {text}
@@ -343,23 +321,22 @@ function UpcomingMomentCard({ date, text }: { date: string; text: string }) {
       </div>
 
       <div
-        className="flex flex-col items-center justify-center rounded-[12px] shrink-0"
+        className="flex flex-col items-center justify-center rounded-[18px] shrink-0"
         style={{
-          width: 52,
-          height: 52,
-          background: 'rgba(156,107,58,0.12)',
-          marginLeft: 12,
+          width: 46,
+          height: 58,
+          background: TERRACOTTA_200,
         }}
       >
         <span
-          className="font-sans font-medium uppercase"
-          style={{ fontSize: 9, letterSpacing: '0.8px', color: AMBER, lineHeight: '13px' }}
+          className="font-mono font-normal uppercase"
+          style={{ fontSize: 10, letterSpacing: '0.2px', color: INK, lineHeight: '14px' }}
         >
           {dayLabel}
         </span>
         <span
-          className="font-serif font-medium"
-          style={{ fontSize: 16, color: AMBER, lineHeight: '20px' }}
+          className="font-serif font-normal"
+          style={{ fontSize: 23, color: INK, lineHeight: '27px' }}
         >
           {dayNum}
         </span>
@@ -494,10 +471,22 @@ export default function RoleDetailSheet({
                   fontVariationSettings: "'opsz' 14",
                 }}
               >
-                {role.label}
+                Role
               </span>
             </div>
 
+            <h1
+              className="font-serif font-bold"
+              style={{
+                fontSize: 38,
+                lineHeight: '42px',
+                letterSpacing: '-0.35px',
+                color: '#fffffe',
+                textShadow: '0 2px 18px rgba(0,0,0,0.18)',
+              }}
+            >
+              {role.label}
+            </h1>
           </div>
         </div>
 
@@ -507,6 +496,7 @@ export default function RoleDetailSheet({
           style={{
             paddingLeft: 20,
             paddingRight: 20,
+            paddingTop: 20,
             paddingBottom: 40,
             animation: 'fadeUpIn 520ms 220ms cubic-bezier(0.22, 1, 0.36, 1) both',
           }}
@@ -519,8 +509,7 @@ export default function RoleDetailSheet({
                 background: '#F6FDE8',
                 border: '1px solid rgba(4,74,40,0.12)',
                 padding: '18px 20px 22px',
-                marginTop: 20,
-                marginBottom: 32,
+                marginBottom: 20,
                 minHeight: 120,
               }}
             >
@@ -547,7 +536,7 @@ export default function RoleDetailSheet({
                 {/* Body text */}
                 <p
                   className="font-bobby"
-                  style={{ fontSize: 21, lineHeight: '27px', letterSpacing: '-0.3px', color: GREEN, fontWeight: 400 }}
+                  style={{ fontSize: 18, lineHeight: '24px', letterSpacing: '-0.2px', color: GREEN, fontWeight: 400 }}
                 >
                   {role.noticed}
                 </p>
@@ -586,12 +575,20 @@ export default function RoleDetailSheet({
             </div>
           )}
 
-          {/* ── Direction — inline quote, no card ── */}
-          <div style={{ marginBottom: 36 }}>
-            <div className="flex items-center justify-between" style={{ marginBottom: 12 }}>
+          {/* ── Direction ── */}
+          <div
+            className="rounded-[18px]"
+            style={{
+              background: '#fffffe',
+              border: '1px solid rgba(138,116,103,0.15)',
+              padding: '16px 16px 17px',
+              marginBottom: 24,
+            }}
+          >
+            <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
               <span
-                className="font-sans font-medium"
-                style={{ fontSize: 12, color: 'rgba(45,45,42,0.65)', fontVariationSettings: "'opsz' 9" }}
+                className="font-serif font-normal"
+                style={{ fontSize: 15, color: INK, lineHeight: '20px' }}
               >
                 Your Direction
               </span>
@@ -605,28 +602,26 @@ export default function RoleDetailSheet({
               </button>
             </div>
 
-            <div style={{ paddingLeft: 14, borderLeft: '2px solid rgba(4,74,40,0.32)' }}>
-              <p
-                className="font-serif"
-                style={{
-                  fontSize: 16,
-                  lineHeight: '25px',
-                  letterSpacing: '-0.15px',
-                  color: GREEN,
-                  fontWeight: 700,
-                }}
-              >
-                "{role.direction}"
-              </p>
-            </div>
+            <p
+              className="font-serif"
+              style={{
+                fontSize: 17,
+                lineHeight: '25px',
+                letterSpacing: '-0.15px',
+                color: GREEN,
+                fontWeight: 700,
+              }}
+            >
+              "{role.direction}"
+            </p>
           </div>
 
           {/* ── Intentions — individual cards, no grouped container ── */}
-          <div style={{ marginBottom: 36 }}>
+          <div style={{ marginBottom: 28 }}>
             <div className="flex items-center justify-between" style={{ marginBottom: 12 }}>
               <span
-                className="font-sans font-medium"
-                style={{ fontSize: 12, color: 'rgba(45,45,42,0.65)', fontVariationSettings: "'opsz' 9" }}
+                className="font-serif font-normal"
+                style={{ fontSize: 15, color: INK, lineHeight: '20px' }}
               >
                 Intentions
               </span>
@@ -713,10 +708,10 @@ export default function RoleDetailSheet({
 
           {/* ── Moments ── */}
           <div>
-            <div className="flex items-center justify-between" style={{ marginBottom: 16 }}>
+            <div className="flex items-center justify-between" style={{ marginBottom: 12 }}>
               <span
-                className="font-sans font-medium"
-                style={{ fontSize: 12, color: 'rgba(45,45,42,0.65)', fontVariationSettings: "'opsz' 9" }}
+                className="font-serif font-normal"
+                style={{ fontSize: 15, color: INK, lineHeight: '20px' }}
               >
                 Moments
               </span>
@@ -735,20 +730,19 @@ export default function RoleDetailSheet({
               )}
             </div>
 
-            {/* Upcoming — dot + label, no extending line */}
+            {/* Upcoming */}
             {role.upcoming.length > 0 && (
               <>
-                <div className="flex items-center gap-[7px]" style={{ marginBottom: 10 }}>
-                  <div className="rounded-full shrink-0" style={{ width: 6, height: 6, background: AMBER }} />
+                <div className="flex items-center" style={{ marginBottom: 8 }}>
                   <span
-                    className="font-sans font-medium uppercase"
-                    style={{ fontSize: 9, letterSpacing: '1.2px', color: AMBER }}
+                    className="font-mono font-normal uppercase"
+                    style={{ fontSize: 10, letterSpacing: '1.1px', color: AMBER, lineHeight: '14px' }}
                   >
                     Upcoming
                   </span>
                 </div>
 
-                <div className="flex flex-col gap-2" style={{ marginBottom: 22 }}>
+                <div className="flex flex-col gap-2" style={{ marginBottom: 18 }}>
                   {role.upcoming.map((m, i) => (
                     <UpcomingMomentCard key={i} date={m.date} text={m.text} />
                   ))}
@@ -756,14 +750,13 @@ export default function RoleDetailSheet({
               </>
             )}
 
-            {/* Recent — dot + label, no extending line */}
+            {/* Recent */}
             {role.past.length > 0 && (
               <>
-                <div className="flex items-center gap-[7px]" style={{ marginBottom: 12 }}>
-                  <div className="rounded-full shrink-0" style={{ width: 6, height: 6, background: 'rgba(107,102,96,0.4)' }} />
+                <div className="flex items-center" style={{ marginBottom: 10 }}>
                   <span
-                    className="font-sans font-medium uppercase"
-                    style={{ fontSize: 9, letterSpacing: '1.2px', color: 'rgba(107,102,96,0.6)' }}
+                    className="font-mono font-normal uppercase"
+                    style={{ fontSize: 10, letterSpacing: '1.1px', color: 'rgba(107,102,96,0.65)', lineHeight: '14px' }}
                   >
                     Recent
                   </span>

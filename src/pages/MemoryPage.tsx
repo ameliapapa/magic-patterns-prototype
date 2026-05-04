@@ -10,8 +10,10 @@ import maeLogo from '../assets/icons/mae-flower-icon.svg'
 const GREEN = '#044A28'
 const AMBER = '#9c6b3a'
 const BORDER = 'rgba(138,116,103,0.2)'
-const AMBER_BG = 'rgba(156,107,58,0.07)'
 const AMBER_BORDER = 'rgba(156,107,58,0.28)'
+const AMBER_800 = '#94440C'
+const TERRACOTTA_50 = '#FEF0E3'
+const TERRACOTTA_200 = '#FBD1AD'
 
 // ─── Calendar constants (April 2026, today = 30) ─────────────────────────────
 
@@ -389,37 +391,31 @@ function UpcomingMomentCard({ moment }: { moment: Moment }) {
     <div
       className="flex items-center justify-between rounded-[18px]"
       style={{
-        background: AMBER_BG,
-        border: `1px solid ${AMBER_BORDER}`,
-        padding: '14px 16px',
+        background: TERRACOTTA_50,
+        border: '1px solid rgba(149,45,23,0.16)',
+        padding: '14px 14px 14px 16px',
       }}
     >
-      <div className="flex flex-col gap-[6px]">
+      <div className="flex min-w-0 flex-col" style={{ gap: 14, paddingRight: 12 }}>
         {/* Meta */}
         <div className="flex items-center gap-2">
           <div
-            className="flex items-center px-2 rounded-pill"
-            style={{ height: 18, background: AMBER }}
+            className="flex items-center rounded-pill"
+            style={{ height: 26, background: AMBER_800, padding: '0 13px' }}
           >
             <span
-              className="font-sans font-medium uppercase"
-              style={{ fontSize: 8, letterSpacing: '1.1px', color: '#fffffe' }}
+              className="font-mono font-normal uppercase"
+              style={{ fontSize: 12, lineHeight: '16px', letterSpacing: '0.2px', color: '#fffffe' }}
             >
               Upcoming
             </span>
           </div>
-          <span
-            className="font-sans font-medium uppercase"
-            style={{ fontSize: 9, letterSpacing: '1px', color: 'rgba(156,107,58,0.75)' }}
-          >
-            {moment.role}
-          </span>
         </div>
 
         {/* Text */}
         <p
-          className="font-sans font-medium text-ink"
-          style={{ fontSize: 15, lineHeight: '22px', letterSpacing: '-0.15px', fontVariationSettings: "'opsz' 14" }}
+          className="font-serif font-normal text-ink"
+          style={{ fontSize: 16, lineHeight: '22px' }}
         >
           {moment.text}
         </p>
@@ -427,23 +423,22 @@ function UpcomingMomentCard({ moment }: { moment: Moment }) {
 
       {/* Date badge */}
       <div
-        className="flex flex-col items-center justify-center rounded-[12px] shrink-0"
+        className="flex flex-col items-center justify-center rounded-[18px] shrink-0"
         style={{
-          width: 52,
-          height: 52,
-          background: 'rgba(156,107,58,0.12)',
-          marginLeft: 12,
+          width: 46,
+          height: 58,
+          background: TERRACOTTA_200,
         }}
       >
         <span
-          className="font-sans font-medium uppercase"
-          style={{ fontSize: 9, letterSpacing: '0.8px', color: AMBER, lineHeight: '13px' }}
+          className="font-mono font-normal uppercase"
+          style={{ fontSize: 10, letterSpacing: '0.2px', color: '#2d2d2a', lineHeight: '14px' }}
         >
-          {moment.date.split(',')[0]}
+          {moment.date.split(',')[0].toUpperCase()}
         </span>
         <span
-          className="font-serif font-medium"
-          style={{ fontSize: 16, color: AMBER, lineHeight: '20px' }}
+          className="font-serif font-normal"
+          style={{ fontSize: 23, color: '#2d2d2a', lineHeight: '27px' }}
         >
           {moment.date.split(' ').pop()}
         </span>

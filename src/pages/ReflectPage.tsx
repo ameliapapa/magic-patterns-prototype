@@ -70,6 +70,8 @@ const INTENTIONS: Record<string, string[]> = {
   daughter:     ['Sunday calls'],
 }
 
+const USE_ROLE_OVERVIEW_CARD_V2 = true
+
 // ─── Role Card ────────────────────────────────────────────────────────────────
 
 function RoleCard({ role }: { role: RoleDef }) {
@@ -236,6 +238,187 @@ function RoleCard({ role }: { role: RoleDef }) {
   )
 }
 
+// ─── Role Overview Card V2 ───────────────────────────────────────────────────
+
+function RoleOverviewCard({ role }: { role: RoleDef }) {
+  const direction = DIRECTIONS[role.id]
+  const intentions = INTENTIONS[role.id] ?? []
+  const illustration = ILLUSTRATIONS[role.id]
+  const illustrationPosition = ILLUSTRATION_POSITIONS[role.id] ?? 'center'
+
+  return (
+    <div
+      className="rounded-[20px] overflow-hidden"
+      style={{
+        background: '#fffffe',
+        border: '1px solid rgba(138,116,103,0.18)',
+      }}
+    >
+      <div className="flex">
+        {/* Image rail */}
+        <div className="relative shrink-0 overflow-hidden" style={{ width: 112, minHeight: 176 }}>
+          <img
+            src={illustration}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: illustrationPosition }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.16) 48%, rgba(0,0,0,0.42) 100%)',
+            }}
+          />
+
+          <div
+            className="absolute flex items-center justify-center rounded-full"
+            style={{
+              left: 14,
+              bottom: 14,
+              width: 32,
+              height: 32,
+              background: 'rgba(255,255,254,0.18)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255,255,254,0.22)',
+            }}
+          >
+            <img src={role.icon} alt="" width={15} height={15} style={{ filter: 'brightness(0) invert(1)' }} />
+          </div>
+        </div>
+
+        <div className="flex min-w-0 flex-1 flex-col" style={{ padding: '15px 15px 14px 16px' }}>
+          {/* Role heading */}
+          <div className="flex items-start justify-between gap-[10px]" style={{ marginBottom: 12 }}>
+            <div className="min-w-0">
+              <span
+                className="font-sans font-normal uppercase text-muted"
+                style={{ fontSize: 9, letterSpacing: '1.4px', fontVariationSettings: "'opsz' 9" }}
+              >
+                Role
+              </span>
+              <p
+                className="font-serif font-bold text-ink"
+                style={{ fontSize: 21, lineHeight: '25px', letterSpacing: '-0.2px', marginTop: 2 }}
+              >
+                {role.label}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              aria-label={`Edit ${role.label}`}
+              className="flex shrink-0 items-center justify-center rounded-pill"
+              style={{
+                width: 32,
+                height: 28,
+                background: 'rgba(138,116,103,0.06)',
+                border: '1px solid rgba(138,116,103,0.14)',
+              }}
+            >
+              <img src={iconPencilEdit} alt="" width={13} height={13} style={{ opacity: 0.58 }} />
+            </button>
+          </div>
+
+          <div style={{ marginBottom: 14 }}>
+            <span
+              className="font-sans font-normal uppercase text-muted"
+              style={{ fontSize: 9, letterSpacing: '1.4px', fontVariationSettings: "'opsz' 9" }}
+            >
+              Direction
+            </span>
+            {direction ? (
+              <p
+                className="font-serif text-ink-secondary"
+                style={{ fontSize: 14, lineHeight: '21px', fontWeight: 700, color: '#044A28', marginTop: 4 }}
+              >
+                "{direction}"
+              </p>
+            ) : (
+              <button className="flex items-center gap-1 text-left" style={{ marginTop: 4 }}>
+                <span
+                  className="font-sans font-normal"
+                  style={{ fontSize: 13, color: 'rgba(138,116,103,0.55)', fontVariationSettings: "'opsz' 9" }}
+                >
+                  + Set your direction
+                </span>
+              </button>
+            )}
+          </div>
+
+        </div>
+      </div>
+
+      {/* Intentions */}
+      <div
+        className="flex flex-col gap-[10px]"
+        style={{
+          padding: '14px 16px 16px',
+          borderTop: '1px solid rgba(138,116,103,0.14)',
+        }}
+      >
+        <div className="flex items-center justify-between gap-[12px]">
+          <span
+            className="font-sans font-normal uppercase text-muted"
+            style={{ fontSize: 9, letterSpacing: '1.4px', fontVariationSettings: "'opsz' 9" }}
+          >
+            Tending now
+          </span>
+          <button className="flex shrink-0 items-center gap-1">
+            <span
+              className="font-sans font-normal"
+              style={{ fontSize: 12, color: 'rgba(138,116,103,0.55)', fontVariationSettings: "'opsz' 9" }}
+            >
+              + Add intention
+            </span>
+          </button>
+        </div>
+
+        {intentions.length > 0 ? (
+          <div className="grid gap-[7px]">
+            {intentions.map((intent, i) => (
+              <div
+                key={i}
+                className="rounded-[12px]"
+                style={{
+                  minHeight: 36,
+                  padding: '8px 11px',
+                  background: 'rgba(138,116,103,0.04)',
+                  border: '1px solid rgba(138,116,103,0.1)',
+                }}
+              >
+                <span
+                  className="font-sans font-normal text-ink"
+                  style={{ fontSize: 13, lineHeight: '18px', fontVariationSettings: "'opsz' 9" }}
+                >
+                  {intent}
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            className="rounded-[12px]"
+            style={{
+              padding: '11px 12px',
+              background: 'rgba(138,116,103,0.04)',
+              border: '1px dashed rgba(138,116,103,0.2)',
+            }}
+          >
+            <p
+              className="font-sans font-normal"
+              style={{ fontSize: 13, lineHeight: '18px', color: 'rgba(138,116,103,0.6)', fontVariationSettings: "'opsz' 9" }}
+            >
+              This role is quiet for now.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ─── Main Page ─────────────────────────────────────────────────────────────────
 
 export default function ReflectPage({ onAddRole }: { onAddRole?: () => void }) {
@@ -244,6 +427,7 @@ export default function ReflectPage({ onAddRole }: { onAddRole?: () => void }) {
   const visibleRoles = activeRole
     ? USER_ROLES.filter(r => r.id === activeRole)
     : USER_ROLES
+  const ReflectRoleCard = USE_ROLE_OVERVIEW_CARD_V2 ? RoleOverviewCard : RoleCard
 
   return (
     <div style={{ width: 393, background: '#FFFCF3' }}>
@@ -356,7 +540,7 @@ export default function ReflectPage({ onAddRole }: { onAddRole?: () => void }) {
         style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 20 }}
       >
         {visibleRoles.map(role => (
-          <RoleCard key={role.id} role={role} />
+          <ReflectRoleCard key={role.id} role={role} />
         ))}
       </div>
     </div>
