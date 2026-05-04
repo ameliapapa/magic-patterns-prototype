@@ -29,6 +29,10 @@ import imgRunner from '../assets/illustrations/u1355955226_runner_in_the_park_--
 const GREEN = '#044A28'
 const BORDER = 'rgba(138,116,103,0.2)'
 const AMBER = '#9c6b3a'
+const AMBER_200 = '#FFED93'
+const AMBER_900 = '#7A380D'
+const SURFACE = '#fffffe'
+const WARM = '#e8e1d7'
 const AMBER_800 = '#94440C'
 const TERRACOTTA_50 = '#FEF0E3'
 const TERRACOTTA_200 = '#FBD1AD'
@@ -196,86 +200,134 @@ const ROLES_DATA: Record<string, RoleData> = {
 
 // ─── Past Moment Card ─────────────────────────────────────────────────────────
 
+function MomentDateTag({ label }: { label: string }) {
+  return (
+    <div
+      className="flex items-center justify-center rounded-pill"
+      style={{
+        height: 28,
+        padding: '0 14px',
+        background: 'rgba(255,255,254,0.92)',
+        backdropFilter: 'blur(6px)',
+      }}
+    >
+      <span
+        className="block font-mono font-normal uppercase"
+        style={{ fontSize: 11, lineHeight: 1, letterSpacing: '0.2px', color: INK, transform: 'translateY(-0.5px)' }}
+      >
+        {label}
+      </span>
+    </div>
+  )
+}
+
+function HighlightButton({
+  highlighted,
+  onClick,
+}: {
+  highlighted: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center justify-center rounded-full"
+      style={{
+        width: 36,
+        height: 36,
+        background: highlighted ? AMBER_200 : 'rgba(255,255,254,0.92)',
+        backdropFilter: 'blur(6px)',
+        transition: 'background 220ms ease',
+      }}
+      aria-label={highlighted ? 'Remove highlight' : 'Highlight moment'}
+    >
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+        <path
+          d="M8 1.5l1.75 3.55 3.9.57-2.82 2.74.66 3.88L8 10.35l-3.49 1.84.66-3.88-2.82-2.74 3.9-.57L8 1.5z"
+          fill={highlighted ? AMBER_900 : 'transparent'}
+          stroke={highlighted ? AMBER_900 : 'rgba(45,45,42,0.55)'}
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  )
+}
+
 function PastMomentCard({ moment }: { moment: PastMoment }) {
   const [highlighted, setHighlighted] = useState(false)
   const hasPhoto = Boolean(moment.image)
 
-  return (
-    <div
-      className="rounded-[20px] overflow-hidden"
-      style={{ background: '#fffffe', border: `1px solid ${BORDER}` }}
-    >
-      {hasPhoto && (
-        <div className="relative overflow-hidden" style={{ height: 168 }}>
-          <img
-            src={moment.image}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(4,74,40,0.22) 100%)',
-            }}
-          />
-        </div>
-      )}
-
-      <div
-        className="flex flex-col"
-        style={{ padding: hasPhoto ? '14px 16px 16px' : '16px' }}
+  if (!hasPhoto) {
+    return (
+      <article
+        className="overflow-hidden rounded-[24px]"
+        style={{
+          background: highlighted ? 'rgba(185,131,61,0.025)' : SURFACE,
+          border: `1px solid ${highlighted ? 'rgba(185,131,61,0.38)' : BORDER}`,
+          padding: '14px 16px 17px',
+          transition: 'background 220ms ease, border-color 220ms ease',
+        }}
       >
-        <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
+        <div className="flex items-center justify-between" style={{ marginBottom: 8 }}>
           <span
             className="font-mono font-normal uppercase"
-            style={{ fontSize: 10, letterSpacing: '0.6px', color: 'rgba(45,45,42,0.74)', lineHeight: '14px' }}
+            style={{ fontSize: 11, lineHeight: 1, letterSpacing: '0.2px', color: INK }}
           >
             {moment.date}
           </span>
-
-          <button
-            onClick={() => setHighlighted(h => !h)}
-            className="flex items-center justify-center shrink-0"
-            style={{ width: 28, height: 28, marginRight: -4, marginTop: -5 }}
-            aria-label={highlighted ? 'Remove highlight' : 'Highlight moment'}
-          >
-            {highlighted ? (
-              <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M8 1.5l1.75 3.55 3.9.57-2.82 2.74.66 3.88L8 10.35l-3.49 1.84.66-3.88-2.82-2.74 3.9-.57L8 1.5z"
-                  fill={AMBER}
-                  stroke={AMBER}
-                  strokeWidth="1"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            ) : (
-              <svg width="17" height="17" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M8 1.5l1.75 3.55 3.9.57-2.82 2.74.66 3.88L8 10.35l-3.49 1.84.66-3.88-2.82-2.74 3.9-.57L8 1.5z"
-                  stroke="rgba(45,45,42,0.62)"
-                  strokeWidth="1.2"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-          </button>
+          <HighlightButton highlighted={highlighted} onClick={() => setHighlighted(h => !h)} />
         </div>
 
         <p
           className="font-serif font-medium"
-          style={{
-            fontSize: hasPhoto ? 15 : 17,
-            lineHeight: hasPhoto ? '22px' : '25px',
-            letterSpacing: '-0.2px',
-            color: INK,
-          }}
+          style={{ fontSize: 17, lineHeight: '26px', color: INK, letterSpacing: '-0.2px' }}
+        >
+          {moment.text}
+        </p>
+      </article>
+    )
+  }
+
+  return (
+    <article
+      className="overflow-hidden rounded-[24px]"
+      style={{
+        background: highlighted ? 'rgba(185,131,61,0.025)' : SURFACE,
+        border: `1px solid ${highlighted ? 'rgba(185,131,61,0.38)' : BORDER}`,
+        transition: 'background 220ms ease, border-color 220ms ease',
+      }}
+    >
+      <div className="relative" style={{ height: 200, background: WARM }}>
+        <img src={moment.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+
+        <div className="absolute" style={{ top: 14, left: 14 }}>
+          <MomentDateTag label={moment.date} />
+        </div>
+
+        <div className="absolute" style={{ top: 12, right: 12 }}>
+          <HighlightButton highlighted={highlighted} onClick={() => setHighlighted(h => !h)} />
+        </div>
+      </div>
+
+      <div
+        style={{
+          position: 'relative',
+          marginTop: -22,
+          borderRadius: '20px 20px 0 0',
+          background: highlighted ? '#fdf6ec' : SURFACE,
+          padding: '16px 18px 20px',
+          transition: 'background 220ms ease',
+        }}
+      >
+        <p
+          className="font-serif font-medium"
+          style={{ fontSize: 17, lineHeight: '26px', color: INK, letterSpacing: '-0.2px' }}
         >
           {moment.text}
         </p>
       </div>
-    </div>
+    </article>
   )
 }
 
@@ -302,7 +354,7 @@ function UpcomingMomentCard({ date, text }: { date: string; text: string }) {
           >
             <span
               className="font-mono font-normal uppercase"
-              style={{ fontSize: 12, lineHeight: '16px', letterSpacing: '0.2px', color: '#fffffe' }}
+              style={{ fontSize: 12, lineHeight: '16px', letterSpacing: 0, color: '#fffffe' }}
             >
               Upcoming
             </span>
@@ -330,7 +382,7 @@ function UpcomingMomentCard({ date, text }: { date: string; text: string }) {
       >
         <span
           className="font-mono font-normal uppercase"
-          style={{ fontSize: 10, letterSpacing: '0.2px', color: INK, lineHeight: '14px' }}
+          style={{ fontSize: 10, letterSpacing: 0, color: INK, lineHeight: '14px' }}
         >
           {dayLabel}
         </span>
@@ -528,7 +580,7 @@ export default function RoleDetailSheet({
                 {/* "MAE NOTICED" label */}
                 <span
                   className="font-mono uppercase"
-                  style={{ fontSize: 9, letterSpacing: '1.2px', color: 'rgba(4,74,40,0.55)', lineHeight: '13px' }}
+                  style={{ fontSize: 9, letterSpacing: '0.2px', color: GREEN, lineHeight: '13px' }}
                 >
                   Mae noticed
                 </span>
@@ -736,7 +788,7 @@ export default function RoleDetailSheet({
                 <div className="flex items-center" style={{ marginBottom: 8 }}>
                   <span
                     className="font-mono font-normal uppercase"
-                    style={{ fontSize: 10, letterSpacing: '1.1px', color: AMBER, lineHeight: '14px' }}
+                    style={{ fontSize: 10, letterSpacing: '0.2px', color: AMBER, lineHeight: '14px' }}
                   >
                     Upcoming
                   </span>
@@ -756,7 +808,7 @@ export default function RoleDetailSheet({
                 <div className="flex items-center" style={{ marginBottom: 10 }}>
                   <span
                     className="font-mono font-normal uppercase"
-                    style={{ fontSize: 10, letterSpacing: '1.1px', color: 'rgba(107,102,96,0.65)', lineHeight: '14px' }}
+                    style={{ fontSize: 10, letterSpacing: '0.2px', color: 'rgba(107,102,96,0.65)', lineHeight: '14px' }}
                   >
                     Recent
                   </span>

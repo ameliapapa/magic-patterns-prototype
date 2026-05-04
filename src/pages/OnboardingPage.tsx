@@ -154,7 +154,7 @@ function GreenButton({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="w-full flex items-center justify-center rounded-[20px] py-4 active:scale-[0.97] transition-transform duration-100"
+      className="w-full flex items-center justify-center rounded-[30px] py-4 active:scale-[0.97] transition-transform duration-100"
       style={{
         background: disabled ? 'rgba(4,74,40,0.45)' : GREEN,
         cursor: disabled ? 'not-allowed' : 'pointer',

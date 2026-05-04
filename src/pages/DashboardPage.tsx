@@ -297,7 +297,7 @@ export default function DashboardPage({
             <img src={iconMore} alt="" width={24} height={24} />
             <p
               className="font-sans font-medium text-center text-black"
-              style={{ fontSize: 10, lineHeight: '19px' }}
+              style={{ fontSize: 14, lineHeight: '20px' }}
             >
               Care for a quick check in?
             </p>
@@ -319,20 +319,15 @@ export default function DashboardPage({
 
       {/* ── 4. "For today" section ── */}
       <div className="flex flex-col items-start" style={{ width: 400, marginLeft: 1, marginTop: 20 }}>
-        <div className="flex items-center justify-between px-6 w-full" style={{ height: 27 }}>
-          <p
-            className="font-serif font-medium text-ink-secondary whitespace-nowrap"
-            style={{ fontSize: 18, lineHeight: '27px' }}
-          >
-            For today
-          </p>
-          <button onClick={onActivityLibraryOpen}>
+        <div className="flex items-center px-6 w-full" style={{ height: 27 }}>
+          <button onClick={onActivityLibraryOpen} className="flex items-center gap-1">
             <span
-              className="font-sans font-medium text-muted text-center whitespace-nowrap"
-              style={{ fontSize: 11, lineHeight: '16.5px' }}
+              className="font-serif font-bold text-ink whitespace-nowrap"
+              style={{ fontSize: 20, lineHeight: '26px', letterSpacing: '-0.3px' }}
             >
-              More suggestions →
+              For today
             </span>
+            <img src={iconChevronRight} alt="" width={15} height={16} />
           </button>
         </div>
 
