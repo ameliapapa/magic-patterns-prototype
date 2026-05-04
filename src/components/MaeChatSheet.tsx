@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import maeLogo from '../assets/icons/mae-flower-icon.svg'
 import chatIcon from '../assets/icons/bubble-chat.svg'
 import archiveIcon from '../assets/icons/archive-04.svg'
+import { COLORS } from '../styles/colorTokens'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
 const GREEN = '#044A28'
@@ -82,13 +83,13 @@ function RichText({ text, isMae }: { text: string; isMae: boolean }) {
 
   return (
     <p
-      className={isMae ? 'font-serif' : 'font-sans'}
+      className="font-sans"
       style={{
-        fontSize: isMae ? 15 : 13,
-        lineHeight: isMae ? '24px' : '19px',
+        fontSize: 16,
+        lineHeight: '24px',
         color: INK,
         letterSpacing: 0,
-        fontVariationSettings: isMae ? undefined : "'opsz' 14",
+        fontVariationSettings: "'opsz' 14",
       }}
     >
       {parts.map((part, index) => {
@@ -136,43 +137,17 @@ function Bubble({ msg }: { msg: Message }) {
         animation: 'fadeUpIn 320ms cubic-bezier(0.22, 1, 0.36, 1) both',
       }}
     >
-      {isMae && (
-        <div className="flex items-center gap-[6px]" style={{ marginBottom: 6, marginLeft: 2 }}>
-          <span
-            className="font-sans font-medium uppercase"
-            style={{ fontSize: 9, letterSpacing: '1px', color: GREEN, opacity: 0.82, fontVariationSettings: "'opsz' 9" }}
-          >
-            Mae
-          </span>
-        </div>
-      )}
-
       <div
         style={{
-          maxWidth: isMae ? '91%' : '76%',
-          padding: isMae ? '15px 16px 15px 17px' : '10px 13px',
-          borderRadius: isMae ? '16px 16px 16px 6px' : '15px 15px 6px 15px',
-          background: isMae ? SURFACE : 'rgba(4,74,40,0.08)',
-          border: isMae ? `1px solid ${BORDER}` : '1px solid rgba(4,74,40,0.12)',
-          borderLeft: isMae ? '3px solid rgba(4,74,40,0.42)' : undefined,
-          boxShadow: isMae ? '0 8px 20px rgba(45,45,42,0.035)' : 'none',
+          maxWidth: '88%',
+          padding: '16px 24px',
+          borderRadius: 32,
+          background: isMae ? 'transparent' : COLORS.role[200],
+          border: isMae ? `1px solid ${BORDER}` : '1px solid transparent',
         }}
       >
         <RichText text={msg.text} isMae={isMae} />
       </div>
-
-      <span
-        className="font-sans"
-        style={{
-          fontSize: 10,
-          color: 'rgba(107,102,96,0.5)',
-          marginTop: 5,
-          letterSpacing: 0,
-          fontVariationSettings: "'opsz' 9",
-        }}
-      >
-        {msg.time}
-      </span>
     </div>
   )
 }
@@ -230,7 +205,7 @@ function TabIcon({
       style={{
         width: 34,
         height: 34,
-        background: active ? GREEN : 'rgba(138,116,103,0.08)',
+        background: active ? GREEN : SURFACE,
         border: `1px solid ${active ? 'rgba(4,74,40,0.18)' : BORDER}`,
         transition: 'background 180ms ease, border-color 180ms ease',
       }}
@@ -262,69 +237,43 @@ function TabIcon({
 function ArchiveCard({ session }: { session: ChatSession }) {
   return (
     <button
-      className="flex w-full items-stretch text-left active:scale-[0.995]"
+      className="flex w-full items-start text-left active:scale-[0.995]"
       style={{
-        background: SURFACE,
+        background: 'transparent',
         border: `1px solid ${BORDER}`,
-        borderRadius: 16,
-        padding: '13px 14px 13px 0',
-        transition: 'transform 120ms ease',
+        borderRadius: 24,
+        padding: '16px 18px',
+        transition: 'transform 120ms ease, border-color 160ms ease, background 160ms ease',
       }}
     >
-      <div
-        className="shrink-0"
-        style={{
-          width: 3,
-          margin: '3px 13px 3px 0',
-          borderRadius: 3,
-          background: 'rgba(4,74,40,0.34)',
-        }}
-      />
-      <div className="flex min-w-0 flex-1 flex-col" style={{ paddingRight: 10 }}>
-        <div className="flex items-center gap-2" style={{ marginBottom: 7 }}>
+      <div className="flex min-w-0 flex-1 flex-col" style={{ paddingRight: 14 }}>
+        <div className="flex flex-wrap items-center" style={{ gap: 6, marginBottom: 10 }}>
           <span
             className="font-sans font-medium uppercase"
-            style={{ fontSize: 9, letterSpacing: '1px', color: MUTED, fontVariationSettings: "'opsz' 9" }}
+            style={{ fontSize: 9, letterSpacing: '1px', color: MUTED, lineHeight: '13px', fontVariationSettings: "'opsz' 9" }}
           >
             {session.date}
           </span>
-          <div
-            className="rounded-pill"
-            style={{
-              height: 18,
-              background: 'rgba(4,74,40,0.08)',
-              padding: '2px 7px',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <span
-              className="font-sans font-medium"
-              style={{ fontSize: 9, color: GREEN, letterSpacing: 0, fontVariationSettings: "'opsz' 9" }}
-            >
-              {session.topic}
-            </span>
-          </div>
         </div>
         <p
-          className="font-serif font-medium"
-          style={{ fontSize: 14, lineHeight: '20px', color: INK, letterSpacing: 0 }}
+          className="font-sans font-normal"
+          style={{ fontSize: 15, lineHeight: '22px', color: INK, letterSpacing: 0, fontVariationSettings: "'opsz' 14" }}
         >
           {session.preview}
         </p>
-        <span
-          className="font-sans font-normal"
-          style={{ marginTop: 7, fontSize: 11, color: MUTED, fontVariationSettings: "'opsz' 9" }}
-        >
-          {session.turns} exchanges
-        </span>
       </div>
       <div
         className="flex shrink-0 items-center justify-center rounded-full"
-        style={{ alignSelf: 'center', width: 28, height: 28, background: 'rgba(138,116,103,0.09)' }}
+        style={{
+          marginTop: 2,
+          width: 32,
+          height: 32,
+          background: SURFACE,
+          border: `1px solid ${BORDER}`,
+        }}
       >
         <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-          <path d="M1 1l5 5-5 5" stroke="rgba(45,45,42,0.52)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1 1l5 5-5 5" stroke={INK} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
     </button>
@@ -547,21 +496,13 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
 
                   {isTyping && (
                     <div className="flex flex-col" style={{ alignItems: 'flex-start' }}>
-                      <div className="flex items-center gap-[6px]" style={{ marginBottom: 6, marginLeft: 2 }}>
-                        <span
-                          className="font-sans font-medium uppercase"
-                          style={{ fontSize: 9, letterSpacing: '1px', color: GREEN, opacity: 0.82 }}
-                        >
-                          Mae
-                        </span>
-                      </div>
                       <div
                         style={{
-                          padding: '14px 16px',
-                          borderRadius: '16px 16px 16px 6px',
-                          background: SURFACE,
+                          maxWidth: '88%',
+                          padding: '16px 24px',
+                          borderRadius: 32,
+                          background: 'transparent',
                           border: `1px solid ${BORDER}`,
-                          borderLeft: '3px solid rgba(4,74,40,0.42)',
                         }}
                       >
                         <TypingDots />
@@ -659,9 +600,9 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
             style={{ padding: '18px 20px 28px' }}
           >
             <div
-              className="flex items-end justify-between"
+              className="flex items-start justify-between"
               style={{
-                marginBottom: 16,
+                marginBottom: 18,
                 animation: 'fadeUpIn 320ms cubic-bezier(0.22, 1, 0.36, 1) both',
               }}
             >
@@ -673,45 +614,61 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
                   Conversation notes
                 </span>
                 <p
-                  className="font-serif font-medium"
-                  style={{ marginTop: 5, fontSize: 21, color: INK, letterSpacing: 0, lineHeight: '27px' }}
+                  className="font-serif font-bold"
+                  style={{ marginTop: 5, fontSize: 24, color: INK, letterSpacing: '-0.2px', lineHeight: '30px' }}
                 >
-                  Saved threads
+                  Archive
                 </p>
               </div>
-              <span
-                className="font-sans font-medium"
-                style={{ paddingBottom: 4, fontSize: 11, color: MUTED, fontVariationSettings: "'opsz' 9" }}
+              <div
+                className="rounded-pill"
+                style={{
+                  marginTop: 2,
+                  padding: '6px 10px',
+                  border: `1px solid ${BORDER}`,
+                }}
               >
-                {ARCHIVE.length} total
-              </span>
+                <span
+                  className="font-sans font-medium"
+                  style={{ fontSize: 11, color: MUTED, fontVariationSettings: "'opsz' 9" }}
+                >
+                  {ARCHIVE.length} saved
+                </span>
+              </div>
             </div>
 
             <div
-              className="flex flex-col gap-2"
-              style={{ animation: 'fadeUpIn 360ms 60ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
+              className="flex flex-col"
+              style={{ gap: 10, animation: 'fadeUpIn 360ms 60ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
             >
-              {ARCHIVE.map(session => (
-                <ArchiveCard key={session.id} session={session} />
+              {ARCHIVE.map((session, index) => (
+                <div
+                  key={session.id}
+                  style={{ animation: 'fadeUpIn 260ms ease-out both', animationDelay: `${index * 35}ms` }}
+                >
+                  <ArchiveCard session={session} />
+                </div>
               ))}
             </div>
 
-            {/* Empty state hint */}
             <div
-              className="rounded-[16px]"
-              style={{
-                marginTop: 16,
-                padding: '14px 16px',
-                border: `1px solid ${BORDER}`,
-                background: 'rgba(255,255,254,0.72)',
-              }}
+              className="rounded-[28px]"
+              style={{ animation: 'fadeUpIn 360ms 60ms cubic-bezier(0.22, 1, 0.36, 1) both' }}
             >
-              <p
-                className="font-serif"
-                style={{ fontSize: 14, lineHeight: '21px', color: MUTED, letterSpacing: 0 }}
+              <div
+                style={{
+                  marginTop: 16,
+                  padding: '14px 18px',
+                  borderRadius: 28,
+                }}
               >
-                Each conversation becomes part of how Mae understands you.
-              </p>
+                <p
+                  className="font-sans"
+                  style={{ fontSize: 13, lineHeight: '20px', color: MUTED, letterSpacing: 0, fontVariationSettings: "'opsz' 14" }}
+                >
+                  Each conversation becomes part of how Mae understands you.
+                </p>
+              </div>
             </div>
           </div>
         )}

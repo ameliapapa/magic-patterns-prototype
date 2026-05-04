@@ -1,6 +1,7 @@
 import heroNature from '../assets/illustrations/walk-in-nature.png'
 import activityWeightlifting from '../assets/illustrations/person_lifting_weights_in_gym.png'
 import activityWatercolor from '../assets/illustrations/u1355955226_painter_painting_a_canvas_--sref_202514354_--prof_51f7c398-d464-4ad1-8bb6-da52f2cc1971_0.png'
+import { COLORS } from '../styles/colorTokens'
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 import iconBubbleChat from '../assets/icons/bubble-chat.svg'
@@ -156,7 +157,7 @@ function IntentionCard({
       </div>
       <div
         className="flex flex-col gap-1 rounded-[12px]"
-        style={{ background: 'rgba(4,74,40,0.05)', padding: '8px 10px' }}
+        style={{ background: COLORS.role[50], padding: '8px 10px' }}
       >
         <span
           className="font-sans font-medium uppercase"
@@ -290,7 +291,7 @@ export default function DashboardPage({
       {/* ── 3. Quick capture widget ── */}
       <div className="flex items-center px-[14.5px]" style={{ width: 393 }}>
         <div
-          className="flex-1 overflow-hidden rounded-[20px] relative"
+          className="flex-1 overflow-hidden rounded-[24px] relative"
           style={{ height: 199, border: '1px solid rgba(138, 116, 103, 0.2)' }}
         >
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">

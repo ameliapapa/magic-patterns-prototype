@@ -68,3 +68,52 @@ Semantic role: memory screen, memory-specific surfaces and accents.
 
 - All three scales follow the same warm-undertone philosophy: no cool greys, no blues, no digitally vivid hues.
 
+---
+
+## Project Token Names
+
+The scales above are available in project files in three forms:
+
+### CSS variables
+
+Defined in `src/index.css`.
+
+- Raw scale tokens: `--mae-green-50` through `--mae-green-900`
+- Raw scale tokens: `--mae-amber-50` through `--mae-amber-900`
+- Raw scale tokens: `--mae-terracotta-50` through `--mae-terracotta-900`
+
+Semantic CSS tokens:
+
+- App surfaces: `--color-canvas`, `--color-page`, `--color-surface`, `--color-warm-surface`
+- Text and borders: `--color-ink`, `--color-ink-secondary`, `--color-muted`, `--color-mid`, `--color-border`, `--color-border-strong`
+- Brand and roles: `--color-brand`, `--color-brand-soft`, `--color-brand-active`, `--color-role-accent`, `--color-role-surface`
+- Highlights: `--color-highlight-accent`, `--color-highlight-surface`, `--color-highlight-strong`
+- Memory: `--color-memory-accent`, `--color-memory-surface`, `--color-memory-strong`
+
+### Tailwind tokens
+
+Defined in `tailwind.config.js`.
+
+- Raw scales: `mae-green`, `mae-amber`, `mae-terracotta`
+- Semantic scales: `role`, `highlight`, `memory`
+- Semantic colors: `canvas`, `page`, `surface`, `warm`, `ink`, `ink-secondary`, `muted`, `mid`, `brand`, `brand-soft`, `brand-active`, `brand-contrast`
+
+Examples:
+
+- `bg-role-50`
+- `text-role-900`
+- `bg-highlight-50`
+- `text-memory-700`
+- `bg-brand`
+- `bg-brand-soft`
+
+### TypeScript tokens
+
+Defined in `src/styles/colorTokens.ts`.
+
+- `COLOR_SCALE.green[50]`
+- `COLOR_SCALE.amber[600]`
+- `COLOR_SCALE.terracotta[700]`
+- `COLORS.brand`
+- `COLORS.role[50]`
+- `CSS_COLORS.brandSoft`

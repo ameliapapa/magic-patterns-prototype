@@ -156,13 +156,14 @@ function GreenButton({
       disabled={disabled}
       className="w-full flex items-center justify-center rounded-[30px] py-4 active:scale-[0.97] transition-transform duration-100"
       style={{
-        background: disabled ? 'rgba(4,74,40,0.45)' : GREEN,
+        background: disabled ? 'transparent' : GREEN,
+        border: disabled ? '1px solid rgba(138,116,103,0.2)' : '1px solid transparent',
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}
     >
       <span
         className="font-bobby font-bold text-[#fcfcfa] text-center"
-        style={{ fontSize: 18 }}
+        style={{ fontSize: 18, color: disabled ? 'rgba(107,102,96,0.72)' : '#fcfcfa' }}
       >
         {label}
       </span>
@@ -224,10 +225,12 @@ function TextInputBox({
   value,
   onChange,
   placeholder,
+  inputWeight = 700,
 }: {
   value: string
   onChange: (v: string) => void
   placeholder: string
+  inputWeight?: 400 | 700
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
@@ -237,7 +240,7 @@ function TextInputBox({
 
   return (
     <div
-      className="relative overflow-hidden rounded-[20px]"
+      className="relative overflow-hidden rounded-[24px]"
       style={{ width: 290, height: 78, border: '1px solid rgba(138,116,103,0.2)', background: BG }}
     >
       <input
@@ -245,7 +248,7 @@ function TextInputBox({
         value={value}
         onChange={e => onChange(e.target.value)}
         className="absolute text-black bg-transparent outline-none border-none"
-        style={{ top: 16, left: 16, right: 16, fontSize: 24, fontFamily: "'F37 Bobby Trial', Georgia, serif", fontWeight: 700 }}
+        style={{ top: 16, left: 16, right: 16, fontSize: 24, fontFamily: "'F37 Bobby Trial', Georgia, serif", fontWeight: inputWeight }}
       />
       {!value && (
         <p
@@ -277,10 +280,10 @@ function RoleTile({
       onClick={onToggle}
       className="flex flex-row items-center shrink-0 active:scale-[0.95]"
       style={{
-        background: selected ? GREEN : BG,
+        background: selected ? GREEN : 'transparent',
         border: selected ? '1px solid transparent' : '1px solid rgba(138,116,103,0.2)',
         transition: 'background 180ms ease, border-color 180ms ease, transform 100ms ease',
-        borderRadius: 20,
+        borderRadius: 24,
         padding: '8px 14px 8px 10px',
         gap: 8,
       }}
@@ -295,7 +298,7 @@ function RoleTile({
         style={{
           fontSize: 12,
           lineHeight: '15px',
-          color: selected ? '#fafaf7' : '#030712',
+          color: selected ? '#fafaf7' : 'rgba(107,102,96,0.85)',
           fontVariationSettings: "'opsz' 14",
           whiteSpace: 'nowrap',
         }}
@@ -325,7 +328,7 @@ function Intro1({ onNext }: { onNext: () => void }) {
           {[imgStudying2, imgParentChild, imgBoardgames].map((src, i) => (
             <div
               key={i}
-              className="shrink-0 rounded-[20px] overflow-hidden"
+              className="shrink-0 rounded-[24px] overflow-hidden"
               style={{ width: 160, height: 160, animation: 'fadeSlideUp 500ms ease both', animationDelay: `${i * 60}ms` }}
             >
               <img src={src} alt="" className="w-full h-full object-cover" />
@@ -336,7 +339,7 @@ function Intro1({ onNext }: { onNext: () => void }) {
           {[imgLunch, imgDancer, imgDogWalk].map((src, i) => (
             <div
               key={i}
-              className="shrink-0 rounded-[20px] overflow-hidden"
+              className="shrink-0 rounded-[24px] overflow-hidden"
               style={{ width: 160, height: 160, animation: 'fadeSlideUp 500ms ease both', animationDelay: `${(i + 3) * 60}ms` }}
             >
               <img src={src} alt="" className="w-full h-full object-cover" />
@@ -659,7 +662,7 @@ function StepIntentions({ onNext, onBack }: { onNext: (items: string[]) => void;
       >
         {CARDS.map((c, i) => (
           <div key={i} className="flex flex-col gap-3 p-2 rounded-[30px] shrink-0">
-            <div className="rounded-[20px] overflow-hidden" style={{ width: 150, height: 150 }}>
+            <div className="rounded-[24px] overflow-hidden" style={{ width: 150, height: 150 }}>
               <img src={c.img} alt={c.title} className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col gap-2 px-1">
@@ -709,7 +712,12 @@ function StepDirections({ onNext, onBack }: { onNext: (direction: string) => voi
       </div>
 
       <div className="flex justify-center" style={{ marginTop: 16 }}>
-        <TextInputBox value={text} onChange={setText} placeholder="Write out your aspiration. You can change it anytime." />
+        <TextInputBox
+          value={text}
+          onChange={setText}
+          placeholder="Write out your aspiration. You can change it anytime."
+          inputWeight={400}
+        />
       </div>
 
       <div
@@ -749,7 +757,7 @@ function StepCheckin({ onNext, onBack }: { onNext: () => void; onBack: () => voi
     <div className="relative size-full" style={{ background: BG }}>
       <MaeHeader step={5} />
 
-      <div className="px-6" style={{ paddingTop: 32 }}>
+      <div className="px-6 text-center" style={{ paddingTop: 32 }}>
         <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
           Let's do your first check-in
         </p>
@@ -757,7 +765,7 @@ function StepCheckin({ onNext, onBack }: { onNext: () => void; onBack: () => voi
 
       <div className="flex justify-center" style={{ marginTop: 20 }}>
         <div
-          className="flex items-center justify-between px-4 py-4 rounded-[20px] overflow-hidden"
+          className="flex items-center justify-between px-4 py-4 rounded-[24px] overflow-hidden"
           style={{ width: 296, border: '1px solid rgba(138,116,103,0.2)', background: BG, animation: 'fadeSlideUp 400ms ease both', animationDelay: '120ms' }}
         >
           <span

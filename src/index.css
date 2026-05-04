@@ -24,6 +24,68 @@
 }
 
 @layer base {
+  :root {
+    /* Raw Mae color scales from color-scales.md */
+    --mae-green-50: #F6FDE8;
+    --mae-green-100: #EBFBCC;
+    --mae-green-200: #D6F6A0;
+    --mae-green-300: #BAEE68;
+    --mae-green-400: #9BE033;
+    --mae-green-500: #7FC71B;
+    --mae-green-600: #619F11;
+    --mae-green-700: #457809;
+    --mae-green-800: #2F6F1B;
+    --mae-green-900: #044A28;
+
+    --mae-amber-50: #FFFCEB;
+    --mae-amber-100: #FFF5C6;
+    --mae-amber-200: #FFED93;
+    --mae-amber-300: #FFDB4A;
+    --mae-amber-400: #FFC820;
+    --mae-amber-500: #F9A707;
+    --mae-amber-600: #DD7F02;
+    --mae-amber-700: #B75806;
+    --mae-amber-800: #94440C;
+    --mae-amber-900: #7A380D;
+
+    --mae-terracotta-50: #FEF0E3;
+    --mae-terracotta-100: #FEEAD6;
+    --mae-terracotta-200: #FBD1AD;
+    --mae-terracotta-300: #F8B079;
+    --mae-terracotta-400: #F48643;
+    --mae-terracotta-500: #F1651E;
+    --mae-terracotta-600: #E24B14;
+    --mae-terracotta-700: #BC3712;
+    --mae-terracotta-800: #952D17;
+    --mae-terracotta-900: #782816;
+
+    /* Semantic application tokens */
+    --color-canvas: #FFFCF3;
+    --color-page: #d4cfc8;
+    --color-surface: #fffffe;
+    --color-warm-surface: #e8e1d7;
+    --color-border: rgba(138, 116, 103, 0.2);
+    --color-border-strong: rgba(138, 116, 103, 0.25);
+    --color-ink: #2d2d2a;
+    --color-ink-secondary: #1f1b16;
+    --color-muted: #6b6660;
+    --color-mid: #404040;
+
+    --color-brand: var(--mae-green-900);
+    --color-brand-soft: var(--mae-green-50);
+    --color-brand-active: var(--mae-green-200);
+    --color-brand-contrast: #fffffe;
+
+    --color-role-accent: var(--mae-green-900);
+    --color-role-surface: var(--mae-green-50);
+    --color-highlight-accent: var(--mae-amber-600);
+    --color-highlight-surface: var(--mae-amber-50);
+    --color-highlight-strong: var(--mae-amber-900);
+    --color-memory-accent: var(--mae-terracotta-700);
+    --color-memory-surface: var(--mae-terracotta-50);
+    --color-memory-strong: var(--mae-terracotta-800);
+  }
+
   *, *::before, *::after {
     box-sizing: border-box;
   }
@@ -35,7 +97,7 @@
   }
 
   body {
-    background-color: #d4cfc8;
+    background-color: var(--color-page);
     display: flex;
     align-items: center;
     justify-content: center;

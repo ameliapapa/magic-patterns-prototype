@@ -289,7 +289,7 @@ function IdeaCard({
 }) {
   return (
     <div
-      className="relative overflow-hidden rounded-[20px] text-left"
+      className="relative overflow-hidden rounded-[24px] text-left"
       style={{
         height: 208,
         background: '#e8e1d7',

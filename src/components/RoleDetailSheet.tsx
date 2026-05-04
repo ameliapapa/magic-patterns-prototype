@@ -315,7 +315,7 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
         style={{
           position: 'relative',
           marginTop: -22,
-          borderRadius: '20px 20px 0 0',
+          borderRadius: '24px 24px 0 0',
           background: highlighted ? AMBER_50 : SURFACE,
           padding: '16px 18px 20px',
           transition: 'background 220ms ease',

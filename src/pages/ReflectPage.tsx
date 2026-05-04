@@ -82,7 +82,7 @@ function RoleCard({ role }: { role: RoleDef }) {
 
   return (
     <div
-      className="flex flex-col rounded-[20px] overflow-hidden"
+      className="flex flex-col rounded-[24px] overflow-hidden"
       style={{
         background: '#fffffe',
         border: '1px solid rgba(138,116,103,0.18)',
@@ -248,7 +248,7 @@ function RoleOverviewCard({ role }: { role: RoleDef }) {
 
   return (
     <div
-      className="rounded-[20px] overflow-hidden"
+      className="rounded-[24px] overflow-hidden"
       style={{
         background: '#fffffe',
         border: '1px solid rgba(138,116,103,0.18)',

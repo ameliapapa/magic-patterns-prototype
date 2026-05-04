@@ -465,7 +465,7 @@ function MomentCard({
         style={{
           position: 'relative',
           marginTop: -22,
-          borderRadius: '20px 20px 0 0',
+          borderRadius: '24px 24px 0 0',
           background: moment.highlighted ? AMBER_50 : SURFACE,
           padding: '16px 18px 20px',
           transition: 'background 220ms ease',
@@ -569,7 +569,7 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
       <section style={{ padding: '20px 20px 0' }}>
         {searchOpen ? (
           <div
-            className="flex items-center rounded-[20px]"
+            className="flex items-center rounded-[24px]"
             style={{
               minHeight: 46,
               background: SURFACE,

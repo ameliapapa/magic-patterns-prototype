@@ -383,20 +383,21 @@ export default function CaptureMomentSheet({
               disabled={!canSubmit}
               className="flex items-center gap-[8px] rounded-pill"
               style={{
-                background: canSubmit ? GREEN : 'rgba(4,74,40,0.25)',
+                background: canSubmit ? GREEN : 'transparent',
+                border: canSubmit ? '1px solid transparent' : `1px solid ${BORDER}`,
                 padding: '12px 20px',
                 cursor: canSubmit ? 'pointer' : 'not-allowed',
-                transition: 'background 200ms ease',
+                transition: 'background 200ms ease, border-color 200ms ease',
               }}
             >
               <span
-                className="font-sans font-medium"
-                style={{ fontSize: 14, color: '#fcfcfa', fontVariationSettings: "'opsz' 14" }}
+                className={canSubmit ? 'font-sans font-medium' : 'font-bobby font-bold'}
+                style={{ fontSize: canSubmit ? 14 : 18, color: canSubmit ? '#fcfcfa' : 'rgba(107,102,96,0.72)', fontVariationSettings: canSubmit ? "'opsz' 14" : undefined }}
               >
                 Capture moment
               </span>
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path d="M2 6.5h9M8 3l3.5 3.5L8 10" stroke="#fcfcfa" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M2 6.5h9M8 3l3.5 3.5L8 10" stroke={canSubmit ? '#fcfcfa' : 'rgba(107,102,96,0.72)'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
           </div>

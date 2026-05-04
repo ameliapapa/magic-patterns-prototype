@@ -131,13 +131,16 @@ function GreenButton({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="w-full rounded-[20px] py-4 font-sans font-medium"
+      className="w-full rounded-[24px] py-4 font-sans font-medium"
       style={{
-        background: disabled ? 'rgba(4,74,40,0.28)' : GREEN,
-        color: '#fffffe',
-        fontSize: 16,
-        fontVariationSettings: "'opsz' 14",
-        transition: 'background 150ms ease',
+        background: disabled ? 'transparent' : GREEN,
+        border: disabled ? `1px solid ${BORDER}` : '1px solid transparent',
+        color: disabled ? 'rgba(107,102,96,0.72)' : '#fffffe',
+        fontFamily: disabled ? "'F37 Bobby Trial', Georgia, serif" : undefined,
+        fontSize: disabled ? 18 : 16,
+        fontWeight: disabled ? 700 : undefined,
+        fontVariationSettings: disabled ? undefined : "'opsz' 14",
+        transition: 'background 150ms ease, border-color 150ms ease',
       }}
     >
       {label}
@@ -264,7 +267,7 @@ function RoleTile({
         background: selected ? GREEN : BG,
         border: selected ? '1px solid transparent' : '1px solid rgba(138,116,103,0.2)',
         transition: 'background 180ms ease, border-color 180ms ease, transform 100ms ease',
-        borderRadius: 20,
+        borderRadius: 24,
         padding: '8px 14px 8px 10px',
         gap: 8,
       }}
@@ -437,7 +440,7 @@ function DirectionStep({
         </p>
 
         <div
-          className="rounded-[20px] overflow-hidden"
+          className="rounded-[24px] overflow-hidden"
           style={{
             background: 'rgba(138,116,103,0.06)',
             border: `1px solid ${BORDER}`,
@@ -766,7 +769,7 @@ function WelcomeStep({
 
         {/* Mae note */}
         <div
-          className="rounded-[20px] flex flex-col gap-[10px]"
+          className="rounded-[24px] flex flex-col gap-[10px]"
           style={{
             background: 'rgba(4,74,40,0.06)',
             padding: '16px 18px',

@@ -253,7 +253,7 @@ function PastMomentCard({
 
   return (
     <div
-      className="rounded-[20px] overflow-hidden"
+      className="rounded-[24px] overflow-hidden"
       style={{
         background: moment.highlighted ? AMBER_50 : '#fffffe',
         border: `1px solid ${BORDER}`,
@@ -608,7 +608,7 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
       {/* ── 4. Ask Mae card ── */}
       <button
         onClick={onMaeChatOpen}
-        className="flex items-center justify-between mx-5 rounded-[20px]"
+        className="flex items-center justify-between mx-5 rounded-[24px]"
         style={{
           background: 'rgba(4,74,40,0.06)',
           border: '1px solid rgba(4,74,40,0.14)',

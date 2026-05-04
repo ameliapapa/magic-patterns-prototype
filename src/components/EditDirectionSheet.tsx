@@ -131,16 +131,17 @@ export default function EditDirectionSheet({
             <button
               onClick={() => { if (canSave) onSave(text.trim()) }}
               disabled={!canSave}
-              className="w-full flex items-center justify-center rounded-[20px] py-4"
+              className="w-full flex items-center justify-center rounded-[24px] py-4"
               style={{
-                background: canSave ? GREEN : 'rgba(4,74,40,0.3)',
+                background: canSave ? GREEN : 'transparent',
+                border: canSave ? '1px solid transparent' : `1px solid ${BORDER}`,
                 cursor: canSave ? 'pointer' : 'not-allowed',
-                transition: 'background 200ms ease',
+                transition: 'background 200ms ease, border-color 200ms ease',
               }}
             >
               <span
-                className="font-sans font-medium"
-                style={{ fontSize: 15, color: '#fcfcfa', fontVariationSettings: "'opsz' 14" }}
+                className={canSave ? 'font-sans font-medium' : 'font-bobby font-bold'}
+                style={{ fontSize: canSave ? 15 : 18, color: canSave ? '#fcfcfa' : 'rgba(107,102,96,0.72)', fontVariationSettings: canSave ? "'opsz' 14" : undefined }}
               >
                 Save Direction
               </span>
