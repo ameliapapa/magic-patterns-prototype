@@ -120,7 +120,7 @@ export default function EditIntentionSheet({
               rows={3}
               className="w-full resize-none bg-transparent outline-none border-none"
               style={{
-                fontFamily: "'Libre Baskerville', Georgia, serif",
+                fontFamily: "'F37 Bobby Trial', Georgia, serif",
                 fontWeight: 700,
                 fontSize: 19,
                 lineHeight: '28px',
@@ -153,7 +153,7 @@ export default function EditIntentionSheet({
                         lineHeight: '30px',
                         padding: '0 12px',
                         background: active ? GREEN : 'transparent',
-                        color: active ? '#fffffe' : MUTED,
+                        color: active ? '#fafaf7' : MUTED,
                         border: `1px solid ${active ? 'transparent' : BORDER}`,
                         transition: 'background 160ms ease, color 160ms ease, border-color 160ms ease',
                         fontVariationSettings: "'opsz' 9",

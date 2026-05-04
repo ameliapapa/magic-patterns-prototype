@@ -112,7 +112,7 @@ export default function EditDirectionSheet({
               rows={3}
               className="w-full resize-none bg-transparent outline-none border-none"
               style={{
-                fontFamily: "'Libre Baskerville', Georgia, serif",
+                fontFamily: "'F37 Bobby Trial', Georgia, serif",
                 fontWeight: 700,
                 fontSize: 19,
                 lineHeight: '28px',

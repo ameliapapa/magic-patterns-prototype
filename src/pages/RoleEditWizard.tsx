@@ -37,11 +37,9 @@ import iconReader from '../assets/icons/reader-role.svg'
 // ─── Tokens ───────────────────────────────────────────────────────────────────
 const GREEN = '#044A28'
 const BG = '#FFFCF3'
-const SURFACE = '#fffffe'
 const INK = '#2d2d2a'
 const MUTED = '#6b6660'
 const BORDER = 'rgba(138,116,103,0.2)'
-const TERRACOTTA = '#8f342f'
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -263,7 +261,7 @@ function RoleTile({
       onClick={onSelect}
       className="flex flex-row items-center shrink-0 active:scale-[0.95]"
       style={{
-        background: selected ? GREEN : SURFACE,
+        background: selected ? GREEN : BG,
         border: selected ? '1px solid transparent' : '1px solid rgba(138,116,103,0.2)',
         transition: 'background 180ms ease, border-color 180ms ease, transform 100ms ease',
         borderRadius: 20,
@@ -285,7 +283,7 @@ function RoleTile({
         style={{
           fontSize: 12,
           lineHeight: '15px',
-          color: selected ? '#fffffe' : INK,
+          color: selected ? '#fafaf7' : '#030712',
           fontVariationSettings: "'opsz' 14",
           whiteSpace: 'nowrap',
         }}
@@ -487,7 +485,7 @@ function DirectionStep({
                 className="font-serif"
                 style={{
                   fontSize: 14,
-                  color: TERRACOTTA,
+                  color: '#BC3712',
                   lineHeight: '20px',
                   fontWeight: 700,
                   transition: 'color 140ms ease',
@@ -747,7 +745,7 @@ function WelcomeStep({
                   fontSize: 18,
                   lineHeight: '27px',
                   letterSpacing: '-0.2px',
-                  color: TERRACOTTA,
+                  color: '#BC3712',
                   fontWeight: 700,
                 }}
               >

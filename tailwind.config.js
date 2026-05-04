@@ -15,10 +15,10 @@ module.exports = {
         mid: '#404040',
       },
       fontFamily: {
-        serif: ['"Libre Baskerville"', 'Georgia', 'serif'],
+        serif: ['"F37 Bobby Trial"', 'Georgia', 'serif'],
         sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
         mono: ['"DM Mono"', 'ui-monospace', 'monospace'],
-        bobby: ['"Libre Baskerville"', 'Georgia', 'serif'],
+        bobby: ['"F37 Bobby Trial"', 'Georgia', 'serif'],
       },
       borderRadius: {
         '4xl': '2rem',
