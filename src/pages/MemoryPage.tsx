@@ -11,6 +11,7 @@ const GREEN = '#044A28'
 const AMBER = '#9c6b3a'
 const BORDER = 'rgba(138,116,103,0.2)'
 const AMBER_BORDER = 'rgba(156,107,58,0.28)'
+const AMBER_50 = '#FFFCEB'
 const AMBER_800 = '#94440C'
 const TERRACOTTA_50 = '#FEF0E3'
 const TERRACOTTA_200 = '#FBD1AD'
@@ -254,7 +255,7 @@ function PastMomentCard({
     <div
       className="rounded-[20px] overflow-hidden"
       style={{
-        background: '#fffffe',
+        background: moment.highlighted ? AMBER_50 : '#fffffe',
         border: `1px solid ${BORDER}`,
       }}
     >

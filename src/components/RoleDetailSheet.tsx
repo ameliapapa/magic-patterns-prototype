@@ -29,6 +29,7 @@ import imgRunner from '../assets/illustrations/u1355955226_runner_in_the_park_--
 const GREEN = '#044A28'
 const BORDER = 'rgba(138,116,103,0.2)'
 const AMBER = '#9c6b3a'
+const AMBER_50 = '#FFFCEB'
 const AMBER_200 = '#FFED93'
 const AMBER_900 = '#7A380D'
 const SURFACE = '#fffffe'
@@ -263,7 +264,7 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
       <article
         className="overflow-hidden rounded-[24px]"
         style={{
-          background: highlighted ? 'rgba(185,131,61,0.025)' : SURFACE,
+          background: highlighted ? AMBER_50 : SURFACE,
           border: `1px solid ${highlighted ? 'rgba(185,131,61,0.38)' : BORDER}`,
           padding: '14px 16px 17px',
           transition: 'background 220ms ease, border-color 220ms ease',
@@ -293,7 +294,7 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
     <article
       className="overflow-hidden rounded-[24px]"
       style={{
-        background: highlighted ? 'rgba(185,131,61,0.025)' : SURFACE,
+        background: highlighted ? AMBER_50 : SURFACE,
         border: `1px solid ${highlighted ? 'rgba(185,131,61,0.38)' : BORDER}`,
         transition: 'background 220ms ease, border-color 220ms ease',
       }}
@@ -315,7 +316,7 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
           position: 'relative',
           marginTop: -22,
           borderRadius: '20px 20px 0 0',
-          background: highlighted ? '#fdf6ec' : SURFACE,
+          background: highlighted ? AMBER_50 : SURFACE,
           padding: '16px 18px 20px',
           transition: 'background 220ms ease',
         }}

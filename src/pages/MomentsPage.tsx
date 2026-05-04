@@ -17,6 +17,15 @@ const MUTED = '#6b6660'
 const INK = '#2d2d2a'
 const RED = '#8f342f'
 const GOLD = '#b9833d'
+const AMBER_50 = '#FFFCEB'
+const AMBER_200 = '#FFED93'
+const AMBER_900 = '#7A380D'
+const MEMORY_SECTION_TITLE_STYLE = {
+  fontSize: 20,
+  lineHeight: '26px',
+  letterSpacing: '-0.3px',
+  color: INK,
+} as const
 
 const DOW_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 const MONTH_LABEL = 'April 2026'
@@ -414,7 +423,7 @@ function MomentCard({
     <article
       className="overflow-hidden rounded-[24px]"
       style={{
-        background: moment.highlighted ? 'rgba(185,131,61,0.025)' : SURFACE,
+        background: moment.highlighted ? AMBER_50 : SURFACE,
         border: `1px solid ${moment.highlighted ? 'rgba(185,131,61,0.38)' : BORDER}`,
         transition: 'background 220ms ease, border-color 220ms ease',
       }}
@@ -437,7 +446,7 @@ function MomentCard({
             right: 12,
             width: 36,
             height: 36,
-            background: moment.highlighted ? 'rgba(185,131,61,0.88)' : 'rgba(255,255,254,0.92)',
+            background: moment.highlighted ? AMBER_200 : 'rgba(255,255,254,0.92)',
             backdropFilter: 'blur(6px)',
             transition: 'background 220ms ease',
           }}
@@ -445,8 +454,8 @@ function MomentCard({
           <Star
             size={15}
             strokeWidth={1.6}
-            color={moment.highlighted ? '#fffffe' : `rgba(45,45,42,0.55)`}
-            fill={moment.highlighted ? '#fffffe' : 'transparent'}
+            color={moment.highlighted ? AMBER_900 : `rgba(45,45,42,0.55)`}
+            fill={moment.highlighted ? AMBER_900 : 'transparent'}
           />
         </button>
       </div>
@@ -457,7 +466,7 @@ function MomentCard({
           position: 'relative',
           marginTop: -22,
           borderRadius: '20px 20px 0 0',
-          background: moment.highlighted ? '#fdf6ec' : SURFACE,
+          background: moment.highlighted ? AMBER_50 : SURFACE,
           padding: '16px 18px 20px',
           transition: 'background 220ms ease',
         }}
@@ -617,19 +626,18 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
               <button
                 key={term}
                 onClick={() => setSearchQuery(term)}
-                className="shrink-0 rounded-pill"
+                className="flex items-center overflow-hidden px-3 py-[6px] rounded-pill shrink-0 active:scale-95"
                 style={{
-                  height: 30,
-                  padding: '0 12px',
-                  background: term === 'highlighted' ? 'rgba(185,131,61,0.08)' : 'rgba(4,74,40,0.06)',
-                  border: `1px solid ${term === 'highlighted' ? 'rgba(185,131,61,0.22)' : 'rgba(4,74,40,0.14)'}`,
+                  background: SURFACE,
+                  border: '1px solid rgba(138, 116, 103, 0.25)',
+                  transition: 'transform 120ms ease, box-shadow 120ms ease',
                 }}
               >
                 <span
-                  className="font-sans font-medium"
+                  className="font-sans font-medium text-mid uppercase whitespace-nowrap"
                   style={{
                     fontSize: 12,
-                    color: term === 'highlighted' ? GOLD : GREEN,
+                    lineHeight: 'normal',
                     fontVariationSettings: "'opsz' 14",
                   }}
                 >
@@ -644,8 +652,8 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
         <div className="flex items-center justify-between" style={{ marginTop: 24 }}>
           <div>
             <h2
-              className="font-serif font-medium"
-              style={{ fontSize: 18, lineHeight: '24px', color: INK, letterSpacing: '-0.2px' }}
+              className="font-serif font-bold"
+              style={MEMORY_SECTION_TITLE_STYLE}
             >
               {sectionTitle}
             </h2>
