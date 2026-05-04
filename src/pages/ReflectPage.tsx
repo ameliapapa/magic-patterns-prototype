@@ -158,9 +158,6 @@ function RoleCard({ role }: { role: RoleDef }) {
         </div>
       </div>
 
-      {/* Divider */}
-      <div style={{ height: 1, background: 'rgba(138,116,103,0.1)', marginLeft: 20, marginRight: 20 }} />
-
       {/* Direction */}
       <div className="flex flex-col gap-[6px] px-5 pt-[14px] pb-4">
         <span
@@ -172,7 +169,7 @@ function RoleCard({ role }: { role: RoleDef }) {
         {direction ? (
           <p
             className="font-serif text-ink-secondary"
-            style={{ fontSize: 15, lineHeight: '23px', fontStyle: 'italic' }}
+            style={{ fontSize: 15, lineHeight: '23px', fontWeight: 700, color: '#044A28' }}
           >
             "{direction}"
           </p>
@@ -187,9 +184,6 @@ function RoleCard({ role }: { role: RoleDef }) {
           </button>
         )}
       </div>
-
-      {/* Divider */}
-      <div style={{ height: 1, background: 'rgba(138,116,103,0.1)', marginLeft: 20, marginRight: 20 }} />
 
       {/* Intentions */}
       <div className="flex flex-col gap-[10px] px-5 pt-[14px] pb-5">
@@ -252,7 +246,7 @@ export default function ReflectPage({ onAddRole }: { onAddRole?: () => void }) {
     : USER_ROLES
 
   return (
-    <div style={{ width: 393, background: '#f8f6f2' }}>
+    <div style={{ width: 393, background: '#FFFCF3' }}>
       {/* ── 1. Header ── */}
       <div className="flex flex-col gap-[6px] px-6" style={{ paddingTop: 48, paddingBottom: 20 }}>
         <p
@@ -278,7 +272,7 @@ export default function ReflectPage({ onAddRole }: { onAddRole?: () => void }) {
           onClick={() => setActiveRole(null)}
           className="flex items-center px-[14px] py-[7px] rounded-pill shrink-0"
           style={{
-            background: activeRole === null ? '#2d2d2a' : '#fffffe',
+            background: activeRole === null ? '#044A28' : '#fffffe',
             border: activeRole === null ? '1px solid transparent' : '1px solid rgba(138,116,103,0.25)',
           }}
         >
@@ -301,7 +295,7 @@ export default function ReflectPage({ onAddRole }: { onAddRole?: () => void }) {
             onClick={() => setActiveRole(role.id === activeRole ? null : role.id)}
             className="flex items-center gap-[6px] px-[12px] py-[7px] rounded-pill shrink-0"
             style={{
-              background: activeRole === role.id ? '#2d2d2a' : '#fffffe',
+              background: activeRole === role.id ? '#044A28' : '#fffffe',
               border: activeRole === role.id ? '1px solid transparent' : '1px solid rgba(138,116,103,0.25)',
             }}
           >

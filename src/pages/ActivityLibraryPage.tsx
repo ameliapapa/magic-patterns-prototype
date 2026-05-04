@@ -43,8 +43,8 @@ import studentDeskImg from '../assets/illustrations/u1355955226_student_studying
 import hardwareStoreImg from '../assets/illustrations/couple-shopping-hardware-store.png'
 import officeWorkerImg from '../assets/illustrations/u1355955226_office_worker_in_front_of_pc_--sref_202514354_--p_34d3ce6f-dd9b-4966-bcba-6d684da243fa_3.png'
 
-const GREEN = '#29422a'
-const CANVAS = '#f8f6f2'
+const GREEN = '#044A28'
+const CANVAS = '#FFFCF3'
 const SURFACE = '#fffffe'
 const BORDER = 'rgba(138,116,103,0.2)'
 const MUTED = '#6b6660'
@@ -405,7 +405,7 @@ function FindMoreCard({ onClick }: { onClick: () => void }) {
       style={{
         width: 120,
         height: 144,
-        background: 'rgba(41,66,42,0.04)',
+        background: 'rgba(4,74,40,0.04)',
         border: `1px solid ${BORDER}`,
         transition: 'transform 120ms ease',
       }}
@@ -413,7 +413,7 @@ function FindMoreCard({ onClick }: { onClick: () => void }) {
     >
       <div
         className="relative flex items-center justify-center rounded-full"
-        style={{ width: 40, height: 40, background: 'rgba(41,66,42,0.08)' }}
+        style={{ width: 40, height: 40, background: 'rgba(4,74,40,0.08)' }}
       >
         <Heart size={20} strokeWidth={1.8} color={GREEN} />
         <span

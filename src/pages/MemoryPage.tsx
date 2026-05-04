@@ -7,7 +7,7 @@ import maeLogo from '../assets/icons/mae-flower-icon.svg'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
 
-const GREEN = '#29422a'
+const GREEN = '#044A28'
 const AMBER = '#9c6b3a'
 const BORDER = 'rgba(138,116,103,0.2)'
 const AMBER_BG = 'rgba(156,107,58,0.07)'
@@ -271,7 +271,7 @@ function PastMomentCard({
           <div
             className="absolute inset-0"
             style={{
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(41,66,42,0.18) 100%)',
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(4,74,40,0.18) 100%)',
             }}
           />
           {/* Role tag overlaid on photo */}
@@ -526,7 +526,7 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
   return (
     <div
       className="relative"
-      style={{ width: 393, background: '#f8f6f2', minHeight: 852 }}
+      style={{ width: 393, background: '#FFFCF3', minHeight: 852 }}
     >
 
       {/* ── 1. Header ── */}
@@ -552,7 +552,7 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
           <img src={iconBubbleChat} alt="chat" width={24} height={24} />
           <span
             className="absolute rounded-full"
-            style={{ width: 7, height: 7, background: GREEN, top: 0, right: 0, border: '1.5px solid #f8f6f2' }}
+            style={{ width: 7, height: 7, background: GREEN, top: 0, right: 0, border: '1.5px solid #FFFCF3' }}
           />
         </button>
       </div>
@@ -614,8 +614,8 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
         onClick={onMaeChatOpen}
         className="flex items-center justify-between mx-5 rounded-[20px]"
         style={{
-          background: 'rgba(41,66,42,0.06)',
-          border: '1px solid rgba(41,66,42,0.14)',
+          background: 'rgba(4,74,40,0.06)',
+          border: '1px solid rgba(4,74,40,0.14)',
           padding: '16px 18px',
           marginBottom: 20,
           width: 'calc(100% - 40px)',
@@ -624,7 +624,7 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
         <div className="flex items-center gap-3">
           <div
             className="flex items-center justify-center rounded-full shrink-0"
-            style={{ width: 36, height: 36, background: 'rgba(41,66,42,0.1)' }}
+            style={{ width: 36, height: 36, background: 'rgba(4,74,40,0.1)' }}
           >
             <img src={maeLogo} alt="" width={18} height={18} />
           </div>
@@ -637,14 +637,14 @@ export default function MemoryPage({ onMaeChatOpen }: { onMaeChatOpen: () => voi
             </span>
             <p
               className="font-serif"
-              style={{ fontSize: 14, lineHeight: '20px', color: '#2d2d2a', letterSpacing: '-0.1px', fontStyle: 'italic' }}
+              style={{ fontSize: 14, lineHeight: '20px', color: '#BC3712', letterSpacing: '-0.1px', fontWeight: 700 }}
             >
               What do my memories say about me this month?
             </p>
           </div>
         </div>
         <svg width="7" height="12" viewBox="0 0 7 12" fill="none" style={{ marginLeft: 12, flexShrink: 0 }}>
-          <path d="M1 1l5 5-5 5" stroke="rgba(41,66,42,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1 1l5 5-5 5" stroke="rgba(4,74,40,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 

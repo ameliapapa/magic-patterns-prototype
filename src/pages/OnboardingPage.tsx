@@ -58,8 +58,8 @@ import iconReaderLight from '../assets/icons/reader-role-light.svg'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const GREEN = '#29422a'
-const BG = '#f8f6f2'
+const GREEN = '#044A28'
+const BG = '#FFFCF3'
 const MAE_LOGO_TOP = 90
 const MAE_LOGO_HEIGHT = 64
 
@@ -145,12 +145,10 @@ function GreenButton({
   label,
   onClick,
   disabled,
-  fontFamily = 'DM Sans',
 }: {
   label: string
   onClick: () => void
   disabled?: boolean
-  fontFamily?: string
 }) {
   return (
     <button
@@ -158,13 +156,13 @@ function GreenButton({
       disabled={disabled}
       className="w-full flex items-center justify-center rounded-[20px] py-4 active:scale-[0.97] transition-transform duration-100"
       style={{
-        background: disabled ? 'rgba(41,66,42,0.45)' : GREEN,
+        background: disabled ? 'rgba(4,74,40,0.45)' : GREEN,
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}
     >
       <span
-        className="font-medium text-base text-[#fcfcfa] text-center"
-        style={{ fontFamily, fontVariationSettings: "'opsz' 14" }}
+        className="font-bobby font-bold text-[#fcfcfa] text-center"
+        style={{ fontSize: 18 }}
       >
         {label}
       </span>
@@ -176,8 +174,8 @@ function BackButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="w-full font-sans font-medium text-base text-center hover:opacity-70 transition-opacity duration-150"
-      style={{ color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
+      className="w-full font-bobby font-bold text-center hover:opacity-70 transition-opacity duration-150"
+      style={{ fontSize: 18, color: 'rgba(74,74,69,0.6)' }}
     >
       Back
     </button>
@@ -190,13 +188,11 @@ function BottomActions({
   onBack,
   continueLabel = 'Continue',
   disabled = false,
-  continueFontFamily = 'DM Sans',
 }: {
   onContinue: () => void
   onBack?: () => void
   continueLabel?: string
   disabled?: boolean
-  continueFontFamily?: string
 }) {
   const pb = onBack ? 24 : 56
   return (
@@ -204,12 +200,7 @@ function BottomActions({
       className="absolute bottom-0 left-0 right-0 flex flex-col items-center"
       style={{ gap: 8, padding: `0 41px ${pb}px` }}
     >
-      <GreenButton
-        label={continueLabel}
-        onClick={onContinue}
-        disabled={disabled}
-        fontFamily={continueFontFamily}
-      />
+      <GreenButton label={continueLabel} onClick={onContinue} disabled={disabled} />
       {onBack && <BackButton onClick={onBack} />}
     </div>
   )
@@ -222,7 +213,7 @@ function SuggestionChip({ label, onClick }: { label: string; onClick?: () => voi
       className="flex items-center justify-center px-2 py-2 rounded-[10px] shrink-0 active:bg-[rgba(138,116,103,0.08)] transition-colors duration-100"
       style={{ border: '1px solid rgba(138,116,103,0.2)' }}
     >
-      <span className="font-sans font-normal text-black text-center" style={{ fontSize: 10, lineHeight: '13px', fontVariationSettings: "'opsz' 14" }}>
+      <span className="font-sans font-normal text-black text-center" style={{ fontSize: 13, lineHeight: '18px', fontVariationSettings: "'opsz' 14" }}>
         {label}
       </span>
     </button>
@@ -254,12 +245,12 @@ function TextInputBox({
         value={value}
         onChange={e => onChange(e.target.value)}
         className="absolute text-black bg-transparent outline-none border-none"
-        style={{ top: 16, left: 16, right: 16, fontSize: 20, fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 }}
+        style={{ top: 16, left: 16, right: 16, fontSize: 24, fontFamily: "'F37 Bobby Trial', Georgia, serif", fontWeight: 700 }}
       />
       {!value && (
         <p
           className="absolute font-sans font-normal text-left"
-          style={{ bottom: 12, left: 16, fontSize: 10, lineHeight: '15px', color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
+          style={{ bottom: 12, left: 16, fontSize: 13, lineHeight: '18px', color: 'rgba(74,74,69,0.6)', fontVariationSettings: "'opsz' 14" }}
         >
           {placeholder}
         </p>
@@ -355,15 +346,15 @@ function Intro1({ onNext }: { onNext: () => void }) {
       </div>
 
       {/* Headline */}
-      <div className="absolute text-center px-6" style={{ top: 613, left: 0, right: 0 }}>
+      <div className="absolute text-center" style={{ top: 613, left: 0, right: 0, padding: '0 41px' }}>
         <p
           className="font-serif font-bold"
           style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}
         >
           Plan your week around{' '}
-          <em style={{ color: '#d13e1e', fontStyle: 'italic' }}>who you are,</em>
+          <em style={{ fontWeight: 700, color: '#BC3712', fontStyle: 'normal' }}>who you are,</em>
           {' '}and{' '}
-          <em style={{ color: '#d13e1e', fontStyle: 'italic' }}>who you are becoming</em>
+          <em style={{ fontWeight: 700, color: '#BC3712', fontStyle: 'normal' }}>who you are becoming</em>
         </p>
       </div>
 
@@ -396,17 +387,17 @@ function Intro2({ onNext }: { onNext: () => void }) {
 
       {/* Headline — between icon and button */}
       <div
-        className="absolute text-center"
-        style={{ top: 468, left: 0, right: 0, paddingLeft: 24, paddingRight: 24 }}
+        className="absolute text-center overflow-hidden"
+        style={{ top: 468, left: 0, right: 0, paddingLeft: 24, paddingRight: 24, paddingBottom: 8 }}
       >
         <p
           className="font-serif font-bold"
-          style={{ fontSize: 32, lineHeight: '38px', color: GREEN }}
+          style={{ fontSize: 32, lineHeight: '38px', color: GREEN, animation: 'maskReveal 700ms cubic-bezier(0.22, 1, 0.36, 1) 150ms both' }}
         >
           Balance your roles{'\n'}
           through journaling{'\n'}
           with{' '}
-          <span style={{ fontFamily: "'Libre Baskerville', Georgia, serif", fontWeight: 700 }}>Mae</span>
+          <span style={{ fontFamily: "'F37 Bobby Trial', Georgia, serif", fontWeight: 700 }}>Mae</span>
         </p>
       </div>
 
@@ -464,9 +455,9 @@ function Intro3({ onNext }: { onNext: () => void }) {
       <MaeHeader extraTop={60} />
 
       {/* Headline */}
-      <div className="text-center px-6" style={{ paddingTop: 48 }}>
-        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
-          The roles you hold,{'\n'}all tended for in one place.
+      <div className="flex justify-center" style={{ paddingTop: 48 }}>
+        <p className="font-serif font-bold text-center" style={{ fontSize: 24, lineHeight: '31px', color: '#2d2d2a', width: 248 }}>
+          The roles you hold,<br />all tended for<br />in one place.
         </p>
       </div>
 
@@ -476,7 +467,6 @@ function Intro3({ onNext }: { onNext: () => void }) {
       <BottomActions
         onContinue={onNext}
         continueLabel="Let's set them up"
-        continueFontFamily="'Libre Baskerville', Georgia, serif"
       />
     </div>
   )
@@ -495,12 +485,12 @@ function StepPersonal({ onNext, onBack }: { onNext: (name: string) => void; onBa
       <MaeHeader step={1} extraTop={60} />
 
       <div className="text-center px-6" style={{ paddingTop: 32 }}>
-        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+        <p className="font-serif font-bold" style={{ fontSize: 24, lineHeight: '31px', color: '#2d2d2a' }}>
           How should I call you?
         </p>
         <p
           className="font-sans font-medium"
-          style={{ fontSize: 10, lineHeight: '27px', color: '#000', marginTop: 0, fontVariationSettings: "'opsz' 14" }}
+          style={{ fontSize: 13, lineHeight: '20px', color: '#000', marginTop: 6, fontVariationSettings: "'opsz' 14" }}
         >
           Could be your name or a nickname
         </p>
@@ -512,16 +502,16 @@ function StepPersonal({ onNext, onBack }: { onNext: (name: string) => void; onBa
           value={name}
           onChange={e => setName(e.target.value)}
           className="w-full bg-transparent outline-none border-none font-serif font-bold text-black"
-          style={{ fontSize: 20, lineHeight: '27px', caretColor: '#000' }}
+          style={{ fontSize: 24, lineHeight: '31px', caretColor: '#000' }}
         />
         <div style={{ width: 271, height: 1, background: '#000', marginTop: 8 }} />
         <p
           className="font-sans font-normal"
           style={{
-            fontSize: 10,
-            lineHeight: '27px',
+            fontSize: 13,
+            lineHeight: '20px',
             color: '#000',
-            marginTop: 4,
+            marginTop: 6,
             fontVariationSettings: "'opsz' 14",
             opacity: name ? 1 : 0,
             transform: name ? 'translateY(0)' : 'translateY(4px)',
@@ -568,18 +558,18 @@ function StepRoles({
       <MaeHeader step={2} extraTop={60} />
 
       <div className="text-center px-6" style={{ paddingTop: 24 }}>
-        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+        <p className="font-serif font-bold" style={{ fontSize: 24, lineHeight: '31px', color: '#2d2d2a' }}>
           Which of these roles do you identify with, right now?
         </p>
         <p
           className="font-sans font-medium"
-          style={{ fontSize: 10, lineHeight: '12px', color: '#000', marginTop: 4, fontVariationSettings: "'opsz' 14" }}
+          style={{ fontSize: 13, lineHeight: '18px', color: '#000', marginTop: 6, fontVariationSettings: "'opsz' 14" }}
         >
           Pick as many as you see fit. You can make changes anytime,{'\n'}roles can change with the seasons
         </p>
       </div>
 
-      <div className="overflow-x-auto scrollbar-hide flex gap-2" style={{ paddingLeft: 24, paddingRight: 24, paddingTop: 16 }}>
+      <div className="overflow-x-auto scrollbar-hide flex gap-2" style={{ paddingLeft: 24, paddingRight: 24, paddingTop: 28 }}>
         {tileRow1.map(r => (
           <RoleTile key={r.id} {...r} selected={selected.has(r.id)} onToggle={() => toggle(r.id)} />
         ))}
@@ -592,18 +582,18 @@ function StepRoles({
       </div>
 
       {/* Custom role input — same style as StepPersonal */}
-      <div style={{ paddingLeft: 55, paddingTop: 32, width: 326 }}>
+      <div style={{ paddingLeft: 55, paddingTop: 52, width: 326 }}>
         <input
           value={customRole}
           onChange={e => setCustomRole(e.target.value)}
           className="w-full bg-transparent outline-none border-none font-serif font-bold text-black"
-          style={{ fontSize: 20, lineHeight: '27px', caretColor: '#000' }}
+          style={{ fontSize: 24, lineHeight: '31px', caretColor: '#000' }}
           placeholder=""
         />
         <div style={{ width: 271, height: 1, background: '#000', marginTop: 8 }} />
         <p
           className="font-sans font-normal"
-          style={{ fontSize: 10, lineHeight: '27px', color: 'rgba(74,74,69,0.6)', marginTop: 2, fontVariationSettings: "'opsz' 14" }}
+          style={{ fontSize: 13, lineHeight: '20px', color: 'rgba(74,74,69,0.6)', marginTop: 6, fontVariationSettings: "'opsz' 14" }}
         >
           Add a role in your own words
         </p>
@@ -621,7 +611,7 @@ function StepRoles({
 
 function StepIntentions({ onNext, onBack }: { onNext: (items: string[]) => void; onBack: () => void }) {
   const [text, setText] = useState('')
-  const suggestions = ['Making pottery', 'Filming videos', 'Designing posters']
+  const suggestions = ['Making pottery', 'Filming videos', 'Designing posters', 'Writing a journal', 'Learning guitar']
   const intentions = text.split(',').map(s => s.trim()).filter(Boolean)
 
   const addSuggestion = (s: string) => {
@@ -639,9 +629,9 @@ function StepIntentions({ onNext, onBack }: { onNext: (items: string[]) => void;
       <MaeHeader step={3} />
 
       <div className="text-center px-6" style={{ paddingTop: 24 }}>
-        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+        <p className="font-serif font-bold" style={{ fontSize: 24, lineHeight: '31px', color: '#2d2d2a' }}>
           Where is your{' '}
-          <em style={{ fontStyle: 'italic' }}>Creative</em>
+          <em style={{ fontWeight: 700, color: '#BC3712', fontStyle: 'normal' }}>Creative</em>
           {' '}role pulling you, right now?
         </p>
       </div>
@@ -650,7 +640,7 @@ function StepIntentions({ onNext, onBack }: { onNext: (items: string[]) => void;
         <TextInputBox value={text} onChange={setText} placeholder="Add as many examples that come to mind" />
       </div>
 
-      <div className="flex gap-2 justify-center flex-wrap px-6" style={{ marginTop: 16 }}>
+      <div className="flex overflow-x-auto scrollbar-hide gap-2" style={{ paddingLeft: 24, paddingRight: 24, marginTop: 16 }}>
         {suggestions.map(s => (
           <SuggestionChip key={s} label={s} onClick={() => addSuggestion(s)} />
         ))}
@@ -658,7 +648,7 @@ function StepIntentions({ onNext, onBack }: { onNext: (items: string[]) => void;
 
       <p
         className="font-sans font-normal text-center uppercase"
-        style={{ fontSize: 10, lineHeight: '15px', color: 'rgba(74,74,69,0.6)', marginTop: 24, letterSpacing: '0.05em', fontVariationSettings: "'opsz' 14" }}
+        style={{ fontSize: 13, lineHeight: '18px', color: 'rgba(74,74,69,0.6)', marginTop: 24, letterSpacing: '0.05em', fontVariationSettings: "'opsz' 14" }}
       >
         How about some suggestions
       </p>
@@ -711,9 +701,9 @@ function StepDirections({ onNext, onBack }: { onNext: (direction: string) => voi
       <MaeHeader step={4} />
 
       <div className="text-center px-6" style={{ paddingTop: 24 }}>
-        <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: '#2d2d2a' }}>
+        <p className="font-serif font-bold" style={{ fontSize: 24, lineHeight: '31px', color: '#2d2d2a' }}>
           Pick one direction for your{' '}
-          <em style={{ fontStyle: 'italic' }}>Creative</em>
+          <em style={{ fontWeight: 700, color: '#BC3712', fontStyle: 'normal' }}>Creative</em>
           {' '}role this season
         </p>
       </div>
@@ -734,8 +724,8 @@ function StepDirections({ onNext, onBack }: { onNext: (direction: string) => voi
       <p
         className="font-sans font-normal"
         style={{
-          fontSize: 10,
-          lineHeight: '15px',
+          fontSize: 13,
+          lineHeight: '18px',
           color: 'rgba(74,74,69,0.6)',
           padding: '16px 54px 0',
           fontVariationSettings: "'opsz' 14",

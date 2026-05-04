@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
-const GREEN = '#29422a'
+const GREEN = '#044A28'
 const BORDER = 'rgba(138,116,103,0.2)'
 const INK = '#2d2d2a'
 const MUTED = '#6b6660'
@@ -120,7 +120,7 @@ export default function EditIntentionSheet({
               rows={3}
               className="w-full resize-none bg-transparent outline-none border-none"
               style={{
-                fontFamily: "'Libre Baskerville', Georgia, serif",
+                fontFamily: "'F37 Bobby Trial', Georgia, serif",
                 fontWeight: 700,
                 fontSize: 19,
                 lineHeight: '28px',
@@ -174,7 +174,7 @@ export default function EditIntentionSheet({
               disabled={!canSave}
               className="w-full flex items-center justify-center rounded-[20px] py-4"
               style={{
-                background: canSave ? GREEN : 'rgba(41,66,42,0.3)',
+                background: canSave ? GREEN : 'rgba(4,74,40,0.3)',
                 cursor: canSave ? 'pointer' : 'not-allowed',
                 transition: 'background 200ms ease',
               }}

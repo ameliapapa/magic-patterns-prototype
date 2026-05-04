@@ -8,8 +8,8 @@ import coffeeImg from '../assets/illustrations/u1355955226_two_girls_sitting_in_
 import creativeImg from '../assets/illustrations/u1355955226_painter_painting_a_canvas_--sref_202514354_--prof_51f7c398-d464-4ad1-8bb6-da52f2cc1971_1.png'
 import professionalImg from '../assets/illustrations/u1355955226_office_worker_in_front_of_pc_--sref_202514354_--p_34d3ce6f-dd9b-4966-bcba-6d684da243fa_3.png'
 
-const GREEN = '#29422a'
-const CANVAS = '#f8f6f2'
+const GREEN = '#044A28'
+const CANVAS = '#FFFCF3'
 const SURFACE = '#fffffe'
 const WARM = '#e8e1d7'
 const BORDER = 'rgba(138,116,103,0.2)'
@@ -160,35 +160,49 @@ function Header({
 function MaeObservation({ onDismiss }: { onDismiss: () => void }) {
   return (
     <div
-      className="relative mx-5 rounded-[22px]"
-      style={{ background: 'rgba(41,66,42,0.06)', padding: '18px 20px' }}
+      className="relative mx-5 rounded-[22px] overflow-hidden"
+      style={{
+        background: '#FFFCEB',
+        border: '1px solid rgba(93,62,31,0.2)',
+        padding: '18px 20px 22px 20px',
+        minHeight: 120,
+      }}
     >
+      {/* Dismiss */}
       <button
         onClick={onDismiss}
         className="absolute flex items-center justify-center"
         aria-label="Dismiss"
-        style={{ top: 14, right: 16, width: 28, height: 28 }}
+        style={{ top: 15, right: 15, width: 26, height: 26 }}
       >
-        <X size={15} strokeWidth={1.8} color={INK} />
+        <X size={13} strokeWidth={1.5} color="#5d3e1f" />
       </button>
 
-      <div className="flex flex-col gap-3" style={{ paddingRight: 28 }}>
-        <div className="flex items-center gap-[7px]">
-          <img src={maeLogo} alt="" width={15} height={15} />
-          <span
-            className="font-sans font-medium uppercase"
-            style={{ fontSize: 9, letterSpacing: '1.3px', color: GREEN, opacity: 0.75, fontVariationSettings: "'opsz' 9" }}
-          >
-            Mae noticed
-          </span>
-        </div>
-        <p
-          className="font-serif"
-          style={{ fontSize: 17, lineHeight: '26px', letterSpacing: '-0.2px', color: INK, fontStyle: 'italic' }}
+      <div className="flex flex-col gap-[9px]" style={{ paddingRight: 88 }}>
+        {/* Label */}
+        <span
+          className="font-mono uppercase"
+          style={{ fontSize: 9, letterSpacing: '1.2px', color: '#5d3e1f', lineHeight: '13px' }}
         >
-          "Your highlighted moments this month are with people who make you feel calm."
+          Mae noticed
+        </span>
+
+        {/* Body */}
+        <p
+          className="font-bobby"
+          style={{ fontSize: 21, lineHeight: '27px', letterSpacing: '-0.3px', color: '#1e1f1c', fontWeight: 400 }}
+        >
+          Your highlighted moments this month are with people who make you feel calm
         </p>
       </div>
+
+      {/* Mae flower — anchored bottom-right, partially clipped */}
+      <img
+        src={maeLogo}
+        alt=""
+        className="absolute pointer-events-none"
+        style={{ width: 88, height: 88, bottom: -10, right: -6 }}
+      />
     </div>
   )
 }
@@ -607,8 +621,8 @@ export default function MomentsPage({ onMaeChatOpen }: { onMaeChatOpen: () => vo
                 style={{
                   height: 30,
                   padding: '0 12px',
-                  background: term === 'highlighted' ? 'rgba(185,131,61,0.08)' : 'rgba(41,66,42,0.06)',
-                  border: `1px solid ${term === 'highlighted' ? 'rgba(185,131,61,0.22)' : 'rgba(41,66,42,0.14)'}`,
+                  background: term === 'highlighted' ? 'rgba(185,131,61,0.08)' : 'rgba(4,74,40,0.06)',
+                  border: `1px solid ${term === 'highlighted' ? 'rgba(185,131,61,0.22)' : 'rgba(4,74,40,0.14)'}`,
                 }}
               >
                 <span

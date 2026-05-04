@@ -26,7 +26,7 @@ import imgCoffee from '../assets/illustrations/u1355955226_two_girls_sitting_in_
 import imgRunner from '../assets/illustrations/u1355955226_runner_in_the_park_--sref_202514354_--profile_8d1_34b21c61-5858-439e-8fbd-0256b22a06a4_0.png'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
-const GREEN = '#29422a'
+const GREEN = '#044A28'
 const BORDER = 'rgba(138,116,103,0.2)'
 const AMBER = '#9c6b3a'
 const AMBER_BG = 'rgba(156,107,58,0.07)'
@@ -56,6 +56,7 @@ type RoleData = {
   illustrationPosition?: string
   direction: string
   question: string
+  noticed: string
   intentions: string[]
   upcoming: UpcomingMoment[]
   past: PastMoment[]
@@ -72,6 +73,7 @@ const ROLES_DATA: Record<string, RoleData> = {
     illustrationPosition: 'center 30%',
     direction: 'Show up for myself first — sleep, movement, and nourishment',
     question: 'When did you last do something purely for yourself?',
+    noticed: 'It has been a while since you moved your body just for the joy of it.',
     intentions: ['Morning routine', 'Read 20 min daily', 'Gym 3× a week'],
     upcoming: [
       { date: 'Fri, May 2', text: 'Yoga class with Sarah' },
@@ -89,6 +91,7 @@ const ROLES_DATA: Record<string, RoleData> = {
     illustrationPosition: 'center 20%',
     direction: 'Create more than I consume',
     question: 'What would you make if no one was watching?',
+    noticed: 'It has been a while since you painted for fun.',
     intentions: ['Portfolio Redesign', 'Watercolor practice', 'Sketchbook habit'],
     upcoming: [
       { date: 'Sat, May 3', text: 'Watercolor workshop at Studio Co.' },
@@ -106,6 +109,7 @@ const ROLES_DATA: Record<string, RoleData> = {
     illustrationPosition: 'center 25%',
     direction: 'Be present, not perfect',
     question: "What's one moment you want to remember from this season with them?",
+    noticed: 'You have been capturing fewer moments with the kids lately.',
     intentions: ['Weekly one-on-one time', 'Less screens at dinner'],
     upcoming: [
       { date: 'Sun, May 4', text: 'Sunday family lunch' },
@@ -123,6 +127,7 @@ const ROLES_DATA: Record<string, RoleData> = {
     illustrationPosition: 'center 35%',
     direction: 'Invest in the people who actually matter',
     question: 'Who deserves more of you right now, and what would close that distance?',
+    noticed: 'You have not reached out to Jo in over three weeks.',
     intentions: ['Monthly catch-up with Jo'],
     upcoming: [
       { date: 'Sat, May 10', text: 'Brunch with Jo at the usual place' },
@@ -140,6 +145,7 @@ const ROLES_DATA: Record<string, RoleData> = {
     illustrationPosition: 'center 40%',
     direction: 'Choose each other every day',
     question: "What's one small gesture that could make this week feel more connected?",
+    noticed: 'The last few weeks have been quiet. A small gesture goes a long way.',
     intentions: [],
     upcoming: [
       { date: 'Wed, May 7', text: 'Anniversary dinner at Chez Louis' },
@@ -157,6 +163,7 @@ const ROLES_DATA: Record<string, RoleData> = {
     illustrationPosition: 'center 15%',
     direction: 'Build things worth building',
     question: 'What work would feel meaningful to look back on in a year?',
+    noticed: 'You have been in reactive mode lately — no deep work sessions logged.',
     intentions: ['Role App design', 'Website Redesign'],
     upcoming: [
       { date: 'Thu, May 8', text: 'Portfolio review with Marcus' },
@@ -174,6 +181,7 @@ const ROLES_DATA: Record<string, RoleData> = {
     illustrationPosition: 'center 30%',
     direction: 'Call more, worry less',
     question: 'When did you last reach out, just because you were thinking of them?',
+    noticed: 'You have not called your mum since her birthday. She would love to hear from you.',
     intentions: ['Sunday calls'],
     upcoming: [
       { date: 'Sun, May 11', text: "Visit mum for Mother's Day" },
@@ -207,7 +215,7 @@ function PastMomentCard({ moment }: { moment: PastMoment }) {
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(41,66,42,0.22) 100%)',
+                'linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(4,74,40,0.22) 100%)',
             }}
           />
         </div>
@@ -394,7 +402,7 @@ export default function RoleDetailSheet({
       {/* Scrollable inner */}
       <div
         className="h-full overflow-y-auto scrollbar-hide"
-        style={{ background: '#f8f6f2' }}
+        style={{ background: '#FFFCF3' }}
       >
         {/* ── 1. Hero illustration ── */}
         <div className="relative shrink-0" style={{ height: 300 }}>
@@ -490,19 +498,6 @@ export default function RoleDetailSheet({
               </span>
             </div>
 
-            {/* Direction preview */}
-            <p
-              className="font-serif"
-              style={{
-                fontSize: 15,
-                lineHeight: '22px',
-                color: 'rgba(255,255,254,0.82)',
-                fontStyle: 'italic',
-                letterSpacing: '-0.1px',
-              }}
-            >
-              "{role.direction}"
-            </p>
           </div>
         </div>
 
@@ -516,72 +511,78 @@ export default function RoleDetailSheet({
             animation: 'fadeUpIn 520ms 220ms cubic-bezier(0.22, 1, 0.36, 1) both',
           }}
         >
-          {/* Mae asks card */}
+          {/* Mae noticed card */}
           {showMaeAsks && (
             <div
-              className="relative rounded-[22px] flex flex-col gap-3"
+              className="relative rounded-[22px] overflow-hidden flex flex-col"
               style={{
-                background: 'rgba(41,66,42,0.06)',
-                padding: '18px 20px',
+                background: '#F6FDE8',
+                border: '1px solid rgba(4,74,40,0.12)',
+                padding: '18px 20px 22px',
                 marginTop: 20,
                 marginBottom: 32,
+                minHeight: 120,
               }}
             >
               {/* Dismiss */}
               <button
                 onClick={() => setShowMaeAsks(false)}
                 className="absolute flex items-center justify-center"
-                style={{ top: 14, right: 14, width: 28, height: 28 }}
+                style={{ top: 15, right: 15, width: 26, height: 26 }}
               >
                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-                  <path d="M1 1l9 9M10 1L1 10" stroke={INK} strokeWidth="1.6" strokeLinecap="round" />
+                  <path d="M1 1l9 9M10 1L1 10" stroke="rgba(4,74,40,0.5)" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </button>
 
-              <div className="flex items-center gap-[7px]" style={{ paddingRight: 24 }}>
-                <img src={maeLogo} alt="" width={15} height={15} />
+              <div className="flex flex-col" style={{ gap: 9, marginBottom: 14 }}>
+                {/* "MAE NOTICED" label */}
                 <span
-                  className="font-sans font-medium uppercase"
-                  style={{
-                    fontSize: 9,
-                    letterSpacing: '1.3px',
-                    color: GREEN,
-                    opacity: 0.75,
-                    fontVariationSettings: "'opsz' 9",
-                  }}
+                  className="font-mono uppercase"
+                  style={{ fontSize: 9, letterSpacing: '1.2px', color: 'rgba(4,74,40,0.55)', lineHeight: '13px' }}
                 >
-                  Mae asks
+                  Mae noticed
                 </span>
+
+                {/* Body text */}
+                <p
+                  className="font-bobby"
+                  style={{ fontSize: 21, lineHeight: '27px', letterSpacing: '-0.3px', color: GREEN, fontWeight: 400 }}
+                >
+                  {role.noticed}
+                </p>
               </div>
 
-              <p
-                className="font-serif"
-                style={{
-                  fontSize: 17,
-                  lineHeight: '26px',
-                  letterSpacing: '-0.2px',
-                  color: INK,
-                  fontStyle: 'italic',
-                }}
-              >
-                "{role.question}"
-              </p>
-
+              {/* CTA pill */}
               <button
-                onClick={() => onCaptureOpen(role.id)}
+                onClick={() => onIntentionEdit(role.id)}
                 className="flex items-center gap-[8px] self-start rounded-[30px]"
-                style={{ background: GREEN, padding: '10px 18px' }}
+                style={{ background: GREEN, padding: '9px 16px' }}
               >
                 <span
                   className="font-sans font-medium"
-                  style={{ fontSize: 13, color: '#fffffe', fontVariationSettings: "'opsz' 14" }}
+                  style={{ fontSize: 12, color: '#fffffe', fontVariationSettings: "'opsz' 14" }}
                 >
-                  Make time for this
+                  Set an intention
                 </span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M2 6h8M7 3l3 3-3 3" stroke="#fffffe" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5h6M5.5 2.5L8 5l-2.5 2.5" stroke="#fffffe" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
+
+              {/* Mae flower — large, clipped bottom-right */}
+              <img
+                src={maeLogo}
+                alt=""
+                className="absolute"
+                style={{
+                  width: 90,
+                  height: 90,
+                  bottom: -10,
+                  right: -8,
+                  opacity: 0.18,
+                }}
+              />
             </div>
           )}
 
@@ -604,15 +605,15 @@ export default function RoleDetailSheet({
               </button>
             </div>
 
-            <div style={{ paddingLeft: 14, borderLeft: '2px solid rgba(41,66,42,0.32)' }}>
+            <div style={{ paddingLeft: 14, borderLeft: '2px solid rgba(4,74,40,0.32)' }}>
               <p
                 className="font-serif"
                 style={{
                   fontSize: 16,
                   lineHeight: '25px',
                   letterSpacing: '-0.15px',
-                  color: INK,
-                  fontStyle: 'italic',
+                  color: GREEN,
+                  fontWeight: 700,
                 }}
               >
                 "{role.direction}"
@@ -703,7 +704,7 @@ export default function RoleDetailSheet({
             >
               <span
                 className="font-sans font-normal"
-                style={{ fontSize: 13, color: 'rgba(41,66,42,0.6)', fontVariationSettings: "'opsz' 9" }}
+                style={{ fontSize: 13, color: 'rgba(4,74,40,0.6)', fontVariationSettings: "'opsz' 9" }}
               >
                 + Add intention
               </span>
@@ -788,11 +789,11 @@ export default function RoleDetailSheet({
               }}
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 2v10M2 7h10" stroke="rgba(41,66,42,0.6)" strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M7 2v10M2 7h10" stroke="rgba(4,74,40,0.6)" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
               <span
                 className="font-sans font-normal"
-                style={{ fontSize: 13, color: 'rgba(41,66,42,0.65)', fontVariationSettings: "'opsz' 9" }}
+                style={{ fontSize: 13, color: 'rgba(4,74,40,0.65)', fontVariationSettings: "'opsz' 9" }}
               >
                 Capture a moment for {role.label}
               </span>

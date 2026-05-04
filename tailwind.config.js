@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bg: '#f8f6f2',
+        bg: '#FFFCF3',
         surface: '#fffffe',
         warm: '#e8e1d7',
         border: 'rgba(138, 116, 103, 0.2)',
@@ -15,9 +15,10 @@ module.exports = {
         mid: '#404040',
       },
       fontFamily: {
-        serif: ['"Libre Baskerville"', 'Georgia', 'serif'],
+        serif: ['"F37 Bobby Trial"', 'Georgia', 'serif'],
         sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
         mono: ['"DM Mono"', 'ui-monospace', 'monospace'],
+        bobby: ['"F37 Bobby Trial"', 'Georgia', 'serif'],
       },
       borderRadius: {
         '4xl': '2rem',

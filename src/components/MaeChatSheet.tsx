@@ -4,11 +4,11 @@ import chatIcon from '../assets/icons/bubble-chat.svg'
 import archiveIcon from '../assets/icons/archive-04.svg'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
-const GREEN = '#29422a'
+const GREEN = '#044A28'
 const BORDER = 'rgba(138,116,103,0.2)'
 const INK = '#2d2d2a'
 const MUTED = '#6b6660'
-const BG = '#f8f6f2'
+const BG = '#FFFCF3'
 const SURFACE = '#fffffe'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -152,9 +152,9 @@ function Bubble({ msg }: { msg: Message }) {
           maxWidth: isMae ? '91%' : '76%',
           padding: isMae ? '15px 16px 15px 17px' : '10px 13px',
           borderRadius: isMae ? '16px 16px 16px 6px' : '15px 15px 6px 15px',
-          background: isMae ? SURFACE : 'rgba(41,66,42,0.08)',
-          border: isMae ? `1px solid ${BORDER}` : '1px solid rgba(41,66,42,0.12)',
-          borderLeft: isMae ? '3px solid rgba(41,66,42,0.42)' : undefined,
+          background: isMae ? SURFACE : 'rgba(4,74,40,0.08)',
+          border: isMae ? `1px solid ${BORDER}` : '1px solid rgba(4,74,40,0.12)',
+          borderLeft: isMae ? '3px solid rgba(4,74,40,0.42)' : undefined,
           boxShadow: isMae ? '0 8px 20px rgba(45,45,42,0.035)' : 'none',
         }}
       >
@@ -231,7 +231,7 @@ function TabIcon({
         width: 34,
         height: 34,
         background: active ? GREEN : 'rgba(138,116,103,0.08)',
-        border: `1px solid ${active ? 'rgba(41,66,42,0.18)' : BORDER}`,
+        border: `1px solid ${active ? 'rgba(4,74,40,0.18)' : BORDER}`,
         transition: 'background 180ms ease, border-color 180ms ease',
       }}
       aria-label={label}
@@ -277,7 +277,7 @@ function ArchiveCard({ session }: { session: ChatSession }) {
           width: 3,
           margin: '3px 13px 3px 0',
           borderRadius: 3,
-          background: 'rgba(41,66,42,0.34)',
+          background: 'rgba(4,74,40,0.34)',
         }}
       />
       <div className="flex min-w-0 flex-1 flex-col" style={{ paddingRight: 10 }}>
@@ -292,7 +292,7 @@ function ArchiveCard({ session }: { session: ChatSession }) {
             className="rounded-pill"
             style={{
               height: 18,
-              background: 'rgba(41,66,42,0.08)',
+              background: 'rgba(4,74,40,0.08)',
               padding: '2px 7px',
               display: 'flex',
               alignItems: 'center',
@@ -523,7 +523,7 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
                     color: MUTED,
                   }}
                 >
-                  <div style={{ width: 4, height: 4, marginTop: 8, borderRadius: 4, background: 'rgba(41,66,42,0.45)' }} />
+                  <div style={{ width: 4, height: 4, marginTop: 8, borderRadius: 4, background: 'rgba(4,74,40,0.45)' }} />
                   <p
                     className="font-sans"
                     style={{ fontSize: 12, lineHeight: '18px', fontVariationSettings: "'opsz' 9" }}
@@ -561,7 +561,7 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
                           borderRadius: '16px 16px 16px 6px',
                           background: SURFACE,
                           border: `1px solid ${BORDER}`,
-                          borderLeft: '3px solid rgba(41,66,42,0.42)',
+                          borderLeft: '3px solid rgba(4,74,40,0.42)',
                         }}
                       >
                         <TypingDots />

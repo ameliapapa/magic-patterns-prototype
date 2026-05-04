@@ -10,7 +10,7 @@ import iconChevronRight from '../assets/icons/icon-chevron-right.svg'
 import iconMore from '../assets/icons/icon-more.svg'
 import navReflect from '../assets/icons/nav-reflect.svg'
 
-const GREEN = '#29422a'
+const GREEN = '#044A28'
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -117,7 +117,7 @@ function IntentionCard({
   return (
     <div
       className="flex flex-col gap-4 overflow-hidden p-4 rounded-2xl shrink-0"
-      style={{ background: 'white', width: 179 }}
+      style={{ background: 'white', width: 179, border: '1px solid rgba(138,116,103,0.2)' }}
     >
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-1">
@@ -156,7 +156,7 @@ function IntentionCard({
       </div>
       <div
         className="flex flex-col gap-1 rounded-[12px]"
-        style={{ background: 'rgba(41,66,42,0.05)', padding: '8px 10px' }}
+        style={{ background: 'rgba(4,74,40,0.05)', padding: '8px 10px' }}
       >
         <span
           className="font-sans font-medium uppercase"
@@ -197,7 +197,7 @@ export default function DashboardPage({
   onActivityLibraryOpen: () => void
 }) {
   return (
-    <div className="relative" style={{ width: 393, background: '#f8f6f2', minHeight: 852 }}>
+    <div className="relative" style={{ width: 393, background: '#FFFCF3', minHeight: 852 }}>
 
       {/* ── 1. Hero section (image + overlapping greeting card + role chips) ── */}
       <div className="relative" style={{ height: 368 }}>
@@ -246,7 +246,7 @@ export default function DashboardPage({
               {/* Unread indicator */}
               <span
                 className="absolute rounded-full"
-                style={{ width: 7, height: 7, background: '#29422a', top: 0, right: 0, border: '1.5px solid #f8f6f2' }}
+                style={{ width: 7, height: 7, background: '#044A28', top: 0, right: 0, border: '1.5px solid #FFFCF3' }}
               />
             </button>
             <img src={iconUserCircle} alt="profile" width={24} height={24} />

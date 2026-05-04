@@ -27,14 +27,16 @@ const ROLE_ID_TO_LABEL: Record<string, string> = {
   partner: 'Partner', professional: 'Professional', daughter: 'Daughter',
 }
 
-const GREEN = '#29422a'
+const GREEN = '#044A28'
 
 // Nav pill height (61) + padding top/bottom (8 + 16) = 85px
 // Gradient fade zone above = 20px
 // Total overlay = 105px → paddingBottom on scroll content
 const NAV_OVERLAY_HEIGHT = 105
 
-function NavTab({
+// ─── Nav — Legacy (warm clay) ─────────────────────────────────────────────────
+
+function NavTabLegacy({
   icon,
   label,
   active,
@@ -81,7 +83,7 @@ function NavTab({
   )
 }
 
-function GlobalNav({
+export function GlobalNavLegacy({
   page,
   navigate,
   onNewMoment,
@@ -96,6 +98,106 @@ function GlobalNav({
         <div
           className="flex flex-1 items-center py-[6px] px-[6px] rounded-pill"
           style={{ background: '#e8e1d7', height: 61 }}
+        >
+          <NavTabLegacy
+            icon={navOverview}
+            label="Overview"
+            active={page === 'dashboard'}
+            onClick={() => navigate('dashboard')}
+          />
+          <NavTabLegacy
+            icon={navReflect}
+            label="Reflect"
+            active={page === 'reflect'}
+            onClick={() => navigate('reflect')}
+          />
+          <NavTabLegacy
+            icon={navMemory}
+            label="Memory"
+            active={page === 'memory'}
+            onClick={() => navigate('memory')}
+          />
+        </div>
+
+        <button
+          onClick={onNewMoment}
+          className="flex items-center justify-center rounded-pill shrink-0"
+          style={{ background: '#e8e1d7', width: 59, height: 59 }}
+        >
+          <img src={navPlus} alt="Add" width={26} height={26} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ─── Nav — Forest green pill ──────────────────────────────────────────────────
+
+const NAV_GREEN_900 = '#044A28'
+const NAV_GREEN_200 = '#D6F6A0'
+
+function NavTab({
+  icon,
+  label,
+  active,
+  onClick,
+}: {
+  icon: string
+  label: string
+  active: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex flex-1 flex-col items-center gap-[2px] py-[4px] rounded-pill"
+      style={{
+        height: 49,
+        background: active ? NAV_GREEN_200 : 'transparent',
+        transition: 'background 200ms ease',
+      }}
+    >
+      <img
+        src={icon}
+        alt=""
+        width={24}
+        height={24}
+        style={{
+          filter: active ? 'none' : 'brightness(0) invert(1)',
+          transition: 'filter 200ms ease',
+        }}
+      />
+      <span
+        className="font-sans font-medium text-center"
+        style={{
+          fontSize: 10,
+          lineHeight: '15px',
+          color: active ? NAV_GREEN_900 : 'rgba(255,255,255,0.85)',
+          fontVariationSettings: "'opsz' 14",
+          transition: 'color 200ms ease',
+        }}
+      >
+        {label}
+      </span>
+    </button>
+  )
+}
+
+function GlobalNav({
+  page,
+  navigate,
+  onNewMoment,
+}: {
+  page: Page
+  navigate: (p: Page) => void
+  onNewMoment: () => void
+}) {
+  return (
+    <div className="absolute bottom-0 left-0 right-0" style={{ zIndex: 20 }}>
+      <div className="flex gap-[11px] items-center" style={{ padding: '8px 23px 16px' }}>
+        <div
+          className="flex flex-1 items-center py-[6px] px-[6px] rounded-pill"
+          style={{ background: NAV_GREEN_900, height: 61 }}
         >
           <NavTab
             icon={navOverview}
@@ -119,10 +221,16 @@ function GlobalNav({
 
         <button
           onClick={onNewMoment}
-          className="flex items-center justify-center rounded-pill shrink-0"
-          style={{ background: '#e8e1d7', width: 59, height: 59 }}
+          className="flex items-center justify-center rounded-full shrink-0"
+          style={{ background: NAV_GREEN_900, width: 59, height: 59 }}
         >
-          <img src={navPlus} alt="Add" width={26} height={26} />
+          <img
+            src={navPlus}
+            alt="Add"
+            width={26}
+            height={26}
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
         </button>
       </div>
     </div>
@@ -160,7 +268,7 @@ export default function App() {
     <div className="flex items-center justify-center min-h-screen">
       {/* Phone frame */}
       <div
-        className="relative overflow-hidden bg-[#f8f6f2]"
+        className="relative overflow-hidden bg-[#FFFCF3]"
         style={{
           width: 393,
           height: 852,

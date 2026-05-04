@@ -11,7 +11,7 @@ import imgHike from '../assets/illustrations/u1355955226_mountain_hike_--sref_20
 import imgFamilyDinner from '../assets/illustrations/u1355955226_family_dinner_table_--sref_202514354_--profile_8d_6dde0955-dfa3-4689-b9fa-afe77a537eda_1.png'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
-const GREEN = '#29422a'
+const GREEN = '#044A28'
 const BORDER = 'rgba(138,116,103,0.2)'
 const INK = '#2d2d2a'
 const MUTED = '#6b6660'
@@ -62,7 +62,7 @@ function IllustrationTile({
         className="absolute inset-0"
         style={{
           background: selected
-            ? 'linear-gradient(to bottom, rgba(41,66,42,0.04), rgba(41,66,42,0.38))'
+            ? 'linear-gradient(to bottom, rgba(4,74,40,0.04), rgba(4,74,40,0.38))'
             : 'linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.22))',
         }}
       />
@@ -236,7 +236,7 @@ export default function CaptureMomentSheet({
               rows={5}
               className="w-full resize-none bg-transparent outline-none border-none"
               style={{
-                fontFamily: "'Libre Baskerville', Georgia, serif",
+                fontFamily: "'F37 Bobby Trial', Georgia, serif",
                 fontWeight: 700,
                 fontSize: 20,
                 lineHeight: '31px',
@@ -301,7 +301,7 @@ export default function CaptureMomentSheet({
                     width: 72,
                     height: 72,
                     border: '1px dashed rgba(138,116,103,0.35)',
-                    background: '#f8f6f2',
+                    background: '#FFFCF3',
                     cursor: 'pointer',
                     color: MUTED,
                   }}
@@ -355,7 +355,7 @@ export default function CaptureMomentSheet({
               style={{
                 width: 40,
                 height: 40,
-                background: showPicker ? 'rgba(41,66,42,0.08)' : 'rgba(138,116,103,0.08)',
+                background: showPicker ? 'rgba(4,74,40,0.08)' : 'rgba(138,116,103,0.08)',
                 transition: 'background 160ms ease',
               }}
               aria-label={showPicker ? 'Close picker' : 'Add illustration'}
@@ -383,7 +383,7 @@ export default function CaptureMomentSheet({
               disabled={!canSubmit}
               className="flex items-center gap-[8px] rounded-pill"
               style={{
-                background: canSubmit ? GREEN : 'rgba(41,66,42,0.25)',
+                background: canSubmit ? GREEN : 'rgba(4,74,40,0.25)',
                 padding: '12px 20px',
                 cursor: canSubmit ? 'pointer' : 'not-allowed',
                 transition: 'background 200ms ease',

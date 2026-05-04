@@ -35,8 +35,8 @@ import iconInvestor from '../assets/icons/investor-role.svg'
 import iconReader from '../assets/icons/reader-role.svg'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
-const GREEN = '#29422a'
-const BG = '#f8f6f2'
+const GREEN = '#044A28'
+const BG = '#FFFCF3'
 const INK = '#2d2d2a'
 const MUTED = '#6b6660'
 const BORDER = 'rgba(138,116,103,0.2)'
@@ -133,7 +133,7 @@ function GreenButton({
       disabled={disabled}
       className="w-full rounded-[20px] py-4 font-sans font-medium"
       style={{
-        background: disabled ? 'rgba(41,66,42,0.28)' : GREEN,
+        background: disabled ? 'rgba(4,74,40,0.28)' : GREEN,
         color: '#fffffe',
         fontSize: 16,
         fontVariationSettings: "'opsz' 14",
@@ -475,19 +475,19 @@ function DirectionStep({
               onClick={() => onChange(s)}
               className="text-left rounded-[14px]"
               style={{
-                border: `1px solid ${value === s ? 'rgba(41,66,42,0.35)' : BORDER}`,
+                border: `1px solid ${value === s ? 'rgba(4,74,40,0.35)' : BORDER}`,
                 padding: '11px 14px',
-                background: value === s ? 'rgba(41,66,42,0.06)' : 'transparent',
+                background: value === s ? 'rgba(4,74,40,0.06)' : 'transparent',
                 transition: 'background 140ms ease, border-color 140ms ease',
               }}
             >
               <span
-                className="font-serif font-bold"
+                className="font-serif"
                 style={{
                   fontSize: 14,
-                  color: value === s ? GREEN : INK,
+                  color: '#BC3712',
                   lineHeight: '20px',
-                  fontStyle: 'italic',
+                  fontWeight: 700,
                   transition: 'color 140ms ease',
                 }}
               >
@@ -593,11 +593,11 @@ function IntentionsStep({
               style={{ padding: '4px 0' }}
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M6 1v10M1 6h10" stroke="rgba(41,66,42,0.5)" strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M6 1v10M1 6h10" stroke="rgba(4,74,40,0.5)" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
               <span
                 className="font-sans font-normal"
-                style={{ fontSize: 13, color: 'rgba(41,66,42,0.65)', fontVariationSettings: "'opsz' 9" }}
+                style={{ fontSize: 13, color: 'rgba(4,74,40,0.65)', fontVariationSettings: "'opsz' 9" }}
               >
                 Add another
               </span>
@@ -738,15 +738,15 @@ function WelcomeStep({
             >
               Your direction
             </span>
-            <div style={{ paddingLeft: 14, borderLeft: '2px solid rgba(41,66,42,0.28)' }}>
+            <div style={{ paddingLeft: 14, borderLeft: '2px solid rgba(4,74,40,0.28)' }}>
               <p
-                className="font-serif font-bold"
+                className="font-serif"
                 style={{
                   fontSize: 18,
                   lineHeight: '27px',
                   letterSpacing: '-0.2px',
-                  color: INK,
-                  fontStyle: 'italic',
+                  color: '#BC3712',
+                  fontWeight: 700,
                 }}
               >
                 "{direction}"
@@ -768,7 +768,7 @@ function WelcomeStep({
         <div
           className="rounded-[20px] flex flex-col gap-[10px]"
           style={{
-            background: 'rgba(41,66,42,0.06)',
+            background: 'rgba(4,74,40,0.06)',
             padding: '16px 18px',
             marginBottom: 28,
           }}

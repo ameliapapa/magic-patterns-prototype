@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'F37 Bobby Trial';
+  src: url('./bobby-font/F37BobbyTrial-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'F37 Bobby Trial';
+  src: url('./bobby-font/F37BobbyTrial-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'F37 Bobby Trial';
+  src: url('./bobby-font/F37BobbyTrial-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
@@ -101,4 +122,9 @@
 @keyframes breathe {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.05); }
+}
+
+@keyframes maskReveal {
+  from { transform: translateY(48px); }
+  to   { transform: translateY(0); }
 }
