@@ -131,19 +131,19 @@ function GreenButton({
     <button
       onClick={onClick}
       disabled={disabled}
-      className="w-full rounded-[24px] py-4 font-sans font-medium"
+      className="w-full flex items-center justify-center rounded-[30px] py-4 active:scale-[0.97] transition-transform duration-100"
       style={{
         background: disabled ? 'transparent' : GREEN,
         border: disabled ? `1px solid ${BORDER}` : '1px solid transparent',
-        color: disabled ? 'rgba(107,102,96,0.72)' : '#fffffe',
-        fontFamily: disabled ? "'F37 Bobby Trial', Georgia, serif" : undefined,
-        fontSize: disabled ? 18 : 16,
-        fontWeight: disabled ? 700 : undefined,
-        fontVariationSettings: disabled ? undefined : "'opsz' 14",
-        transition: 'background 150ms ease, border-color 150ms ease',
+        cursor: disabled ? 'not-allowed' : 'pointer',
       }}
     >
-      {label}
+      <span
+        className="font-bobby font-bold text-center"
+        style={{ fontSize: 18, color: disabled ? 'rgba(107,102,96,0.72)' : '#fcfcfa' }}
+      >
+        {label}
+      </span>
     </button>
   )
 }
@@ -152,8 +152,8 @@ function BackButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="w-full py-3 font-sans font-normal"
-      style={{ fontSize: 14, color: 'rgba(74,74,69,0.55)', fontVariationSettings: "'opsz' 14" }}
+      className="w-full font-bobby font-bold text-center hover:opacity-70 transition-opacity duration-150"
+      style={{ fontSize: 18, color: 'rgba(74,74,69,0.6)' }}
     >
       Back
     </button>
@@ -209,7 +209,7 @@ function CoverStep({ onNext, onClose }: { onNext: () => void; onClose: () => voi
           </svg>
           <span
             className="font-sans font-medium"
-            style={{ fontSize: 12, color: '#fffffe', fontVariationSettings: "'opsz' 14" }}
+            style={{ fontSize: 14, color: '#fffffe', fontVariationSettings: "'opsz' 14" }}
           >
             Close
           </span>
@@ -228,13 +228,13 @@ function CoverStep({ onNext, onClose }: { onNext: () => void; onClose: () => voi
         <img src={maeFlowerIcon} alt="" width={42} height={42} />
         <h1
           className="font-serif font-bold text-center"
-          style={{ fontSize: 28, letterSpacing: '-0.5px', color: INK, lineHeight: '35px' }}
+          style={{ fontSize: 30, letterSpacing: '-0.4px', color: INK, lineHeight: '37px' }}
         >
           Let's add a role.
         </h1>
         <p
           className="font-sans text-center"
-          style={{ fontSize: 14, color: MUTED, lineHeight: '21px', fontVariationSettings: "'opsz' 14" }}
+          style={{ fontSize: 15, color: MUTED, lineHeight: '22px', fontVariationSettings: "'opsz' 14" }}
         >
           Pick one, set a direction, done.
         </p>
@@ -284,8 +284,8 @@ function RoleTile({
       <span
         className="font-sans font-medium"
         style={{
-          fontSize: 12,
-          lineHeight: '15px',
+          fontSize: 14,
+          lineHeight: '18px',
           color: selected ? '#fafaf7' : '#030712',
           fontVariationSettings: "'opsz' 14",
           whiteSpace: 'nowrap',
@@ -320,12 +320,12 @@ function PickRoleStep({
 
       <div style={{ animation: 'fadeUpIn 460ms 140ms both' }}>
         <div className="text-center px-6" style={{ paddingTop: 20 }}>
-          <p className="font-serif font-bold" style={{ fontSize: 20, lineHeight: '27px', color: INK }}>
+          <p className="font-serif font-bold" style={{ fontSize: 24, lineHeight: '31px', color: INK }}>
             Which role?
           </p>
           <p
             className="font-sans font-medium"
-            style={{ fontSize: 10, color: MUTED, marginTop: 4, fontVariationSettings: "'opsz' 14" }}
+            style={{ fontSize: 13, lineHeight: '18px', color: MUTED, marginTop: 4, fontVariationSettings: "'opsz' 14" }}
           >
             You can add more later.
           </p>
@@ -370,13 +370,13 @@ function PickRoleStep({
               if (e.target.value.trim()) onSelect(null)
             }}
             className="w-full bg-transparent outline-none border-none font-serif font-bold text-black"
-            style={{ fontSize: 20, lineHeight: '27px', caretColor: INK }}
+            style={{ fontSize: 24, lineHeight: '31px', caretColor: INK }}
             placeholder=""
           />
           <div style={{ width: 271, height: 1, background: INK, marginTop: 8 }} />
           <p
             className="font-sans font-normal"
-            style={{ fontSize: 10, lineHeight: '27px', color: 'rgba(74,74,69,0.6)', marginTop: 2, fontVariationSettings: "'opsz' 14" }}
+            style={{ fontSize: 13, lineHeight: '19px', color: 'rgba(74,74,69,0.6)', marginTop: 8, fontVariationSettings: "'opsz' 14" }}
           >
             Add a role in your own words
           </p>
@@ -428,13 +428,13 @@ function DirectionStep({
       >
         <h2
           className="font-serif font-bold"
-          style={{ fontSize: 22, letterSpacing: '-0.3px', color: INK, marginBottom: 6, lineHeight: '29px' }}
+          style={{ fontSize: 24, letterSpacing: '-0.2px', color: INK, marginBottom: 6, lineHeight: '31px' }}
         >
           How do you want to show up as {role?.label ?? 'this role'}?
         </h2>
         <p
           className="font-sans"
-          style={{ fontSize: 13, color: MUTED, marginBottom: 24, fontVariationSettings: "'opsz' 14" }}
+          style={{ fontSize: 15, lineHeight: '22px', color: MUTED, marginBottom: 24, fontVariationSettings: "'opsz' 14" }}
         >
           One line is enough.
         </p>
@@ -456,18 +456,18 @@ function DirectionStep({
             className="w-full bg-transparent resize-none outline-none font-serif font-bold"
             rows={3}
             style={{
-              fontSize: 19,
-              lineHeight: '28px',
+              fontSize: 21,
+              lineHeight: '30px',
               color: INK,
               caretColor: GREEN,
-              letterSpacing: '-0.2px',
+              letterSpacing: 0,
             }}
           />
         </div>
 
         <p
           className="font-sans font-medium"
-          style={{ fontSize: 11, color: 'rgba(45,45,42,0.4)', letterSpacing: '0.5px', marginBottom: 12, fontVariationSettings: "'opsz' 9" }}
+          style={{ fontSize: 12, color: 'rgba(45,45,42,0.55)', letterSpacing: 0, marginBottom: 12, fontVariationSettings: "'opsz' 9" }}
         >
           TRY ONE OF THESE
         </p>
@@ -487,9 +487,9 @@ function DirectionStep({
               <span
                 className="font-serif"
                 style={{
-                  fontSize: 14,
-                  color: '#BC3712',
-                  lineHeight: '20px',
+                  fontSize: 16,
+                  color: INK,
+                  lineHeight: '23px',
                   fontWeight: 700,
                   transition: 'color 140ms ease',
                 }}
@@ -549,13 +549,13 @@ function IntentionsStep({
       >
         <h2
           className="font-serif font-bold"
-          style={{ fontSize: 22, letterSpacing: '-0.3px', color: INK, marginBottom: 6, lineHeight: '29px' }}
+          style={{ fontSize: 24, letterSpacing: '-0.2px', color: INK, marginBottom: 6, lineHeight: '31px' }}
         >
           What do you want to keep coming back to?
         </h2>
         <p
           className="font-sans"
-          style={{ fontSize: 13, color: MUTED, marginBottom: 24, fontVariationSettings: "'opsz' 14" }}
+          style={{ fontSize: 15, lineHeight: '22px', color: MUTED, marginBottom: 24, fontVariationSettings: "'opsz' 14" }}
         >
           One is plenty. You can always add more.
         </p>
@@ -577,13 +577,14 @@ function IntentionsStep({
                 value={val}
                 autoFocus={i === intentions.length - 1 && i > 0}
                 onChange={e => update(i, e.target.value)}
-                placeholder={i === 0 ? 'e.g. Daily walk, weekly call, journalling' : 'Another intention...'}
+                placeholder={i === 0 ? 'e.g. Daily walk or weekly call' : 'Another intention...'}
                 className="w-full bg-transparent outline-none font-serif font-bold"
                 style={{
-                  fontSize: 17,
+                  fontSize: 19,
+                  lineHeight: '25px',
                   color: INK,
                   caretColor: GREEN,
-                  letterSpacing: '-0.15px',
+                  letterSpacing: 0,
                 }}
               />
             </div>
@@ -600,7 +601,7 @@ function IntentionsStep({
               </svg>
               <span
                 className="font-sans font-normal"
-                style={{ fontSize: 13, color: 'rgba(4,74,40,0.65)', fontVariationSettings: "'opsz' 9" }}
+                style={{ fontSize: 15, color: 'rgba(4,74,40,0.7)', fontVariationSettings: "'opsz' 14" }}
               >
                 Add another
               </span>
@@ -610,7 +611,7 @@ function IntentionsStep({
 
         <p
           className="font-sans font-medium"
-          style={{ fontSize: 11, color: 'rgba(45,45,42,0.4)', letterSpacing: '0.5px', marginBottom: 12, fontVariationSettings: "'opsz' 9" }}
+          style={{ fontSize: 12, color: 'rgba(45,45,42,0.55)', letterSpacing: 0, marginBottom: 12, fontVariationSettings: "'opsz' 9" }}
         >
           OR PICK ONE
         </p>
@@ -624,7 +625,7 @@ function IntentionsStep({
             >
               <span
                 className="font-sans font-normal"
-                style={{ fontSize: 12, color: INK, fontVariationSettings: "'opsz' 9" }}
+                style={{ fontSize: 14, lineHeight: '19px', color: INK, fontVariationSettings: "'opsz' 14" }}
               >
                 {s}
               </span>
@@ -731,8 +732,8 @@ function WelcomeStep({
             <span
               className="font-sans font-medium uppercase"
               style={{
-                fontSize: 10,
-                letterSpacing: '1.1px',
+                fontSize: 12,
+                letterSpacing: 0,
                 color: 'rgba(45,45,42,0.45)',
                 display: 'block',
                 marginBottom: 12,
@@ -745,10 +746,10 @@ function WelcomeStep({
               <p
                 className="font-serif"
                 style={{
-                  fontSize: 18,
-                  lineHeight: '27px',
-                  letterSpacing: '-0.2px',
-                  color: '#BC3712',
+                  fontSize: 20,
+                  lineHeight: '29px',
+                  letterSpacing: 0,
+                  color: INK,
                   fontWeight: 700,
                 }}
               >
@@ -760,7 +761,7 @@ function WelcomeStep({
           <div style={{ marginBottom: 24 }}>
             <p
               className="font-sans"
-              style={{ fontSize: 14, color: 'rgba(138,116,103,0.65)', fontVariationSettings: "'opsz' 14" }}
+              style={{ fontSize: 15, lineHeight: '22px', color: 'rgba(45,45,42,0.68)', fontVariationSettings: "'opsz' 14" }}
             >
               No direction set — you can add one from the role screen.
             </p>
@@ -780,14 +781,14 @@ function WelcomeStep({
             <img src={maeFlowerIcon} alt="" width={16} height={16} />
             <span
               className="font-sans font-medium uppercase"
-              style={{ fontSize: 9, letterSpacing: '1.3px', color: GREEN, opacity: 0.8, fontVariationSettings: "'opsz' 9" }}
+              style={{ fontSize: 11, letterSpacing: 0, color: GREEN, opacity: 0.8, fontVariationSettings: "'opsz' 9" }}
             >
               Mae
             </span>
           </div>
           <p
             className="font-sans"
-            style={{ fontSize: 14, lineHeight: '21px', color: INK, fontVariationSettings: "'opsz' 14" }}
+            style={{ fontSize: 15, lineHeight: '22px', color: INK, fontVariationSettings: "'opsz' 14" }}
           >
             I'll ask how this is going when you check in.
           </p>

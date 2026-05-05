@@ -1,7 +1,7 @@
+import { Pencil } from 'lucide-react'
 import heroNature from '../assets/illustrations/walk-in-nature.png'
 import activityWeightlifting from '../assets/illustrations/person_lifting_weights_in_gym.png'
 import activityWatercolor from '../assets/illustrations/u1355955226_painter_painting_a_canvas_--sref_202514354_--prof_51f7c398-d464-4ad1-8bb6-da52f2cc1971_0.png'
-import { COLORS } from '../styles/colorTokens'
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 import iconBubbleChat from '../assets/icons/bubble-chat.svg'
@@ -9,7 +9,6 @@ import iconUserCircle from '../assets/icons/icon-user-circle.svg'
 import iconHeart from '../assets/icons/icon-heart.svg'
 import iconChevronRight from '../assets/icons/icon-chevron-right.svg'
 import iconMore from '../assets/icons/icon-more.svg'
-import navReflect from '../assets/icons/nav-reflect.svg'
 
 const GREEN = '#044A28'
 
@@ -106,76 +105,57 @@ function IntentionCard({
   title,
   subtitle,
   directionRole,
-  direction,
   onEdit,
 }: {
   title: string
   subtitle: string
   directionRole: string
-  direction: string
   onEdit?: () => void
 }) {
   return (
     <div
-      className="flex flex-col gap-4 overflow-hidden p-4 rounded-2xl shrink-0"
+      className="flex flex-col gap-3 overflow-hidden p-4 rounded-2xl shrink-0"
       style={{ background: 'white', width: 179, border: '1px solid rgba(138,116,103,0.2)' }}
     >
       <div className="flex items-center justify-between w-full">
-        <div className="flex items-center gap-1">
-          <img src={navReflect} alt="" width={16} height={16} />
-          <span
-            className="font-sans font-normal text-ink-secondary"
-            style={{ fontSize: 12, lineHeight: '18px', fontVariationSettings: "'opsz' 9" }}
-          >
-            Reflect
-          </span>
-        </div>
-        {onEdit && (
-          <button onClick={onEdit}>
-            <span
-              className="font-sans font-normal text-muted"
-              style={{ fontSize: 11, fontVariationSettings: "'opsz' 9" }}
-            >
-              Edit
-            </span>
-          </button>
-        )}
-      </div>
-      <div className="flex flex-col gap-2">
-        <p
-          className="font-sans font-medium text-ink-secondary whitespace-nowrap"
-          style={{ fontSize: 16, lineHeight: '24px', letterSpacing: '-0.16px', fontVariationSettings: "'opsz' 14" }}
-        >
-          {title}
-        </p>
-        <p
-          className="font-sans font-normal text-muted whitespace-nowrap"
-          style={{ fontSize: 12, lineHeight: '18px', fontVariationSettings: "'opsz' 9" }}
-        >
-          {subtitle}
-        </p>
-      </div>
-      <div
-        className="flex flex-col gap-1 rounded-[12px]"
-        style={{ background: COLORS.role[50], padding: '8px 10px' }}
-      >
         <span
-          className="font-sans font-medium uppercase"
+          className="font-sans font-medium uppercase rounded-pill"
           style={{
             fontSize: 9,
             lineHeight: '12px',
-            letterSpacing: '0.9px',
-            color: 'rgba(74,74,69,0.55)',
+            letterSpacing: '0.8px',
+            color: GREEN,
+            background: 'rgba(4,74,40,0.06)',
+            border: '1px solid rgba(4,74,40,0.1)',
+            padding: '3px 8px',
             fontVariationSettings: "'opsz' 9",
           }}
         >
           {directionRole}
         </span>
+        {onEdit && (
+          <button
+            onClick={onEdit}
+            className="flex items-center justify-center rounded-full"
+            style={{ width: 28, height: 28, background: 'rgba(138,116,103,0.08)' }}
+            aria-label="Edit intention"
+          >
+            <Pencil size={13} strokeWidth={1.8} color="#6b6660" />
+          </button>
+        )}
+      </div>
+      <div className="flex flex-col gap-1">
         <p
-          className="font-sans font-medium"
-          style={{ fontSize: 12, lineHeight: '16px', color: GREEN, fontVariationSettings: "'opsz' 9" }}
+          className="font-serif font-bold text-ink"
+          style={{ fontSize: 16, lineHeight: '21px', letterSpacing: '-0.2px' }}
         >
-          {direction}
+          {title}
+        </p>
+        <p
+          className="font-sans font-normal text-muted"
+          style={{ fontSize: 12, lineHeight: '17px', fontVariationSettings: "'opsz' 9" }}
+        >
+          {subtitle}
         </p>
       </div>
     </div>
@@ -371,21 +351,18 @@ export default function DashboardPage({
             title="Portfolio Redesign"
             subtitle="Create new custom icons"
             directionRole="Creative"
-            direction="Create more than I consume"
             onEdit={() => onIntentionEdit('Portfolio Redesign', ROLE_IDS['Creative'])}
           />
           <IntentionCard
             title="Role App design"
             subtitle="Refine user flow"
             directionRole="Professional"
-            direction="Build things worth building"
             onEdit={() => onIntentionEdit('Role App design', ROLE_IDS['Professional'])}
           />
           <IntentionCard
             title="Website Redesign"
             subtitle="Create new custom icons"
             directionRole="Professional"
-            direction="Build things worth building"
             onEdit={() => onIntentionEdit('Website Redesign', ROLE_IDS['Professional'])}
           />
         </div>

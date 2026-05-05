@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import maeLogo from '../assets/icons/mae-flower-icon.svg'
+import maeLogo from '../assets/icons/mae-logo.svg'
 import chatIcon from '../assets/icons/bubble-chat.svg'
 import archiveIcon from '../assets/icons/archive-04.svg'
 import { COLORS } from '../styles/colorTokens'
@@ -63,20 +63,6 @@ const SUGGESTIONS = [
   'How have my habits been this week?',
   'Which role needs more attention right now?',
 ]
-
-function MaeMark({ size = 40 }: { size?: number }) {
-  return (
-    <div
-      className="flex items-center justify-center"
-      style={{
-        width: size,
-        height: size,
-      }}
-    >
-      <img src={maeLogo} alt="" width={Math.round(size * 0.72)} height={Math.round(size * 0.72)} />
-    </div>
-  )
-}
 
 function RichText({ text, isMae }: { text: string; isMae: boolean }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g)
@@ -375,24 +361,16 @@ export default function MaeChatSheet({ onClose }: { onClose: () => void }) {
             </svg>
           </button>
 
-          <div className="flex min-w-0 flex-1 items-center gap-2">
-            <MaeMark size={30} />
-            <div className="min-w-0">
-              <span
-                style={{
-                  display: 'block',
-                  fontFamily: "'Fraunces', Georgia, serif",
-                  fontSize: 20,
-                  fontWeight: 700,
-                  lineHeight: '23px',
-                  color: INK,
-                  letterSpacing: 0,
-                  fontVariationSettings: "'opsz' 24",
-                }}
-              >
-                Mae
-              </span>
-            </div>
+          <div className="flex min-w-0 flex-1 items-center">
+            <img
+              src={maeLogo}
+              alt="Mae"
+              style={{
+                height: 30,
+                width: 'auto',
+                maxWidth: 100,
+              }}
+            />
           </div>
 
           <div

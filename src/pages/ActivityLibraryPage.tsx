@@ -201,20 +201,45 @@ const LIBRARY_ITEMS: LibraryItem[] = [
   },
 ]
 
-function CreateTile() {
+function EmptySavedSection() {
   return (
-    <button
-      className="flex items-center justify-center rounded-[24px] active:scale-[0.98]"
+    <section
+      className="rounded-[24px]"
       style={{
-        width: 72,
-        height: 72,
-        background: GREEN,
-        transition: 'transform 120ms ease',
+        marginBottom: 32,
+        padding: 16,
+        background: SURFACE,
+        border: `1px solid ${BORDER}`,
       }}
-      aria-label="Create activity"
     >
-      <Plus size={28} strokeWidth={1.7} color={SURFACE} />
-    </button>
+      <h2
+        className="font-serif font-bold"
+        style={{ fontSize: 20, lineHeight: '26px', color: '#151512', letterSpacing: '-0.2px' }}
+      >
+        Saved ideas
+      </h2>
+      <div
+        className="mt-4 flex items-center gap-3 rounded-[16px]"
+        style={{
+          padding: '12px 14px',
+          background: 'rgba(4,74,40,0.04)',
+          border: '1px solid rgba(4,74,40,0.08)',
+        }}
+      >
+        <div
+          className="flex shrink-0 items-center justify-center rounded-full"
+          style={{ width: 36, height: 36, background: 'rgba(4,74,40,0.08)' }}
+        >
+          <Heart size={18} strokeWidth={1.8} color={GREEN} />
+        </div>
+        <p
+          className="font-sans"
+          style={{ fontSize: 13, lineHeight: '18px', color: MUTED, fontVariationSettings: "'opsz' 14" }}
+        >
+          Heart ideas in any category to collect them here.
+        </p>
+      </div>
+    </section>
   )
 }
 
@@ -684,19 +709,7 @@ export default function ActivityLibraryPage({
               </div>
             </section>
           ) : (
-            <div
-              className="grid"
-              style={{
-                gridTemplateColumns: 'repeat(4, 72px)',
-                justifyContent: 'space-between',
-                marginBottom: 24,
-              }}
-            >
-              <CreateTile />
-              <CreateTile />
-              <CreateTile />
-              <CreateTile />
-            </div>
+            <EmptySavedSection />
           )
         )}
 
